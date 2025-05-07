@@ -2,7 +2,6 @@
 
 
 #include "Game/StartPlayerController.h"
-
 #include "UI/StartGame/UI_StartGame.h"
 
 void AStartPlayerController::BeginPlay()

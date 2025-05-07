@@ -3,6 +3,7 @@
 
 #include "UI/StartGame/UI_StartGame.h"
 #include "Components/Button.h"
+#include "Game/SaveManager.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include <Kismet/GameplayStatics.h>
 
@@ -23,7 +24,6 @@ void UUI_StartGame::OnExitCilcked()
 void UUI_StartGame::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
-	UE_LOG(LogTemp, Warning, TEXT("UUI_StartGame::NativeOnInitialized"));
 
 	if (Btn_Start != nullptr) {
 		Btn_Start->OnClicked.AddDynamic(this, &UUI_StartGame::OnStartCilcked);

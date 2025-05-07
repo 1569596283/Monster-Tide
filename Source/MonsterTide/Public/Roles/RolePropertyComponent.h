@@ -14,12 +14,18 @@ enum class ERoleType :uint8 {
 };
 
 USTRUCT(BlueprintType)
-struct FRolePrperty :public FTableRowBase
+struct FRoleProperty :public FTableRowBase
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
 	ERoleType Type;
+
+	UPROPERTY(EditDefaultsOnly)
+	int Level;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Exp;
 
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHP;
@@ -40,6 +46,7 @@ struct FRolePrperty :public FTableRowBase
 	float Defense;
 };
 
+FRoleProperty* getRandomRoleProperty(ERoleType type);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MONSTERTIDE_API URolePropertyComponent : public UActorComponent
@@ -55,10 +62,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	FRolePrperty* RoleProperty;
+	FRoleProperty* RoleProperty;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	bool InitProperty(FName rowName);
 };
+
