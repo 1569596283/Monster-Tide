@@ -14,13 +14,13 @@ void UUI_Game::NativeOnInitialized()
 
 void UUI_Game::RefreshHeros()
 {
-	TArray<FRoleProperty>& RPArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroArray();
-	for (int i = 0; i < RPArr.Num(); i++) {
-		AddHeroItem(RPArr[i]);
+	TArray<FRoleProperty>* RPArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroArray();
+	for (int i = 0; i < RPArr->Num(); i++) {
+		AddHeroItem(RPArr->GetData() + i);
 	}
 }
 
-void UUI_Game::AddHeroItem(FRoleProperty& rp)
+void UUI_Game::AddHeroItem(FRoleProperty* rp)
 {
 	if (ScrHero && HeroItemClass) {
 		UUI_HeroItem* item = CreateWidget<UUI_HeroItem>(this, HeroItemClass);

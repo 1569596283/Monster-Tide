@@ -21,7 +21,7 @@ class MONSTERTIDE_API UUI_HeroItem : public UUserWidget
 public:
 	virtual void NativeOnInitialized() override;
 
-	void InitRoleProperty(FRoleProperty &rp);
+	void InitRoleProperty(FRoleProperty* rp);
 
 private:
 	FRoleProperty* RoleProperty;
@@ -56,8 +56,7 @@ protected:
 	void OnBtnHeroClicked();
 
 	/* 根据当前状态和新点击的角色属性设置是否选中 */
-	UFUNCTION()
-	void SetBtnHeroState(const FRoleProperty& rp);
+	void SetBtnHeroState(FRoleProperty* rp);
 	/* 根据是否选中设置按钮颜色 */
 	UFUNCTION()
 	void RefreshBtnHeroState();

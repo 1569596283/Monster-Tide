@@ -14,19 +14,19 @@ void UHeroManager::InitHeroProperty()
 	}
 }
 
-TArray<FRoleProperty>& UHeroManager::GetHeroArray()
+TArray<FRoleProperty>* UHeroManager::GetHeroArray()
 {
 	// TODO: 在此处插入 return 语句
-	return HeroPropertyArr;
+	return &HeroPropertyArr;
 }
 
-void UHeroManager::SelectHeroItem(const FRoleProperty& rp)
+void UHeroManager::SelectHeroItem(FRoleProperty* rp)
 {
-	if (&rp == CurSelectRoleProperty) {
+	if (rp == CurSelectRoleProperty) {
 		CurSelectRoleProperty = nullptr;
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("SelectHeroItem"));
+		CurSelectRoleProperty = rp;
 		OnSelectItemChanged.Broadcast(rp);
 	}
 }

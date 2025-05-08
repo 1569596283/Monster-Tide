@@ -15,63 +15,58 @@ void UUI_HeroItem::NativeOnInitialized()
 	if (Btn_Hero != nullptr) {
 		Btn_Hero->OnClicked.AddDynamic(this, &UUI_HeroItem::OnBtnHeroClicked);
 		auto mgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
-		mgr->OnSelectItemChanged.AddDynamic(this, &UUI_HeroItem::SetBtnHeroState);
+		mgr->OnSelectItemChanged.AddUObject(this, &UUI_HeroItem::SetBtnHeroState);
 	}
 }
 
-void UUI_HeroItem::InitRoleProperty(FRoleProperty& rp)
+void UUI_HeroItem::InitRoleProperty(FRoleProperty* rp)
 {
-	RoleProperty = &rp;
+	RoleProperty = rp;
 	TB_Name->SetText(FText::FromString(TEXT("Name")));
-	TB_Type->SetText(UEnum::GetDisplayValueAsText(rp.Type));
-	TB_Level->SetText(FText::FromString(FString::FromInt(rp.Level)));
-	FString HPText = FString::FromInt(rp.HP) + "/" + FString::FromInt(rp.MaxHP);
+	TB_Type->SetText(UEnum::GetDisplayValueAsText(rp->Type));
+	TB_Level->SetText(FText::FromString(FString::FromInt(rp->Level)));
+	FString HPText = FString::FromInt(rp->HP) + "/" + FString::FromInt(rp->MaxHP);
 	TB_HP->SetText(FText::FromString(HPText));
-	PB_HP->SetPercent(rp.HP / rp.MaxHP);
-	FString MPText = FString::FromInt(rp.MP) + "/" + FString::FromInt(rp.MaxMP);
+	PB_HP->SetPercent(rp->HP / rp->MaxHP);
+	FString MPText = FString::FromInt(rp->MP) + "/" + FString::FromInt(rp->MaxMP);
 	TB_MP->SetText(FText::FromString(MPText));
-	PB_MP->SetPercent(rp.MP / rp.MaxMP);
-	FString EXPText = FString::FromInt(rp.Exp) + "/" + FString::FromInt(100);
+	PB_MP->SetPercent(rp->MP / rp->MaxMP);
+	FString EXPText = FString::FromInt(rp->Exp) + "/" + FString::FromInt(100);
 	TB_EXP->SetText(FText::FromString(EXPText));
-	PB_EXP->SetPercent(rp.Exp / 100);
+	PB_EXP->SetPercent(rp->Exp / 100);
 }
 
 void UUI_HeroItem::OnBtnHeroClicked()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnBtnHeroClicked"));
-	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->SelectHeroItem(*RoleProperty);
 	if (IsSelect) {
-		SetBtnHeroState(*RoleProperty);
+		SetBtnHeroState(RoleProperty);
 	}
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->SelectHeroItem(RoleProperty);
 }
 
-void UUI_HeroItem::SetBtnHeroState(const FRoleProperty& rp)
+void UUI_HeroItem::SetBtnHeroState(FRoleProperty* rp)
 {
-	bool newState = &rp == RoleProperty;
-	UE_LOG(LogTemp, Warning, TEXT("SetBtnHeroState newState %d"), newState);
-	if (!IsSelect && &rp == RoleProperty) {
+	bool newState = false;
+	if (!IsSelect && rp == RoleProperty) {
 		// 改为选中状态
 		newState = true;
 	}
-	else if ((IsSelect && &rp == RoleProperty) || IsSelect && &rp != RoleProperty) {
+	else if ((IsSelect && rp == RoleProperty) || IsSelect && rp != RoleProperty) {
 		newState = false;
 	}
 	if (newState != IsSelect) {
 		IsSelect = newState;
 		RefreshBtnHeroState();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("SetBtnHeroState %d"), IsSelect);
 }
 
 void UUI_HeroItem::RefreshBtnHeroState()
 {
-	UE_LOG(LogTemp, Warning, TEXT("RefreshBtnHeroState %d"), IsSelect);
-	//FButtonStyle ButtonStyle = Btn_Hero->GetStyle();
-	//if (IsSelect) {
-	//	ButtonStyle.SetNormal(FSlateColorBrush(FColor::Green));
-	//}
-	//else {
-	//	ButtonStyle.SetNormal(FSlateColorBrush(FColor::Green));
-	//}
-	//Btn_Hero->SetStyle(ButtonStyle);
+	// 设置普通状态颜色
+	if (IsSelect) {
+		Btn_Hero->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor::Green);
+	}
+	else {
+		Btn_Hero->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor::Gray);
+	}
 }

@@ -8,7 +8,7 @@
 
 struct FRoleProperty;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, const FRoleProperty&, newRoleProperty);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, FRoleProperty*);
 
 /**
  *
@@ -21,12 +21,11 @@ class MONSTERTIDE_API UHeroManager : public UGameInstanceSubsystem
 public:
 	void InitHeroProperty();
 
-	TArray<FRoleProperty>& GetHeroArray();
+	TArray<FRoleProperty>* GetHeroArray();
 
-	UPROPERTY(BlueprintAssignable)
 	FOnSelectItemChanged OnSelectItemChanged;
 
-	void SelectHeroItem(const FRoleProperty& rp);
+	void SelectHeroItem(FRoleProperty* rp);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
