@@ -14,15 +14,22 @@ void USaveManager::SaveGameData()
 
 void USaveManager::InitSaveData()
 {
+	if (GameData != nullptr) {
+		GameData->RemoveFromRoot();
+	}
 	USaveGame* Data = UGameplayStatics::LoadGameFromSlot("TestSaveData", 0);
-	if (Data != nullptr) {
-		GameData = Cast<USaveGameData>(Data);
-	}
-	else {
-		GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
-		FRoleProperty* rp = getRandomRoleProperty(ERoleType::Hero);
-		GameData->AddHero(rp);
-	}
+	//if (Data != nullptr) {
+	//	GameData = Cast<USaveGameData>(Data);
+	//}
+	//else {
+	//	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
+	//	FRoleProperty* rp = getRandomRoleProperty(ERoleType::Hero);
+	//	GameData->AddHero(rp);
+	//}
+	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
+	GameData->AddToRoot();
+	FRoleProperty* rp = getRandomRoleProperty(ERoleType::Hero);
+	GameData->AddHero(rp);
 }
 
 const TArray<FRoleProperty>& USaveManager::GetHeroArray() const

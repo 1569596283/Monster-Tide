@@ -39,7 +39,6 @@ bool URolePropertyComponent::InitProperty(FName RowName)
 		FString ContextString = "Text";
 		RoleProperty = DT_RoleProperty->FindRow<FRoleProperty>(RowName, ContextString);
 		if (RoleProperty) {
-			UE_LOG(LogTemp, Warning, TEXT("HP:%f , MP:%f , Attack:%f , Defense:%f"), RoleProperty->HP, RoleProperty->MP, RoleProperty->Attack, RoleProperty->Defense);
 			return true;
 		}
 	}
@@ -48,6 +47,15 @@ bool URolePropertyComponent::InitProperty(FName RowName)
 
 FRoleProperty* getRandomRoleProperty(ERoleType type)
 {
-	FRoleProperty* rp = new FRoleProperty();
-	return rp;
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_RoleProperty.DT_RoleProperty'")));
+	if (DataTable) {
+		FString ContextString = "Text";
+		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FRoleProperty* RoleProperty = DataTable->FindRow<FRoleProperty>(RowName, ContextString);
+		if (RoleProperty) {
+			FRoleProperty* rp = new FRoleProperty(*RoleProperty);
+			return rp;
+		}
+	}
+	return nullptr;
 }

@@ -11,6 +11,11 @@ const TArray< FRoleProperty >& USaveGameData::GetHeroArray() const
 
 bool USaveGameData::AddHero(FRoleProperty* rp)
 {
-	HeroArr.Push(*rp);
-	return true;
+	if (rp) {
+		HeroArr.Push(*rp);
+		return true;
+	}
+	else {
+		return false;
+	}
 }

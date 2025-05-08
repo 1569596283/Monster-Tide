@@ -9,14 +9,29 @@
 
 UENUM(BlueprintType)
 enum class ERoleType :uint8 {
-	Hero,
-	Enemy
+	Hero	UMETA(DisplayName = "Hero"),
+	Enemy	UMETA(DisplayName = "Enemy")
 };
 
 USTRUCT(BlueprintType)
 struct FRoleProperty :public FTableRowBase
 {
 	GENERATED_BODY()
+
+	FRoleProperty() {};
+
+	FRoleProperty(const FRoleProperty& Other)
+		: Type(Other.Type)
+		, Level(Other.Level)
+		, Exp(Other.Exp)
+		, MaxHP(Other.MaxHP)
+		, HP(Other.HP)
+		, MaxMP(Other.MaxMP)
+		, MP(Other.MP)
+		, Attack(Other.Attack)
+		, Defense(Other.Defense)
+	{
+	};
 
 	UPROPERTY(EditDefaultsOnly)
 	ERoleType Type;
@@ -69,4 +84,3 @@ public:
 
 	bool InitProperty(FName rowName);
 };
-
