@@ -34,31 +34,31 @@ struct FRoleProperty :public FTableRowBase
 	};
 
 	UPROPERTY(EditDefaultsOnly)
-	ERoleType Type;
+	ERoleType Type = ERoleType::Hero;
 
 	UPROPERTY(EditDefaultsOnly)
-	int Level;
+	int Level = 1;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Exp;
+	float Exp = 0;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MaxHP;
+	float MaxHP = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	float HP;
+	float HP = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MaxMP;
+	float MaxMP = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MP;
+	float MP = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Attack;
+	float Attack = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Defense;
+	float Defense = 0;
 };
 
 FRoleProperty* getRandomRoleProperty(ERoleType type);

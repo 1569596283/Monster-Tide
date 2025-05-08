@@ -31,7 +31,7 @@ public:
 	void RefreshHeros();
 
 private:
-	void AddHeroItem(const FRoleProperty& rp);
+	void AddHeroItem(FRoleProperty& rp);
 
 	void RemoveHeroItem();
 };

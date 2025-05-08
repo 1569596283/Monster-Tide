@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Roles/RolePropertyComponent.h"
 #include "UI_HeroItem.generated.h"
 
 class UTextBlock;
@@ -20,10 +19,14 @@ class MONSTERTIDE_API UUI_HeroItem : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void Init(const FRoleProperty &rp);
+	virtual void NativeOnInitialized() override;
+
+	void InitRoleProperty(FRoleProperty &rp);
 
 private:
-	FRoleProperty RoleProperty;
+	FRoleProperty* RoleProperty;
+
+	bool IsSelect = false;
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -48,4 +51,14 @@ protected:
 	TObjectPtr<UProgressBar> PB_MP;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UProgressBar> PB_EXP;
+
+	UFUNCTION()
+	void OnBtnHeroClicked();
+
+	/* 根据当前状态和新点击的角色属性设置是否选中 */
+	UFUNCTION()
+	void SetBtnHeroState(const FRoleProperty& rp);
+	/* 根据是否选中设置按钮颜色 */
+	UFUNCTION()
+	void RefreshBtnHeroState();
 };
