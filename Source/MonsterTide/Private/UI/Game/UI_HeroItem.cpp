@@ -6,7 +6,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/Button.h"
 #include "Roles/HeroManager.h"
-#include "Roles/RolePropertyComponent.h"
+#include "Data/RolePropertyData.h"
 
 void UUI_HeroItem::NativeOnInitialized()
 {
@@ -16,6 +16,7 @@ void UUI_HeroItem::NativeOnInitialized()
 		Btn_Hero->OnClicked.AddDynamic(this, &UUI_HeroItem::OnBtnHeroClicked);
 		auto mgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
 		mgr->OnSelectItemChanged.AddUObject(this, &UUI_HeroItem::SetBtnHeroState);
+		mgr->OnPlaceHero.AddUObject(this, &UUI_HeroItem::OnPlaceHero);
 	}
 }
 
@@ -62,11 +63,20 @@ void UUI_HeroItem::SetBtnHeroState(FRoleProperty* rp)
 
 void UUI_HeroItem::RefreshBtnHeroState()
 {
+	FButtonStyle BtnStyle = Btn_Hero->GetStyle();
 	// ÉèÖÃÆÕÍ¨×´Ì¬ÑÕÉ«
 	if (IsSelect) {
-		Btn_Hero->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor::Green);
+		BtnStyle.Normal.TintColor = FSlateColor(FLinearColor::Green);
 	}
 	else {
-		Btn_Hero->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor::Gray);
+		BtnStyle.Normal.TintColor = FSlateColor(FLinearColor::Gray);
+	}
+	Btn_Hero->SetStyle(BtnStyle);
+}
+
+void UUI_HeroItem::OnPlaceHero(FRoleProperty* rp)
+{
+	if (rp == RoleProperty) {
+		RemoveFromParent();
 	}
 }

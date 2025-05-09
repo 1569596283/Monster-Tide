@@ -7,6 +7,7 @@
 #include "RoleBase.generated.h"
 
 class URolePropertyComponent;
+struct FRoleProperty;
 
 UCLASS()
 class MONSTERTIDE_API ARoleBase : public ACharacter
@@ -24,7 +25,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void InitRole();
+	void InitRole(FRoleProperty* RoleProperty);
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<URolePropertyComponent> RolePropertyComponent;

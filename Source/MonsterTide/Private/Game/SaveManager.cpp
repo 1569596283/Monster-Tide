@@ -3,7 +3,7 @@
 
 #include "Game/SaveManager.h"
 #include "Game/SaveGameData.h"
-#include "Roles/RolePropertyComponent.h"
+#include "Data/RolePropertyData.h"
 #include "Kismet/GameplayStatics.h"
 
 

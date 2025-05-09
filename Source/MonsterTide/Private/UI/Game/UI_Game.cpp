@@ -4,8 +4,8 @@
 #include "UI/Game/UI_Game.h"
 #include "UI/Game/UI_HeroItem.h"
 #include "Components/ScrollBox.h"
-#include "Roles/RolePropertyComponent.h"
 #include "Roles/HeroManager.h"
+#include "Data/RolePropertyData.h"
 
 void UUI_Game::NativeOnInitialized()
 {

@@ -60,4 +60,5 @@ protected:
 	/* 根据是否选中设置按钮颜色 */
 	UFUNCTION()
 	void RefreshBtnHeroState();
+	void OnPlaceHero(FRoleProperty* rp);
 };

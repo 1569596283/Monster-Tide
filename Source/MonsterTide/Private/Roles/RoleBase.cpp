@@ -16,8 +16,6 @@ ARoleBase::ARoleBase()
 void ARoleBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	InitRole();
 }
 
 // Called every frame
@@ -34,10 +32,10 @@ void ARoleBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ARoleBase::InitRole()
+void ARoleBase::InitRole(FRoleProperty* RoleProperty)
 {
 	if (RolePropertyComponent) {
-		RolePropertyComponent->InitProperty("Hero");
+		RolePropertyComponent->InitProperty(RoleProperty);
 	}
 }
 

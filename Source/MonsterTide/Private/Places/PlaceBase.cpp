@@ -3,6 +3,7 @@
 
 #include "Places/PlaceBase.h"
 #include "Components/StaticMeshComponent.h"
+#include "Roles/HeroManager.h"
 
 // Sets default values
 APlaceBase::APlaceBase()
@@ -17,22 +18,19 @@ APlaceBase::APlaceBase()
 void APlaceBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void APlaceBase::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("NotifyActorOnClicked"));
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->CreateHeroAtLocation(GetActorLocation());
 }
 
 void APlaceBase::NotifyActorBeginCursorOver()
 {
-	UE_LOG(LogTemp, Warning, TEXT("NotifyActorBeginCursorOver"));
 }
 
 void APlaceBase::NotifyActorEndCursorOver()
 {
-	UE_LOG(LogTemp, Warning, TEXT("NotifyActorEndCursorOver"));
 }
 
 // Called every frame

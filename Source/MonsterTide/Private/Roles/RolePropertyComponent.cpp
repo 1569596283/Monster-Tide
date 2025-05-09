@@ -2,6 +2,7 @@
 
 
 #include "Roles/RolePropertyComponent.h"
+#include "Data/RolePropertyData.h"
 
 // Sets default values for this component's properties
 URolePropertyComponent::URolePropertyComponent()
@@ -32,30 +33,8 @@ void URolePropertyComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-bool URolePropertyComponent::InitProperty(FName RowName)
+bool URolePropertyComponent::InitProperty(FRoleProperty* rp)
 {
-	DT_RoleProperty = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_RoleProperty.DT_RoleProperty'")));
-	if (DT_RoleProperty) {
-		FString ContextString = "Text";
-		RoleProperty = DT_RoleProperty->FindRow<FRoleProperty>(RowName, ContextString);
-		if (RoleProperty) {
-			return true;
-		}
-	}
-	return false;
-}
-
-FRoleProperty* getRandomRoleProperty(ERoleType type)
-{
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_RoleProperty.DT_RoleProperty'")));
-	if (DataTable) {
-		FString ContextString = "Text";
-		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
-		FRoleProperty* RoleProperty = DataTable->FindRow<FRoleProperty>(RowName, ContextString);
-		if (RoleProperty) {
-			FRoleProperty* rp = new FRoleProperty(*RoleProperty);
-			return rp;
-		}
-	}
-	return nullptr;
+	RoleProperty = rp;
+	return true;
 }

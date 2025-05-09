@@ -2,8 +2,9 @@
 
 
 #include "Roles/HeroManager.h"
+#include "Roles/RoleBase.h"
 #include "Game/SaveManager.h"
-#include "Roles/RolePropertyComponent.h"
+#include "Data/RolePropertyData.h"
 
 void UHeroManager::InitHeroProperty()
 {
@@ -29,4 +30,20 @@ void UHeroManager::SelectHeroItem(FRoleProperty* rp)
 		CurSelectRoleProperty = rp;
 		OnSelectItemChanged.Broadcast(rp);
 	}
+}
+
+void UHeroManager::CreateHeroAtLocation(FVector loc)
+{
+	if (CurSelectRoleProperty == nullptr) {
+		return;
+	}
+	FVector SpawnLocation(loc.X, loc.Y, loc.Z + 200); // 生成位置
+	FRotator SpawnRotation(0, 0, 0);  // 生成旋转
+	TSubclassOf<ARoleBase> RoleClass = GetRoleSubclass(CurSelectRoleProperty->Type);
+	if (RoleClass) {
+		ARoleBase* Hero = GetWorld()->SpawnActor<ARoleBase>(RoleClass, SpawnLocation, SpawnRotation);
+		Hero->InitRole(CurSelectRoleProperty);
+	}
+	OnPlaceHero.Broadcast(CurSelectRoleProperty);
+	CurSelectRoleProperty = nullptr;
 }

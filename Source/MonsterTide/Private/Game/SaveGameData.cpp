@@ -2,7 +2,7 @@
 
 
 #include "Game/SaveGameData.h"
-#include "Roles/RolePropertyComponent.h"
+#include "Data/RolePropertyData.h"
 
 const TArray< FRoleProperty >& USaveGameData::GetHeroArray() const
 {

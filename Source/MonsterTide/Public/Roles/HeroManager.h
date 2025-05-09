@@ -9,6 +9,7 @@
 struct FRoleProperty;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, FRoleProperty*);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, FRoleProperty*);
 
 /**
  *
@@ -24,8 +25,12 @@ public:
 	TArray<FRoleProperty>* GetHeroArray();
 
 	FOnSelectItemChanged OnSelectItemChanged;
+	FOnPlaceHero OnPlaceHero;
 
 	void SelectHeroItem(FRoleProperty* rp);
+
+	/* 创建英雄在指定位置 */
+	void CreateHeroAtLocation(FVector loc);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
