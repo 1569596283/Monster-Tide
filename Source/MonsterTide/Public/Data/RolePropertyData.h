@@ -61,8 +61,6 @@ struct FRolePropertyConfig :public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	ERoleType Type = ERoleType::Role;
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class ARoleBase> RoleClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	float MinHP = 100;
@@ -82,5 +80,32 @@ struct FRolePropertyConfig :public FTableRowBase
 	float MaxDefense = 0;
 };
 
-FRoleProperty* getRandomRoleProperty(ERoleType type);
-TSubclassOf<class ARoleBase> GetRoleSubclass(ERoleType type);
+class AEnemyBase;
+class AHeroBase;
+
+
+/* µ–»À Ù–‘≈‰÷√ */
+USTRUCT(BlueprintType)
+struct FEnemyPropertyConfig :public FRolePropertyConfig
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AEnemyBase> RoleClass;
+};
+
+
+/* ”¢–€ Ù–‘≈‰÷√ */
+USTRUCT(BlueprintType)
+struct FHeroPropertyConfig :public FRolePropertyConfig
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AHeroBase> RoleClass;
+};
+
+FRoleProperty* getRandomHeroProperty(ERoleType type);
+TSubclassOf<AHeroBase> GetHeroSubclass(ERoleType type);
+FRoleProperty* getRandomEnemyProperty(ERoleType type);
+TSubclassOf<AEnemyBase> GetEnemySubclass(ERoleType type);

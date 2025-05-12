@@ -2,7 +2,7 @@
 
 
 #include "Roles/HeroManager.h"
-#include "Roles/RoleBase.h"
+#include "Roles/Heros/HeroBase.h"
 #include "Game/SaveManager.h"
 #include "Data/RolePropertyData.h"
 
@@ -39,9 +39,9 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 	}
 	FVector SpawnLocation(loc.X, loc.Y, loc.Z + 200); // 生成位置
 	FRotator SpawnRotation(0, 0, 0);  // 生成旋转
-	TSubclassOf<ARoleBase> RoleClass = GetRoleSubclass(CurSelectRoleProperty->Type);
-	if (RoleClass) {
-		ARoleBase* Hero = GetWorld()->SpawnActor<ARoleBase>(RoleClass, SpawnLocation, SpawnRotation);
+	TSubclassOf<AHeroBase> HeroClass = GetHeroSubclass(CurSelectRoleProperty->Type);
+	if (HeroClass) {
+		AHeroBase* Hero = GetWorld()->SpawnActor<AHeroBase>(HeroClass, SpawnLocation, SpawnRotation);
 		Hero->InitRole(CurSelectRoleProperty);
 	}
 	OnPlaceHero.Broadcast(CurSelectRoleProperty);

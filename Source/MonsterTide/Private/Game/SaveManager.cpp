@@ -29,7 +29,7 @@ void USaveManager::InitSaveData()
 	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
 	GameData->AddToRoot();
 	for (int i = 0; i < 4; i++) {
-		FRoleProperty* rp = getRandomRoleProperty(ERoleType::Hero);
+		FRoleProperty* rp = getRandomHeroProperty(ERoleType::Hero);
 		GameData->AddHero(rp);
 	}
 }

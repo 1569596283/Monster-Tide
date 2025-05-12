@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "GameGameMode.generated.h"
 
+class ULevelManager;
+
 /**
  * 
  */
@@ -13,5 +15,11 @@ UCLASS()
 class MONSTERTIDE_API AGameGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void BeginPlay() override;
+
+private :
+	UPROPERTY()
+	TObjectPtr<ULevelManager> LevelManager;
 };

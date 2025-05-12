@@ -2,6 +2,8 @@
 
 
 #include "Data/RolePropertyData.h"
+#include "Roles/Heros/HeroBase.h"
+#include "Roles/Enemys/EnemyBase.h"
 
 FRoleProperty::FRoleProperty()
 {
@@ -33,30 +35,59 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	Defense = FMath::RandRange(Config.MinDefense,Config.MaxDefense);
 }
 
-FRoleProperty* getRandomRoleProperty(ERoleType type)
+FRoleProperty* getRandomHeroProperty(ERoleType type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_RoleProperty.DT_RoleProperty'")));
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
-		FRolePropertyConfig* RolePropertyConfig = DataTable->FindRow<FRolePropertyConfig>(RowName, ContextString);
-		if (RolePropertyConfig) {
-			FRoleProperty* rp = new FRoleProperty(*RolePropertyConfig);
+		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
+		if (HeroPropertyConfig) {
+			FRoleProperty* rp = new FRoleProperty(*HeroPropertyConfig);
 			return rp;
 		}
 	}
 	return nullptr;
 }
 
-TSubclassOf<class ARoleBase> GetRoleSubclass(ERoleType type)
+TSubclassOf<AHeroBase> GetHeroSubclass(ERoleType type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_RoleProperty.DT_RoleProperty'")));
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
-		FRolePropertyConfig* RolePropertyConfig = DataTable->FindRow<FRolePropertyConfig>(RowName, ContextString);
-		if (RolePropertyConfig) {
-			return RolePropertyConfig->RoleClass;
+		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
+		if (HeroPropertyConfig) {
+			return HeroPropertyConfig->RoleClass;
+		}
+	}
+	return NULL;
+}
+
+FRoleProperty* getRandomEnemyProperty(ERoleType type)
+{
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
+	if (DataTable) {
+		FString ContextString = "Context";
+		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
+		if (EnemyPropertyConfig) {
+			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
+			return rp;
+		}
+	}
+	return nullptr;
+}
+
+TSubclassOf<AEnemyBase> GetEnemySubclass(ERoleType type)
+{
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
+	if (DataTable) {
+		FString ContextString = "Context";
+		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
+		if (EnemyPropertyConfig) {
+			return EnemyPropertyConfig->RoleClass;
 		}
 	}
 	return NULL;
