@@ -23,20 +23,14 @@ void ULevelManager::OpenLevel(int Level)
 void ULevelManager::InitLevel()
 {
 	LevelTime = 0;
-	TPair<int, int> enemyArr = GetGameEnemyArr(CurLevel);
+	CurLevelConfig = GetLevelConfig(CurLevel);
 	EnemyArr.Empty();
-	for (int i = enemyArr.Key; i <= enemyArr.Value; i++) {
+	for (int i = CurLevelConfig->Enemy[0]; i <= CurLevelConfig->Enemy[1]; i++) {
 		FGameEnemyConfig GameEnemyConfig = GetGameEnemyConfig(i);
 		EnemyArr.Push(GameEnemyConfig);
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(
-		TimerHandle,
-		this,
-		&ULevelManager::Tick,
-		0.1f,
-		true
-	);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ULevelManager::Tick, 0.1f, true);
 }
 
 void ULevelManager::GameOver()
@@ -48,7 +42,6 @@ void ULevelManager::CreateEnemy()
 {
 	for (int i = EnemyArr.Num() - 1; i >= 0; i--) {
 		if (FMath::IsNearlyEqual(EnemyArr[i].ArrivalTime, LevelTime, 0.05)) {
-			UE_LOG(LogTemp, Warning, TEXT("CreateEnemy %d "), i);
 			GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->CreateEnemys(EnemyArr[i]);
 			EnemyArr.RemoveAt(i);
 		}

@@ -39,7 +39,8 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 	}
 	FVector SpawnLocation(loc.X, loc.Y, loc.Z + 200); // 生成位置
 	FRotator SpawnRotation(0, 0, 0);  // 生成旋转
-	TSubclassOf<AHeroBase> HeroClass = GetHeroSubclass(CurSelectRoleProperty->Type);
+	FHeroPropertyConfig* HeroPropertyConfig = GetHeroPropertyConfig(CurSelectRoleProperty->Type);
+	TSubclassOf<AHeroBase> HeroClass = HeroPropertyConfig->HeroClass;
 	if (HeroClass) {
 		AHeroBase* Hero = GetWorld()->SpawnActor<AHeroBase>(HeroClass, SpawnLocation, SpawnRotation);
 		Hero->InitRole(CurSelectRoleProperty);

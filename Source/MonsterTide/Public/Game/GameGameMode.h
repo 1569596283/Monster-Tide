@@ -7,6 +7,7 @@
 #include "GameGameMode.generated.h"
 
 class ULevelManager;
+class AEnemyBase;
 
 /**
  * 
@@ -19,7 +20,12 @@ class MONSTERTIDE_API AGameGameMode : public AGameModeBase
 public:
 	virtual void BeginPlay() override;
 
+	int HP;
+
 private :
 	UPROPERTY()
 	TObjectPtr<ULevelManager> LevelManager;
+
+	void OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy);
+	void OnEnemyDead(TObjectPtr<AEnemyBase> Enemy);
 };

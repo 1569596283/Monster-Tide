@@ -7,6 +7,10 @@
 #include "EnemyManager.generated.h"
 
 struct FGameEnemyConfig;
+class AEnemyBase;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyArrived, TObjectPtr<AEnemyBase>);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyDead, TObjectPtr<AEnemyBase>);
 
 struct FCreateStruct
 {
@@ -29,10 +33,19 @@ class MONSTERTIDE_API UEnemyManager : public UGameInstanceSubsystem
 public:
 	void CreateEnemys(FGameEnemyConfig EnemyConfig);
 
+	FOnEnemyArrived EnemyArrived;
+	FOnEnemyDead EnemyDead;
+
 private:
 	TArray<FCreateStruct*> CreateArray;
+
+	UPROPERTY()
+	TArray <TObjectPtr< AEnemyBase >> EnemyArray;
 
 	UFUNCTION()
 	void CreateEnemy(FGameEnemyConfig EnemyConfig);
 
+	void RemoveEnemy(TObjectPtr< AEnemyBase > Enemy);
+	void OnEnemyDead(TObjectPtr< AEnemyBase > Enemy);
+	void OnEnemyArrived(TObjectPtr< AEnemyBase > Enemy);
 };

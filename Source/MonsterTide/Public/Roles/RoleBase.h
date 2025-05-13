@@ -27,6 +27,8 @@ public:
 
 	void InitRole(FRoleProperty* RoleProperty);
 
+	void RemoveRole();
+
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
 

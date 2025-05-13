@@ -91,9 +91,11 @@ struct FEnemyPropertyConfig :public FRolePropertyConfig
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class AEnemyBase> RoleClass;
-};
+	TSubclassOf<class AEnemyBase> EnemyClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	int Damage = 1;
+};
 
 /* ”¢–€ Ù–‘≈‰÷√ */
 USTRUCT(BlueprintType)
@@ -102,10 +104,10 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AHeroBase> RoleClass;
+	TSubclassOf<AHeroBase> HeroClass;
 };
 
 FRoleProperty* getRandomHeroProperty(ERoleType type);
-TSubclassOf<AHeroBase> GetHeroSubclass(ERoleType type);
+FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type);
 FRoleProperty* getRandomEnemyProperty(ERoleType type);
-TSubclassOf<AEnemyBase> GetEnemySubclass(ERoleType type);
+FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType type);

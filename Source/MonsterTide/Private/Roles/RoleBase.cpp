@@ -39,3 +39,8 @@ void ARoleBase::InitRole(FRoleProperty* RoleProperty)
 	}
 }
 
+void ARoleBase::RemoveRole()
+{
+	Destroy();
+}
+

@@ -24,4 +24,4 @@ struct FLevelConfig :public FTableRowBase
 	TArray<int>Enemy = {};
 };
 
-TPair<int, int> GetGameEnemyArr(int Level);
+FLevelConfig* GetLevelConfig(int Level);

@@ -12,7 +12,6 @@ FCreateStruct::FCreateStruct(FGameEnemyConfig* Cfg)
 	GameEnemyConfig = new FGameEnemyConfig(Cfg);
 }
 
-
 void UEnemyManager::CreateEnemys(FGameEnemyConfig EnemyConfig)
 {
 	UE_LOG(LogTemp, Warning, TEXT("CreateEnemys"));
@@ -34,7 +33,8 @@ void UEnemyManager::CreateEnemys(FGameEnemyConfig EnemyConfig)
 void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 {
 	UE_LOG(LogTemp, Warning, TEXT("CreateEnemy"));
-	TSubclassOf<AEnemyBase> RoleClass = GetEnemySubclass(EnemyConfig.Type);
+	FEnemyPropertyConfig* EnemyPropertyConfig = GetEnemyPropertyConfig(EnemyConfig.Type);
+	TSubclassOf<AEnemyBase> RoleClass = EnemyPropertyConfig->EnemyClass;
 	if (RoleClass) {
 		FVector SpawnLocation(0, 0, 0); // 生成位置
 		FRotator SpawnRotation(0, 0, 0);  // 生成旋转
@@ -42,7 +42,10 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		AEnemyBase* Enemy = GetWorld()->SpawnActor<AEnemyBase>(RoleClass, SpawnLocation, SpawnRotation, SpawnParams);
 		// TODO : 下方初始化的时候传入样条名称
-		Enemy->InitRole(nullptr);
+		Enemy->InitEnemy(EnemyConfig.Path, EnemyConfig.EnemyLevel, EnemyPropertyConfig);
+		Enemy->OnEnemyDead.AddUObject(this, &UEnemyManager::OnEnemyDead);
+		Enemy->OnEnemyArrived.AddUObject(this, &UEnemyManager::OnEnemyArrived);
+		EnemyArray.Push(Enemy);
 	}
 
 	for (FCreateStruct* CreateStruct : CreateArray) {
@@ -55,4 +58,21 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 			break;
 		}
 	}
+}
+
+void UEnemyManager::RemoveEnemy(TObjectPtr<AEnemyBase> Enemy)
+{
+	EnemyArray.Remove(Enemy);
+}
+
+void UEnemyManager::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
+{
+	EnemyDead.Broadcast(Enemy);
+	RemoveEnemy(Enemy);
+}
+
+void UEnemyManager::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
+{
+	EnemyArrived.Broadcast(Enemy);
+	RemoveEnemy(Enemy);
 }
