@@ -3,30 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "Components/WidgetComponent.h"
 #include "RolePropertyComponent.generated.h"
 
-
 struct FRoleProperty;
+class UUI_RoleProperty;
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class MONSTERTIDE_API URolePropertyComponent : public UActorComponent
+/**
+ *
+ */
+UCLASS(meta = (BlueprintSpawnableComponent))
+class MONSTERTIDE_API URolePropertyComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
-
 public:
-	URolePropertyComponent();
+	bool InitProperty(FRoleProperty* rp);
+	void RefreshProperty();
 
-	UPROPERTY()
-	TObjectPtr<UDataTable> DT_RoleProperty;
+	TObjectPtr<UUI_RoleProperty> UMG_RoleProperty;
 
 protected:
-	virtual void BeginPlay() override;
-
 	FRoleProperty* RoleProperty;
-
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	bool InitProperty(FRoleProperty* rp);
 };

@@ -31,6 +31,20 @@ class MONSTERTIDE_API ARoleBase : public ACharacter
 public:
 	ARoleBase();
 
+	void InitRole(FRoleProperty* RoleProperty);
+
+	void RemoveRole();
+
+	bool IsDead();
+
+	FOnRoleUseSkill OnRoleUseSkill;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
+
+	void ChangeHP(float Value);
+	void ChangeMP(float Value);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -43,22 +57,14 @@ protected:
 	virtual float UseSkill();
 	int GetNextSkill();
 
+private:
+	void SkillTiming(float DeltaTime);
+
+	void RefreshPropertyPosition();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void InitRole(FRoleProperty* RoleProperty);
-
-	void RemoveRole();
-
-	bool IsDead();
-
-	FOnRoleUseSkill OnRoleUseSkill;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
-
-private:
-	void SkillTiming(float DeltaTime);
 };

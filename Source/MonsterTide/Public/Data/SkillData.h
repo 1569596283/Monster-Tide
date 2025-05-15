@@ -35,6 +35,9 @@ struct FSkillConfig :public FTableRowBase
 	float CD = 1.f;
 
 	UPROPERTY(EditDefaultsOnly)
+	int Speed = 500;
+
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ASkillBase> SkillClass;
 };
 

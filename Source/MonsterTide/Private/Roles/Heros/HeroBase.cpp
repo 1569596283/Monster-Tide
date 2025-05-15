@@ -58,11 +58,14 @@ float AHeroBase::UseSkill()
 	TObjectPtr<AEnemyBase> TargetEnemy = GetTargetEnemy();
 	if (TargetEnemy != nullptr) {
 		int index = GetNextSkill();
+		if (index < 0) {
+			return CurRoleProperty->SkillInterval;
+		}
 		FSkillConfig* SkillConfig = &RoleSkill.SkillConfigArray[index];
 		OnRoleUseSkill.Broadcast(SkillConfig->Type, this, TargetEnemy);
-		// TODO 增加扣除魔法值
+		this->ChangeMP(-SkillConfig->Consume);
 		// 后面改成这个技能的释放时间和角色技能间隔的较大值
 		return CurRoleProperty->SkillInterval;
 	}
-	return 0;
+	return CurRoleProperty->SkillInterval;
 }

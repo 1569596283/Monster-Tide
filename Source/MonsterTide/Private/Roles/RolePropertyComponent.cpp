@@ -2,39 +2,20 @@
 
 
 #include "Roles/RolePropertyComponent.h"
+#include "UI/Game/UI_RoleProperty.h"
 #include "Data/RolePropertyData.h"
-
-// Sets default values for this component's properties
-URolePropertyComponent::URolePropertyComponent()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
-}
-
-
-// Called when the game starts
-void URolePropertyComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-
-}
-
-
-// Called every frame
-void URolePropertyComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
 
 bool URolePropertyComponent::InitProperty(FRoleProperty* rp)
 {
 	RoleProperty = rp;
+	UMG_RoleProperty = Cast<UUI_RoleProperty>(GetWidget());
+	RefreshProperty();
 	return true;
+}
+
+void URolePropertyComponent::RefreshProperty()
+{
+	UMG_RoleProperty->SetLevel(RoleProperty->Level);
+	UMG_RoleProperty->SetHP(RoleProperty->HP / RoleProperty->MaxHP);
+	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
 }

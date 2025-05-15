@@ -6,13 +6,65 @@
 #include "Data/RolePropertyData.h"
 #include "Data/SkillData.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 ARoleBase::ARoleBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	RolePropertyComponent = CreateDefaultSubobject<URolePropertyComponent>(TEXT("RoleProperty"));
+}
+
+void ARoleBase::InitRole(FRoleProperty* RoleProperty)
+{
+	CurRoleProperty = RoleProperty;
+
+	for (int i = 0; i < RoleProperty->Skill.Num(); i++) {
+		RoleSkill.SkillCD.Push(0.f);
+		RoleSkill.SkillConfigArray.Push(*GetSkillConfig(RoleProperty->Skill[i]));
+	}
+	RolePropertyComponent = GetComponentByClass<URolePropertyComponent>();
+	if (RolePropertyComponent) {
+		RolePropertyComponent->InitProperty(RoleProperty);
+	}
+}
+
+void ARoleBase::RemoveRole()
+{
+	Destroy();
+}
+
+bool ARoleBase::IsDead()
+{
+	if (CurRoleProperty) {
+		return CurRoleProperty->HP <= 0;
+	}
+	return true;
+}
+
+void ARoleBase::ChangeHP(float Value)
+{
+	CurRoleProperty->HP += Value;
+	if (CurRoleProperty->HP <= 0) {
+		CurRoleProperty->HP = 0;
+		RemoveRole();
+	}
+	else if (CurRoleProperty->HP > CurRoleProperty->HP) {
+		CurRoleProperty->HP = CurRoleProperty->MaxHP;
+	}
+	RolePropertyComponent->RefreshProperty();
+}
+
+void ARoleBase::ChangeMP(float Value)
+{
+	CurRoleProperty->MP += Value;
+	if (CurRoleProperty->MP <= 0) {
+		CurRoleProperty->MP = 0;
+	}
+	else if (CurRoleProperty->MP > CurRoleProperty->MP) {
+		CurRoleProperty->MP = CurRoleProperty->MaxMP;
+	}
+	RolePropertyComponent->RefreshProperty();
 }
 
 // Called when the game starts or when spawned
@@ -48,7 +100,7 @@ TArray<TObjectPtr<AActor>> ARoleBase::GetTargetWithinRange(ECollisionChannel Cha
 		ObjectTypes,
 		false, // 是否追踪复杂碰撞
 		ActorsToIgnore,
-		EDrawDebugTrace::ForOneFrame, // 调试显示方式
+		EDrawDebugTrace::None, // 调试显示方式
 		OutHits,
 		true // 忽略自身
 	);
@@ -78,32 +130,6 @@ void ARoleBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-void ARoleBase::InitRole(FRoleProperty* RoleProperty)
-{
-	CurRoleProperty = RoleProperty;
-	if (RolePropertyComponent) {
-		RolePropertyComponent->InitProperty(RoleProperty);
-	}
-	for (int i = 0; i < RoleProperty->Skill.Num(); i++) {
-		RoleSkill.SkillCD.Push(0.f);
-		RoleSkill.SkillConfigArray.Push(*GetSkillConfig(RoleProperty->Skill[i]));
-	}
-}
-
-void ARoleBase::RemoveRole()
-{
-	Destroy();
-}
-
-bool ARoleBase::IsDead()
-{
-	if (CurRoleProperty) {
-		return CurRoleProperty->HP <= 0;
-	}
-	return true;
-}
-
 
 float ARoleBase::UseSkill()
 {
@@ -143,9 +169,15 @@ void ARoleBase::SkillTiming(float DeltaTime)
 	}
 }
 
+void ARoleBase::RefreshPropertyPosition()
+{
+
+}
+
 // Called every frame
 void ARoleBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	SkillTiming(DeltaTime);
+	RefreshPropertyPosition();
 }

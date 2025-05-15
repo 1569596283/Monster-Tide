@@ -79,7 +79,6 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
-			UE_LOG(LogTemp, Warning, TEXT("Enemy HP : %f"), rp->HP);
 			if (level > 0) {
 				rp->Level = level;
 				float m = 1 + level / 10.f;
@@ -90,7 +89,6 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
 				rp->Attack *= m;
 				rp->Defense *= m;
 			}
-			UE_LOG(LogTemp, Warning, TEXT("Enemy HP : %f"),rp->HP);
 			return rp;
 		}
 	}

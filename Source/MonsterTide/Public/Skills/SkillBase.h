@@ -6,21 +6,31 @@
 #include "GameFramework/Actor.h"
 #include "SkillBase.generated.h"
 
+enum class ESkillType :uint8;
+struct FSkillConfig;
+class ARoleBase;
+
 UCLASS()
 class MONSTERTIDE_API ASkillBase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASkillBase();
+
+	virtual void InitSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Move(float DeltaTime);
 
+	FVector TargetLocation;
+	FSkillConfig* SkillConfig;
+	TObjectPtr<ARoleBase> TargetRole;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
