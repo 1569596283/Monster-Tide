@@ -6,8 +6,22 @@
 #include "GameFramework/Character.h"
 #include "RoleBase.generated.h"
 
-class URolePropertyComponent;
+enum class ESkillType : uint8;
 struct FRoleProperty;
+struct FSkillConfig;
+class URolePropertyComponent;
+
+struct FRoleSkill
+{
+	float Interval = 0.f;
+	int NextSkill = 0;
+	/*  £”‡¿‰»¥ ±º‰ */
+	TArray<float> SkillCD = {};
+	TArray<FSkillConfig> SkillConfigArray = {};
+};
+
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnRoleUseSkill, ESkillType, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
+
 
 UCLASS()
 class MONSTERTIDE_API ARoleBase : public ACharacter
@@ -20,6 +34,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	FRoleProperty* CurRoleProperty;
+
+ 	TArray<TObjectPtr<AActor>> GetTargetWithinRange(ECollisionChannel Channel);
+
+	FRoleSkill RoleSkill = FRoleSkill();
+
+	virtual float UseSkill();
+	int GetNextSkill();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 
@@ -29,7 +52,13 @@ public:
 
 	void RemoveRole();
 
+	bool IsDead();
+
+	FOnRoleUseSkill OnRoleUseSkill;
+
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
 
+private:
+	void SkillTiming(float DeltaTime);
 };

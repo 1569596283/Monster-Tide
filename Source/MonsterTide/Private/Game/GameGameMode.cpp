@@ -7,6 +7,7 @@
 #include "Levels/LevelManager.h"
 #include "Roles/EnemyManager.h"
 #include "Roles/Enemys/EnemyBase.h"
+#include "Skills/SkillManager.h"
 #include <Kismet/KismetSystemLibrary.h>
 
 void AGameGameMode::BeginPlay()
@@ -17,6 +18,7 @@ void AGameGameMode::BeginPlay()
 	auto EnemyMgr = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>();
 	EnemyMgr->EnemyArrived.AddUObject(this, &AGameGameMode::OnEnemyArrived);
 	EnemyMgr->EnemyDead.AddUObject(this, &AGameGameMode::OnEnemyDead);
+	GetWorld()->GetGameInstance()->GetSubsystem<USkillManager>()->InitSkill();
 }
 
 void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)

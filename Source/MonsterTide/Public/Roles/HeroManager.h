@@ -7,9 +7,12 @@
 #include "HeroManager.generated.h"
 
 struct FRoleProperty;
+enum class ESkillType :uint8;
+class ARoleBase;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, FRoleProperty*);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, FRoleProperty*);
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnRoleUseSkill, ESkillType, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
 
 /**
  *
@@ -26,6 +29,7 @@ public:
 
 	FOnSelectItemChanged OnSelectItemChanged;
 	FOnPlaceHero OnPlaceHero;
+	FOnRoleUseSkill OnRoleUseSkill;
 
 	void SelectHeroItem(FRoleProperty* rp);
 
@@ -37,4 +41,6 @@ protected:
 	TArray<FRoleProperty> HeroPropertyArr;
 
 	FRoleProperty* CurSelectRoleProperty;
+
+	void RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 };

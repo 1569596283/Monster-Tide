@@ -14,7 +14,6 @@ FCreateStruct::FCreateStruct(FGameEnemyConfig* Cfg)
 
 void UEnemyManager::CreateEnemys(FGameEnemyConfig EnemyConfig)
 {
-	UE_LOG(LogTemp, Warning, TEXT("CreateEnemys"));
 	CreateEnemy(EnemyConfig);
 	if (EnemyConfig.Number > 1) {
 		EnemyConfig.Number -= 1;
@@ -32,7 +31,6 @@ void UEnemyManager::CreateEnemys(FGameEnemyConfig EnemyConfig)
 
 void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 {
-	UE_LOG(LogTemp, Warning, TEXT("CreateEnemy"));
 	FEnemyPropertyConfig* EnemyPropertyConfig = GetEnemyPropertyConfig(EnemyConfig.Type);
 	TSubclassOf<AEnemyBase> RoleClass = EnemyPropertyConfig->EnemyClass;
 	if (RoleClass) {

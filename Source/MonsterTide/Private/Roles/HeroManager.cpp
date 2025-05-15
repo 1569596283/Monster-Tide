@@ -44,7 +44,13 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 	if (HeroClass) {
 		AHeroBase* Hero = GetWorld()->SpawnActor<AHeroBase>(HeroClass, SpawnLocation, SpawnRotation);
 		Hero->InitRole(CurSelectRoleProperty);
+		Hero->OnRoleUseSkill.AddUObject(this, &UHeroManager::RoleUseSkill);
 	}
 	OnPlaceHero.Broadcast(CurSelectRoleProperty);
 	CurSelectRoleProperty = nullptr;
+}
+
+void UHeroManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
+{
+	this->OnRoleUseSkill.Broadcast(Type, User, Target);
 }

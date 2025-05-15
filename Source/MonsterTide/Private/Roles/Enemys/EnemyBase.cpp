@@ -4,12 +4,24 @@
 #include "Roles/Enemys/EnemyBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SplineComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Levels/Spline.h"
 #include "Data/RolePropertyData.h"
+
+AEnemyBase::AEnemyBase()
+{
+	UCapsuleComponent* Capsule = GetCapsuleComponent();
+	if (Capsule)
+	{
+		Capsule->SetCollisionProfileName(TEXT("Enemy"));
+	}
+}
 
 void AEnemyBase::InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPropertyConfig)
 {
 	Damage = EnemyPropertyConfig->Damage;
+	FRoleProperty* RoleProperty = GetRandomEnemyProperty(EnemyPropertyConfig->Type ,Level);
+	InitRole(RoleProperty);
 	Distance = 0.f;
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpline::StaticClass(), FoundActors);
@@ -24,9 +36,14 @@ void AEnemyBase::InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPrope
 	}
 }
 
-int AEnemyBase::GetDamage()
+int AEnemyBase::GetDamage() const
 {
-	return 1;
+	return Damage;
+}
+
+float AEnemyBase::GetRemainDistance() const
+{
+	return SplineComponent->GetSplineLength() - Distance;
 }
 
 void AEnemyBase::RemoveRole()

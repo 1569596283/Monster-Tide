@@ -20,9 +20,13 @@ class MONSTERTIDE_API AEnemyBase : public ARoleBase
 	GENERATED_BODY()
 
 public:
+	AEnemyBase();
+
 	void InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPropertyConfig);
 
-	int GetDamage();
+	int GetDamage() const;
+	/* 获得距离终点的剩余路程 */
+	float GetRemainDistance() const;
 
 	FOnEnemyDead OnEnemyDead;
 	FOnEnemyArrived OnEnemyArrived;

@@ -20,6 +20,9 @@ FRoleProperty::FRoleProperty(const FRoleProperty& Other)
 	MP = Other.MP;
 	Attack = Other.Attack;
 	Defense = Other.Defense;
+	Range = Other.Range;
+	SkillInterval = Other.SkillInterval;
+	Skill = Other.Skill;
 }
 
 FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
@@ -32,10 +35,13 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	MaxMP = FMath::RandRange(Config.MinMP, Config.MaxMP);
 	MP = MaxMP;
 	Attack = FMath::RandRange(Config.MinAttack, Config.MaxAttack);
-	Defense = FMath::RandRange(Config.MinDefense,Config.MaxDefense);
+	Defense = FMath::RandRange(Config.MinDefense, Config.MaxDefense);
+	Range = Config.Range;
+	SkillInterval = Config.SkillInterval;
+	Skill = Config.Skill;
 }
 
-FRoleProperty* getRandomHeroProperty(ERoleType type)
+FRoleProperty* GetRandomHeroProperty(ERoleType type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
 	if (DataTable) {
@@ -64,7 +70,7 @@ FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type)
 	return nullptr;
 }
 
-FRoleProperty* getRandomEnemyProperty(ERoleType type)
+FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
 	if (DataTable) {
@@ -73,6 +79,18 @@ FRoleProperty* getRandomEnemyProperty(ERoleType type)
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
+			UE_LOG(LogTemp, Warning, TEXT("Enemy HP : %f"), rp->HP);
+			if (level > 0) {
+				rp->Level = level;
+				float m = 1 + level / 10.f;
+				rp->HP *= m;
+				rp->MaxHP *= m;
+				rp->MP *= m;
+				rp->MaxMP *= m;
+				rp->Attack *= m;
+				rp->Defense *= m;
+			}
+			UE_LOG(LogTemp, Warning, TEXT("Enemy HP : %f"),rp->HP);
 			return rp;
 		}
 	}

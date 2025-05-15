@@ -6,6 +6,8 @@
 #include "Roles/RoleBase.h"
 #include "HeroBase.generated.h"
 
+class AEnemyBase;
+
 /**
  * 
  */
@@ -14,4 +16,16 @@ class MONSTERTIDE_API AHeroBase : public ARoleBase
 {
 	GENERATED_BODY()
 	
+public:
+	AHeroBase();
+
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual float UseSkill() override;
+
+private:
+	void LookAtEnemy();
+
+	TObjectPtr<AEnemyBase> GetTargetEnemy();
 };

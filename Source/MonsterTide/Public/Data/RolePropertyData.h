@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "RolePropertyData.generated.h"
 
+enum class ESkillType :uint8;
+
 /* 角色类型，包括英雄和敌人 */
 UENUM(BlueprintType)
 enum class ERoleType :uint8 {
@@ -32,25 +34,34 @@ struct FRoleProperty
 	int Level = 1;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Exp = 0;
+	float Exp = 0.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MaxHP = 100;
+	float MaxHP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float HP = 100;
+	float HP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MaxMP = 100;
+	float MaxMP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MP = 100;
+	float MP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Attack = 100;
+	float Attack = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Defense = 0;
+	float Defense = 0.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Range = 500.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float SkillInterval = 1.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<ESkillType> Skill = {};
 };
 
 /* 角色属性配置 */
@@ -63,21 +74,27 @@ struct FRolePropertyConfig :public FTableRowBase
 	ERoleType Type = ERoleType::Role;
 
 	UPROPERTY(EditDefaultsOnly)
-	float MinHP = 100;
+	float MinHP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MaxHP = 100;
+	float MaxHP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MinMP = 100;
+	float MinMP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MaxMP = 100;
+	float MaxMP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MinAttack = 10;
+	float MinAttack = 10.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MaxAttack = 10;
+	float MaxAttack = 10.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MinDefense = 0;
+	float MinDefense = 0.f;
 	UPROPERTY(EditDefaultsOnly)
-	float MaxDefense = 0;
+	float MaxDefense = 0.f;
+	UPROPERTY(EditDefaultsOnly)
+	float Range = 500.f;
+	UPROPERTY(EditDefaultsOnly)
+	float SkillInterval = 1.f;
+	UPROPERTY(EditDefaultsOnly)
+	TArray<ESkillType> Skill = {};
 };
 
 class AEnemyBase;
@@ -107,7 +124,7 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 	TSubclassOf<AHeroBase> HeroClass;
 };
 
-FRoleProperty* getRandomHeroProperty(ERoleType type);
+FRoleProperty* GetRandomHeroProperty(ERoleType type);
 FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type);
-FRoleProperty* getRandomEnemyProperty(ERoleType type);
+FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level = 0);
 FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType type);
