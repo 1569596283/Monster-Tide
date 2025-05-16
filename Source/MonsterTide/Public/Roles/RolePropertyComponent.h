@@ -22,6 +22,13 @@ public:
 
 	TObjectPtr<UUI_RoleProperty> UMG_RoleProperty;
 
+	const FRoleProperty* GetRoleProperty();
+
+	bool IsDead();
+
+	float ChangeHP(float Value);
+	float ChangeMP(float Value);
+
 protected:
 	FRoleProperty* RoleProperty;
 };

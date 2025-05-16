@@ -29,6 +29,8 @@ protected:
 	FVector TargetLocation;
 	FSkillConfig* SkillConfig;
 	TObjectPtr<ARoleBase> TargetRole;
+	TObjectPtr<ARoleBase> UserRole;
+	float Damage;
 
 public:
 	// Called every frame

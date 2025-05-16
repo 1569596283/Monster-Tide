@@ -6,6 +6,7 @@
 #include "Data/RolePropertyData.h"
 #include "Components/CapsuleComponent.h"
 #include "Data/SkillData.h"
+#include "Roles/RolePropertyComponent.h"
 
 AHeroBase::AHeroBase()
 {
@@ -59,13 +60,12 @@ float AHeroBase::UseSkill()
 	if (TargetEnemy != nullptr) {
 		int index = GetNextSkill();
 		if (index < 0) {
-			return CurRoleProperty->SkillInterval;
+			return RolePropertyComponent->GetRoleProperty()->SkillInterval;
 		}
 		FSkillConfig* SkillConfig = &RoleSkill.SkillConfigArray[index];
 		OnRoleUseSkill.Broadcast(SkillConfig->Type, this, TargetEnemy);
 		this->ChangeMP(-SkillConfig->Consume);
 		// 后面改成这个技能的释放时间和角色技能间隔的较大值
-		return CurRoleProperty->SkillInterval;
 	}
-	return CurRoleProperty->SkillInterval;
+	return RolePropertyComponent->GetRoleProperty()->SkillInterval;
 }

@@ -3,6 +3,7 @@
 
 #include "Skills/SkillBase.h"
 #include "Data/SkillData.h"
+#include "Data/RolePropertyData.h"
 #include "Roles/RoleBase.h"
 
 // Sets default values
@@ -18,6 +19,8 @@ void ASkillBase::InitSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectP
 	SkillConfig = GetSkillConfig(Type);
 	TargetRole = Target;
 	TargetLocation = Target->GetActorLocation();
+	UserRole = User;
+	Damage = UserRole->GetRoleProperty()->Attack * SkillConfig->Multiple;
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +37,9 @@ void ASkillBase::Move(float DeltaTime)
 	FVector CurLocation = this->GetActorLocation();
 	float Distance = DeltaTime * SkillConfig->Speed;
 	if (FVector::PointsAreNear(TargetLocation, CurLocation, Distance)) {
+		if (IsValid(TargetRole)) {
+			float damage = TargetRole->OnHit(Damage);
+		}
 		Destroy();
 		return;
 	}

@@ -45,10 +45,11 @@ public:
 	void ChangeHP(float Value);
 	void ChangeMP(float Value);
 
+	float OnHit(float Damage);
+
+	const FRoleProperty* GetRoleProperty();
 protected:
 	virtual void BeginPlay() override;
-
-	FRoleProperty* CurRoleProperty;
 
  	TArray<TObjectPtr<AActor>> GetTargetWithinRange(ECollisionChannel Channel);
 

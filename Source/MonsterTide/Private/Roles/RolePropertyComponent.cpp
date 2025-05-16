@@ -19,3 +19,27 @@ void URolePropertyComponent::RefreshProperty()
 	UMG_RoleProperty->SetHP(RoleProperty->HP / RoleProperty->MaxHP);
 	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
 }
+
+const FRoleProperty* URolePropertyComponent::GetRoleProperty()
+{
+	return RoleProperty;
+}
+
+bool URolePropertyComponent::IsDead()
+{
+	return RoleProperty->HP <= 0;
+}
+
+float URolePropertyComponent::ChangeHP(float Value)
+{
+	RoleProperty->HP = FMath::Clamp(RoleProperty->HP + Value, 0.f, RoleProperty->MaxHP);
+	UMG_RoleProperty->SetHP(RoleProperty->HP / RoleProperty->MaxHP);
+	return RoleProperty->HP;
+}
+
+float URolePropertyComponent::ChangeMP(float Value)
+{
+	RoleProperty->MP = FMath::Clamp(RoleProperty->MP + Value, 0.f, RoleProperty->MaxMP);
+	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
+	return RoleProperty->MP;
+}

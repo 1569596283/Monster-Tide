@@ -17,8 +17,6 @@ ARoleBase::ARoleBase()
 
 void ARoleBase::InitRole(FRoleProperty* RoleProperty)
 {
-	CurRoleProperty = RoleProperty;
-
 	for (int i = 0; i < RoleProperty->Skill.Num(); i++) {
 		RoleSkill.SkillCD.Push(0.f);
 		RoleSkill.SkillConfigArray.Push(*GetSkillConfig(RoleProperty->Skill[i]));
@@ -36,35 +34,30 @@ void ARoleBase::RemoveRole()
 
 bool ARoleBase::IsDead()
 {
-	if (CurRoleProperty) {
-		return CurRoleProperty->HP <= 0;
-	}
-	return true;
+	return RolePropertyComponent->IsDead();
 }
 
 void ARoleBase::ChangeHP(float Value)
 {
-	CurRoleProperty->HP += Value;
-	if (CurRoleProperty->HP <= 0) {
-		CurRoleProperty->HP = 0;
+	if (RolePropertyComponent->ChangeHP(Value) == 0) {
 		RemoveRole();
 	}
-	else if (CurRoleProperty->HP > CurRoleProperty->HP) {
-		CurRoleProperty->HP = CurRoleProperty->MaxHP;
-	}
-	RolePropertyComponent->RefreshProperty();
 }
 
 void ARoleBase::ChangeMP(float Value)
 {
-	CurRoleProperty->MP += Value;
-	if (CurRoleProperty->MP <= 0) {
-		CurRoleProperty->MP = 0;
-	}
-	else if (CurRoleProperty->MP > CurRoleProperty->MP) {
-		CurRoleProperty->MP = CurRoleProperty->MaxMP;
-	}
-	RolePropertyComponent->RefreshProperty();
+	RolePropertyComponent->ChangeMP(Value);
+}
+
+float ARoleBase::OnHit(float Damage)
+{
+	ChangeHP(-Damage);
+	return Damage;
+}
+
+const FRoleProperty* ARoleBase::GetRoleProperty()
+{
+	return RolePropertyComponent->GetRoleProperty();
 }
 
 // Called when the game starts or when spawned
@@ -80,7 +73,7 @@ TArray<TObjectPtr<AActor>> ARoleBase::GetTargetWithinRange(ECollisionChannel Cha
 
 	FVector StartLocation = GetActorLocation(); // 设置起点
 	FVector EndLocation = GetActorLocation();   // 设置终点
-	float SphereRadius = CurRoleProperty->Range;  // 球体半径
+	float SphereRadius = RolePropertyComponent->GetRoleProperty()->Range;  // 球体半径
 
 	// 设置要检测的Object类型
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
@@ -133,7 +126,7 @@ void ARoleBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float ARoleBase::UseSkill()
 {
-	return CurRoleProperty->SkillInterval;
+	return  RolePropertyComponent->GetRoleProperty()->SkillInterval;
 }
 
 int ARoleBase::GetNextSkill()
@@ -142,7 +135,7 @@ int ARoleBase::GetNextSkill()
 	int i = 0;
 	while (i < RoleSkill.SkillCD.Num()) {
 		if (RoleSkill.SkillCD[RoleSkill.NextSkill] == 0 &&
-			CurRoleProperty->MP >= RoleSkill.SkillConfigArray[RoleSkill.NextSkill].Consume) {
+			RolePropertyComponent->GetRoleProperty()->MP >= RoleSkill.SkillConfigArray[RoleSkill.NextSkill].Consume) {
 			index = RoleSkill.NextSkill;
 		}
 		RoleSkill.NextSkill = (RoleSkill.NextSkill + 1) % RoleSkill.SkillCD.Num();
