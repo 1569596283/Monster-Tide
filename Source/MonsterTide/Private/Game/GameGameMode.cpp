@@ -25,10 +25,28 @@ void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 {
 	HP -= Enemy->GetDamage();
 	if (HP <= 0) {
-		UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+		Defeat();
+	}
+	else {
+		CheckVictory();
 	}
 }
 
 void AGameGameMode::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
 {
+	CheckVictory();
+}
+
+void AGameGameMode::CheckVictory()
+{
+	int Num1 = LevelManager->GetEnemyNumber();
+	int Num2 = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->GetEnemyNumber();
+	if (Num1 + Num2 == 0) {
+		LevelManager->OpenLevel();
+	}
+}
+
+void AGameGameMode::Defeat()
+{
+	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
 }

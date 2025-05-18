@@ -27,6 +27,8 @@ public:
 
 	FLevelConfig* CurLevelConfig;
 
+	int GetEnemyNumber() const;
+
 private:
 	UPROPERTY()
 	/* 当前关卡经过的时间 */

@@ -40,7 +40,7 @@ bool ARoleBase::IsDead()
 void ARoleBase::ChangeHP(float Value)
 {
 	if (RolePropertyComponent->ChangeHP(Value) == 0) {
-		RemoveRole();
+		Dead();
 	}
 }
 
@@ -146,6 +146,11 @@ int ARoleBase::GetNextSkill()
 	return index;
 }
 
+void ARoleBase::Dead()
+{
+	RemoveRole();
+}
+
 void ARoleBase::SkillTiming(float DeltaTime)
 {
 	if (RoleSkill.SkillCD.Num() == 0) {
@@ -162,15 +167,10 @@ void ARoleBase::SkillTiming(float DeltaTime)
 	}
 }
 
-void ARoleBase::RefreshPropertyPosition()
-{
-
-}
-
 // Called every frame
 void ARoleBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	SkillTiming(DeltaTime);
-	RefreshPropertyPosition();
+	RolePropertyComponent->RecoveryProperty(DeltaTime);
 }

@@ -29,6 +29,11 @@ public:
 	float ChangeHP(float Value);
 	float ChangeMP(float Value);
 
+	void RecoveryProperty(float DeltaTime);
+
 protected:
 	FRoleProperty* RoleProperty;
+
+private:
+
 };

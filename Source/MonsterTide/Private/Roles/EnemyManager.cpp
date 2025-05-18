@@ -29,6 +29,15 @@ void UEnemyManager::CreateEnemys(FGameEnemyConfig EnemyConfig)
 	}
 }
 
+int UEnemyManager::GetEnemyNumber() const
+{
+	int Num = EnemyArray.Num();
+	for (FCreateStruct* CreateStruct : CreateArray) {
+		Num += CreateStruct->GameEnemyConfig->Number;
+	}
+	return Num;
+}
+
 void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 {
 	FEnemyPropertyConfig* EnemyPropertyConfig = GetEnemyPropertyConfig(EnemyConfig.Type);
@@ -65,12 +74,12 @@ void UEnemyManager::RemoveEnemy(TObjectPtr<AEnemyBase> Enemy)
 
 void UEnemyManager::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
 {
-	EnemyDead.Broadcast(Enemy);
 	RemoveEnemy(Enemy);
+	EnemyDead.Broadcast(Enemy);
 }
 
 void UEnemyManager::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 {
-	EnemyArrived.Broadcast(Enemy);
 	RemoveEnemy(Enemy);
+	EnemyArrived.Broadcast(Enemy);
 }

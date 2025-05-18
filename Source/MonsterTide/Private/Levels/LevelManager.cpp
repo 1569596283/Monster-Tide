@@ -38,6 +38,15 @@ void ULevelManager::GameOver()
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
+int ULevelManager::GetEnemyNumber() const
+{
+	int Num = 0;
+	for (FGameEnemyConfig cfg : EnemyArr) {
+		Num += cfg.Number;
+	}
+	return Num;
+}
+
 void ULevelManager::CreateEnemy()
 {
 	for (int i = EnemyArr.Num() - 1; i >= 0; i--) {

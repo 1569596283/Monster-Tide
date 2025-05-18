@@ -43,3 +43,9 @@ float URolePropertyComponent::ChangeMP(float Value)
 	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
 	return RoleProperty->MP;
 }
+
+void URolePropertyComponent::RecoveryProperty(float DeltaTime)
+{
+	ChangeHP(DeltaTime * RoleProperty->RecoveryHP);
+	ChangeMP(DeltaTime * RoleProperty->RecoveryMP);
+}

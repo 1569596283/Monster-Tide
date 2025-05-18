@@ -48,7 +48,6 @@ float AEnemyBase::GetRemainDistance() const
 
 void AEnemyBase::RemoveRole()
 {
-	OnEnemyDead.Broadcast(this);
 	Super::RemoveRole();
 }
 
@@ -69,4 +68,10 @@ void AEnemyBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Move(DeltaTime);
+}
+
+void AEnemyBase::Dead()
+{
+	Super::Dead();
+	OnEnemyDead.Broadcast(this);
 }

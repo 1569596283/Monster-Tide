@@ -16,8 +16,10 @@ FRoleProperty::FRoleProperty(const FRoleProperty& Other)
 	Exp = Other.Exp;
 	MaxHP = Other.MaxHP;
 	HP = Other.HP;
+	RecoveryHP = Other.RecoveryHP;
 	MaxMP = Other.MaxMP;
 	MP = Other.MP;
+	RecoveryMP = Other.RecoveryMP;
 	Attack = Other.Attack;
 	Defense = Other.Defense;
 	Range = Other.Range;
@@ -32,8 +34,10 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	Exp = 0;
 	MaxHP = FMath::RandRange(Config.MinHP, Config.MaxHP);
 	HP = MaxHP;
+	RecoveryHP = Config.RecoveryHP;
 	MaxMP = FMath::RandRange(Config.MinMP, Config.MaxMP);
 	MP = MaxMP;
+	RecoveryMP = Config.RecoveryMP;
 	Attack = FMath::RandRange(Config.MinAttack, Config.MaxAttack);
 	Defense = FMath::RandRange(Config.MinDefense, Config.MaxDefense);
 	Range = Config.Range;

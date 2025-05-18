@@ -28,4 +28,7 @@ private :
 
 	void OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy);
 	void OnEnemyDead(TObjectPtr<AEnemyBase> Enemy);
+
+	void CheckVictory();
+	void Defeat();
 };

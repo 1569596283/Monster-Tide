@@ -36,6 +36,8 @@ public:
 	FOnEnemyArrived EnemyArrived;
 	FOnEnemyDead EnemyDead;
 
+	int GetEnemyNumber() const;
+
 private:
 	TArray<FCreateStruct*> CreateArray;
 

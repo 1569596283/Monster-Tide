@@ -58,10 +58,10 @@ protected:
 	virtual float UseSkill();
 	int GetNextSkill();
 
+	virtual void Dead();
+
 private:
 	void SkillTiming(float DeltaTime);
-
-	void RefreshPropertyPosition();
 
 public:	
 	virtual void Tick(float DeltaTime) override;

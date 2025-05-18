@@ -33,6 +33,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	virtual void Dead() override;
+
 private:
 	TObjectPtr<USplineComponent> SplineComponent;
 	float Distance = 0.f;

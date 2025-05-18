@@ -43,10 +43,16 @@ struct FRoleProperty
 	float HP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
+	float RecoveryHP = 0.f;
+
+	UPROPERTY(EditDefaultsOnly)
 	float MaxMP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float MP = 100.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float RecoveryMP = 1.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float Attack = 100.f;
@@ -78,9 +84,13 @@ struct FRolePropertyConfig :public FTableRowBase
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
+	float RecoveryHP = 0.f;
+	UPROPERTY(EditDefaultsOnly)
 	float MinMP = 100.f;
 	UPROPERTY(EditDefaultsOnly)
 	float MaxMP = 100.f;
+	UPROPERTY(EditDefaultsOnly)
+	float RecoveryMP = 1.f;
 	UPROPERTY(EditDefaultsOnly)
 	float MinAttack = 10.f;
 	UPROPERTY(EditDefaultsOnly)
