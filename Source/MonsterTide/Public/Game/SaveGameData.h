@@ -16,10 +16,20 @@ class MONSTERTIDE_API USaveGameData : public USaveGame
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadOnly)
-	TArray<FRoleProperty> HeroArr;
-
 	const TArray<FRoleProperty>& GetHeroArray() const;
 
 	bool AddHero(FRoleProperty* rp);
+
+	int GetCurLevel() const;
+	void SetCurLevl(int Level);
+
+	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
+
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FRoleProperty> HeroArr;
+
+	UPROPERTY(BlueprintReadOnly)
+	int CurLevel = 0;
 };

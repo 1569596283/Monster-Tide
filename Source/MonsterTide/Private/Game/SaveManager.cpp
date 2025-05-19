@@ -7,9 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 
 
-void USaveManager::SaveGameData()
+void USaveManager::SaveGameData(FString Name)
 {
-	UGameplayStatics::SaveGameToSlot(GameData, "TestSaveData", 0);
+	UGameplayStatics::SaveGameToSlot(GameData, Name, 0);
 }
 
 void USaveManager::InitSaveData()
@@ -17,15 +17,7 @@ void USaveManager::InitSaveData()
 	if (GameData != nullptr) {
 		GameData->RemoveFromRoot();
 	}
-	USaveGame* Data = UGameplayStatics::LoadGameFromSlot("TestSaveData", 0);
-	//if (Data != nullptr) {
-	//	GameData = Cast<USaveGameData>(Data);
-	//}
-	//else {
-	//	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
-	//	FRoleProperty* rp = getRandomRoleProperty(ERoleType::Hero);
-	//	GameData->AddHero(rp);
-	//}
+
 	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
 	GameData->AddToRoot();
 	for (int i = 0; i < 4; i++) {
@@ -34,7 +26,32 @@ void USaveManager::InitSaveData()
 	}
 }
 
+bool USaveManager::ReadSaveData(FString Name)
+{
+	if (GameData != nullptr) {
+		GameData->RemoveFromRoot();
+	}
+
+	USaveGame* Data = UGameplayStatics::LoadGameFromSlot(Name, 0);
+	if (Data != nullptr) {
+		GameData = Cast<USaveGameData>(Data);
+		GameData->AddToRoot();
+		return true;
+	}
+	return false;
+}
+
 const TArray<FRoleProperty>& USaveManager::GetHeroArray() const
 {
 	return GameData->GetHeroArray();
+}
+
+void USaveManager::SetCurLevel(int Level)
+{
+	GameData->SetCurLevl(Level);
+}
+
+void USaveManager::SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr)
+{
+	GameData->SetHeroProperty(RolePropertyArr);
 }

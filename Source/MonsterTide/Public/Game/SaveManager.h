@@ -19,11 +19,16 @@ class MONSTERTIDE_API USaveManager : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	void SaveGameData();
+	void SaveGameData(FString Name);
 
 	void InitSaveData();
 
+	bool ReadSaveData(FString Name);
+
 	const TArray< FRoleProperty >& GetHeroArray() const;
+
+	void SetCurLevel(int Level);
+	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
 	
 private :
 	TObjectPtr<USaveGameData> GameData;

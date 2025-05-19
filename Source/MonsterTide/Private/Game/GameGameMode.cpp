@@ -2,9 +2,12 @@
 
 
 #include "Game/GameGameMode.h"
+#include "Game/GamePlayerController.h"
+#include "Game/SaveManager.h"
 #include "Data/LevelData.h"
 #include "Data/RolePropertyData.h"
 #include "Levels/LevelManager.h"
+#include "Roles/HeroManager.h"
 #include "Roles/EnemyManager.h"
 #include "Roles/Enemys/EnemyBase.h"
 #include "Skills/SkillManager.h"
@@ -42,11 +45,22 @@ void AGameGameMode::CheckVictory()
 	int Num1 = LevelManager->GetEnemyNumber();
 	int Num2 = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->GetEnemyNumber();
 	if (Num1 + Num2 == 0) {
-		LevelManager->OpenLevel();
+		auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
+		SaveMgr->SetCurLevel(LevelManager->GetCueLevel());
+		TArray<FRoleProperty>* RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroArray();
+		SaveMgr->SetHeroProperty(RolePropertyArr);
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
+		if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC) ) {
+			GPC->OpenSettlementUI(true);
+		}
+		SaveMgr->SaveGameData("TestSaveData");
 	}
 }
 
 void AGameGameMode::Defeat()
 {
-	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
+		GPC->OpenSettlementUI(false);
+	}
 }

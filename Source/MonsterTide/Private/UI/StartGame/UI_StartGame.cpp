@@ -17,6 +17,11 @@ void UUI_StartGame::OnStartCilcked()
 
 void UUI_StartGame::OnContinueCilcked()
 {
+ 	bool Success = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->ReadSaveData("TestSaveData");
+	if (Success) {
+		GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->InitHeroProperty();
+		GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->OpenLevel();
+	}
 }
 
 void UUI_StartGame::OnExitCilcked()

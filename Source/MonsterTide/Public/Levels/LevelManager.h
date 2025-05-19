@@ -20,8 +20,10 @@ class MONSTERTIDE_API ULevelManager : public UGameInstanceSubsystem
 public:
 	void OpenLevel();
 	void OpenLevel(int Level);
+	void OpenNextLevel();
 
 	void InitLevel();
+	int GetCueLevel();
 
 	void GameOver();
 
@@ -34,7 +36,7 @@ private:
 	/* 当前关卡经过的时间 */
 	float LevelTime = 0;
 	/* 当前关卡 */
-	int CurLevel;
+	int CurLevel = 1;
 
 
 	FTimerHandle TimerHandle;

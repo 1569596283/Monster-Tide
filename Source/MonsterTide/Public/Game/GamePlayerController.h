@@ -8,6 +8,7 @@
 
 
 class UUI_Game;
+class UUI_Settlement;
 /**
  * 
  */
@@ -16,12 +17,21 @@ class MONSTERTIDE_API AGamePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUI_Game> UI_GameClass;
 
 public:
 	virtual void BeginPlay() override;
 
+	void OpenSettlementUI(bool Victory);
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUI_Game> UI_GameClass;
 	UPROPERTY()
 	TObjectPtr<UUI_Game> UI_Game;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUI_Settlement> UI_SettlementClass;
+	UPROPERTY()
+	TObjectPtr<UUI_Settlement> UI_Settlement;
+
 };

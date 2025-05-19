@@ -9,15 +9,20 @@
 
 void ULevelManager::OpenLevel()
 {
-	UGameplayStatics::OpenLevel(this, FName("GameMap_1"));
-	CurLevel = 1;
+	FString HPText = "GameMap_" + FString::FromInt(CurLevel);
+	UGameplayStatics::OpenLevel(this, FName(HPText));
 }
 
 void ULevelManager::OpenLevel(int Level)
 {
-	FString HPText = "GameMap_" + FString::FromInt(Level);
-	UGameplayStatics::OpenLevel(this, FName(HPText));
 	CurLevel = Level;
+	OpenLevel();
+}
+
+void ULevelManager::OpenNextLevel()
+{
+	//CurLevel++;
+	OpenLevel();
 }
 
 void ULevelManager::InitLevel()
@@ -31,6 +36,11 @@ void ULevelManager::InitLevel()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ULevelManager::Tick, 0.1f, true);
+}
+
+int ULevelManager::GetCueLevel()
+{
+	return CurLevel;
 }
 
 void ULevelManager::GameOver()

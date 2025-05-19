@@ -19,3 +19,23 @@ bool USaveGameData::AddHero(FRoleProperty* rp)
 		return false;
 	}
 }
+
+int USaveGameData::GetCurLevel() const
+{
+	return CurLevel;
+}
+
+void USaveGameData::SetCurLevl(int Level)
+{
+	if (Level > CurLevel) {
+		CurLevel = Level;
+	}
+}
+
+void USaveGameData::SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr)
+{
+	HeroArr.Empty();
+	for (int i = 0; i < RolePropertyArr->Num(); i++) {
+		HeroArr.Push(*(RolePropertyArr->GetData() + i));
+	}
+}
