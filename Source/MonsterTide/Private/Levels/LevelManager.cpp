@@ -9,8 +9,8 @@
 
 void ULevelManager::OpenLevel()
 {
-	FString HPText = "GameMap_" + FString::FromInt(CurLevel);
-	UGameplayStatics::OpenLevel(this, FName(HPText));
+	FString LevelName = "GameMap_" + FString::FromInt(CurLevel);
+	UGameplayStatics::OpenLevel(this, FName(LevelName));
 }
 
 void ULevelManager::OpenLevel(int Level)

@@ -5,11 +5,20 @@
 #include "CoreMinimal.h"
 #include "LevelData.generated.h"
 
+/* 角色类型，包括英雄和敌人 */
+UENUM(BlueprintType)
+enum class ELevelType :uint8 {
+	Classic UMETA(DisplayName = "Classic"),
+};
+
+
 /* 角色属性配置 */
 USTRUCT(BlueprintType)
 struct FLevelConfig :public FTableRowBase
 {
 	GENERATED_BODY()
+	UPROPERTY(EditDefaultsOnly)
+	int Level = 1;
 
 	UPROPERTY(EditDefaultsOnly)
 	FString LevelName = "";
@@ -22,6 +31,12 @@ struct FLevelConfig :public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<int>Enemy = {};
+
+	UPROPERTY(EditDefaultsOnly)
+	ELevelType Type = ELevelType::Classic;
+
 };
 
 FLevelConfig* GetLevelConfig(int Level);
+
+TArray<FLevelConfig *> GetLevelConfigs(ELevelType Type);

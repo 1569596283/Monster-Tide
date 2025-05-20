@@ -17,12 +17,12 @@ class MONSTERTIDE_API AStartPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUI_StartGame> UI_StartGameClass;
-
 public:
 	virtual void BeginPlay() override;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUI_StartGame> UI_StartGameClass;
 	UPROPERTY()
 	TObjectPtr<UUI_StartGame> UI_StartGame;
 };

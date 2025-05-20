@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/SizeBox.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/GameplayStatics.h>
 
 void UUI_Settlement::NativeOnInitialized()
 {
@@ -48,5 +49,6 @@ void UUI_Settlement::OnBtnRestartClicked()
 
 void UUI_Settlement::OnBtnReturnClicked()
 {
-	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+	UGameplayStatics::OpenLevel(this, FName("MainMap"));
+
 }

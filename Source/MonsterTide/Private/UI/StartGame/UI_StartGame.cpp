@@ -7,12 +7,13 @@
 #include "Roles/HeroManager.h"
 #include "Levels/Levelmanager.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/GameplayStatics.h>
 
 void UUI_StartGame::OnStartCilcked()
 {
 	GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->InitSaveData();
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->InitHeroProperty();
-	GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->OpenLevel();
+	UGameplayStatics::OpenLevel(this, FName("MainMap"));
 }
 
 void UUI_StartGame::OnContinueCilcked()
@@ -20,7 +21,7 @@ void UUI_StartGame::OnContinueCilcked()
  	bool Success = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->ReadSaveData("TestSaveData");
 	if (Success) {
 		GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->InitHeroProperty();
-		GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->OpenLevel();
+		UGameplayStatics::OpenLevel(this, FName("MainMap"));
 	}
 }
 

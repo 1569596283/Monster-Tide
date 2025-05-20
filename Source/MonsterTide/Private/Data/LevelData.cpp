@@ -15,3 +15,23 @@ FLevelConfig* GetLevelConfig(int Level)
 	}
 	return nullptr;
 }
+
+TArray<FLevelConfig*> GetLevelConfigs(ELevelType Type)
+{
+	TArray<FLevelConfig*> Arr = TArray<FLevelConfig*>();
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_Level.DT_Level'")));
+	if (DataTable) {
+	TArray<FName> RowNames = DataTable->GetRowNames();
+		FString ContextString = "Context";
+		// 遍历所有行
+		for (const FName& RowName : RowNames)
+		{
+			FLevelConfig* LevelConfig = DataTable->FindRow<FLevelConfig>(RowName, "");
+			if (LevelConfig && LevelConfig->Type == Type)
+			{
+				Arr.Push(LevelConfig);
+			}
+		}
+	}
+	return Arr;
+}
