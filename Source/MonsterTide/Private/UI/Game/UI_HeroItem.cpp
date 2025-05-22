@@ -6,6 +6,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/Button.h"
 #include "Roles/HeroManager.h"
+#include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
 
 void UUI_HeroItem::NativeOnInitialized()
@@ -20,39 +21,40 @@ void UUI_HeroItem::NativeOnInitialized()
 	}
 }
 
-void UUI_HeroItem::InitRoleProperty(FRoleProperty* rp)
+void UUI_HeroItem::InitRoleAttribute(TObjectPtr< URoleAttribute > RA)
 {
-	RoleProperty = rp;
+	RoleAttribute = RA;
+	const FRoleProperty* RoleProperty = RA->GetRoleProperty();
 	TB_Name->SetText(FText::FromString(TEXT("Name")));
-	TB_Type->SetText(UEnum::GetDisplayValueAsText(rp->Type));
-	TB_Level->SetText(FText::FromString(FString::FromInt(rp->Level)));
-	FString HPText = FString::FromInt(rp->HP) + "/" + FString::FromInt(rp->MaxHP);
+	TB_Type->SetText(UEnum::GetDisplayValueAsText(RoleProperty->Type));
+	TB_Level->SetText(FText::FromString(FString::FromInt(RoleProperty->Level)));
+	FString HPText = FString::FromInt(RoleProperty->HP) + "/" + FString::FromInt(RoleProperty->MaxHP);
 	TB_HP->SetText(FText::FromString(HPText));
-	PB_HP->SetPercent(rp->HP / rp->MaxHP);
-	FString MPText = FString::FromInt(rp->MP) + "/" + FString::FromInt(rp->MaxMP);
+	PB_HP->SetPercent(RoleProperty->HP / RoleProperty->MaxHP);
+	FString MPText = FString::FromInt(RoleProperty->MP) + "/" + FString::FromInt(RoleProperty->MaxMP);
 	TB_MP->SetText(FText::FromString(MPText));
-	PB_MP->SetPercent(rp->MP / rp->MaxMP);
-	FString EXPText = FString::FromInt(rp->Exp) + "/" + FString::FromInt(100);
+	PB_MP->SetPercent(RoleProperty->MP / RoleProperty->MaxMP);
+	FString EXPText = FString::FromInt(RoleProperty->Exp) + "/" + FString::FromInt(100);
 	TB_EXP->SetText(FText::FromString(EXPText));
-	PB_EXP->SetPercent(rp->Exp / 100);
+	PB_EXP->SetPercent(RoleProperty->Exp / 100);
 }
 
 void UUI_HeroItem::OnBtnHeroClicked()
 {
 	if (IsSelect) {
-		SetBtnHeroState(RoleProperty);
+		SetBtnHeroState(RoleAttribute);
 	}
-	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->SelectHeroItem(RoleProperty);
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->SelectHeroItem(RoleAttribute);
 }
 
-void UUI_HeroItem::SetBtnHeroState(FRoleProperty* rp)
+void UUI_HeroItem::SetBtnHeroState(TObjectPtr< URoleAttribute > RA)
 {
 	bool newState = false;
-	if (!IsSelect && rp == RoleProperty) {
+	if (!IsSelect && RA == RoleAttribute) {
 		// 改为选中状态
 		newState = true;
 	}
-	else if ((IsSelect && rp == RoleProperty) || IsSelect && rp != RoleProperty) {
+	else if ((IsSelect && RA == RoleAttribute) || IsSelect && RA != RoleAttribute) {
 		newState = false;
 	}
 	if (newState != IsSelect) {
@@ -74,9 +76,9 @@ void UUI_HeroItem::RefreshBtnHeroState()
 	Btn_Hero->SetStyle(BtnStyle);
 }
 
-void UUI_HeroItem::OnPlaceHero(FRoleProperty* rp)
+void UUI_HeroItem::OnPlaceHero(TObjectPtr< URoleAttribute > RA)
 {
-	if (rp == RoleProperty) {
+	if (RA == RoleAttribute) {
 		RemoveFromParent();
 	}
 }

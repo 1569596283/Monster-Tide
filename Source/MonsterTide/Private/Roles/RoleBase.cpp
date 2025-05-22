@@ -3,6 +3,7 @@
 
 #include "Roles/RoleBase.h"
 #include "Roles/RolePropertyComponent.h"
+#include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
 #include "Data/SkillData.h"
 #include <Kismet/KismetSystemLibrary.h>
@@ -15,9 +16,11 @@ ARoleBase::ARoleBase()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ARoleBase::InitRole(FRoleProperty* RoleProperty)
+void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
 {
-	for (int i = 0; i < RoleProperty->Skill.Num(); i++) {
+	RoleAttribute = RA;
+	const FRoleProperty* RoleProperty = RA->GetRoleProperty();
+	for (int i = 0; i < RA->GetRoleProperty()->Skill.Num(); i++) {
 		RoleSkill.SkillCD.Push(0.f);
 		RoleSkill.SkillConfigArray.Push(*GetSkillConfig(RoleProperty->Skill[i]));
 	}
@@ -34,24 +37,19 @@ void ARoleBase::RemoveRole()
 
 bool ARoleBase::IsDead()
 {
-	return RolePropertyComponent->IsDead();
-}
-
-void ARoleBase::ChangeHP(float Value)
-{
-	if (RolePropertyComponent->ChangeHP(Value) == 0) {
-		Dead();
+	if (RoleAttribute== nullptr) {
+		return true;
 	}
-}
-
-void ARoleBase::ChangeMP(float Value)
-{
-	RolePropertyComponent->ChangeMP(Value);
+	return RoleAttribute->IsDead();
 }
 
 float ARoleBase::OnHit(float Damage)
 {
-	ChangeHP(-Damage);
+	// 加一个函数，把伤害变成实际伤害。
+	RoleAttribute->ChangeHP(-Damage);
+	if (IsDead()) {
+		Dead();
+	}
 	return Damage;
 }
 

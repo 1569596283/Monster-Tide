@@ -22,7 +22,7 @@ class MONSTERTIDE_API AEnemyBase : public ARoleBase
 public:
 	AEnemyBase();
 
-	void InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPropertyConfig);
+	void InitEnemy(int Path, int Damage);
 
 	int GetDamage() const;
 	/* 获得距离终点的剩余路程 */
@@ -39,7 +39,7 @@ protected:
 private:
 	TObjectPtr<USplineComponent> SplineComponent;
 	float Distance = 0.f;
-	int Damage = 1;
+	int CurDamage = 1;
 
 	void RemoveRole();
 

@@ -6,12 +6,12 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "HeroManager.generated.h"
 
-struct FRoleProperty;
 enum class ESkillType :uint8;
 class ARoleBase;
+class URoleAttribute;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, FRoleProperty*);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, FRoleProperty*);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, TObjectPtr< URoleAttribute >);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnRoleUseSkill, ESkillType, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
 
 /**
@@ -25,22 +25,22 @@ class MONSTERTIDE_API UHeroManager : public UGameInstanceSubsystem
 public:
 	void InitHeroProperty();
 
-	TArray<FRoleProperty>* GetHeroArray();
+	TArray<TObjectPtr< URoleAttribute >> GetHeroAttributeArray();
 
 	FOnSelectItemChanged OnSelectItemChanged;
 	FOnPlaceHero OnPlaceHero;
 	FOnRoleUseSkill OnRoleUseSkill;
 
-	void SelectHeroItem(FRoleProperty* rp);
+	void SelectHeroItem(TObjectPtr< URoleAttribute > RA);
 
 	/* 创建英雄在指定位置 */
 	void CreateHeroAtLocation(FVector loc);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FRoleProperty> HeroPropertyArr;
+	TArray <TObjectPtr< URoleAttribute >> HeroAttributeArr;
 
-	FRoleProperty* CurSelectRoleProperty;
+	TObjectPtr< URoleAttribute > CurSelectRoleAttribute;
 
 	void RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 };

@@ -9,7 +9,7 @@
 class UTextBlock;
 class UButton;
 class UProgressBar;
-struct FRoleProperty;
+class URoleAttribute;
 /**
  * 
  */
@@ -21,10 +21,10 @@ class MONSTERTIDE_API UUI_HeroItem : public UUserWidget
 public:
 	virtual void NativeOnInitialized() override;
 
-	void InitRoleProperty(FRoleProperty* rp);
+	void InitRoleAttribute(TObjectPtr< URoleAttribute > RA);
 
 private:
-	FRoleProperty* RoleProperty;
+	TObjectPtr< URoleAttribute > RoleAttribute;
 
 	bool IsSelect = false;
 	
@@ -56,9 +56,9 @@ protected:
 	void OnBtnHeroClicked();
 
 	/* 根据当前状态和新点击的角色属性设置是否选中 */
-	void SetBtnHeroState(FRoleProperty* rp);
+	void SetBtnHeroState(TObjectPtr< URoleAttribute > RA);
 	/* 根据是否选中设置按钮颜色 */
 	UFUNCTION()
 	void RefreshBtnHeroState();
-	void OnPlaceHero(FRoleProperty* rp);
+	void OnPlaceHero(TObjectPtr< URoleAttribute > RA);
 };

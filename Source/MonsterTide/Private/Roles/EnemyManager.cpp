@@ -3,6 +3,7 @@
 
 #include "Roles/EnemyManager.h"
 #include "Roles/Enemys/EnemyBase.h"
+#include "Roles/RoleAttribute.h"
 #include "Data/GameEnemyData.h"
 #include "Data/RolePropertyData.h"
 
@@ -49,7 +50,11 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		AEnemyBase* Enemy = GetWorld()->SpawnActor<AEnemyBase>(RoleClass, SpawnLocation, SpawnRotation, SpawnParams);
 		// TODO : 下方初始化的时候传入样条名称
-		Enemy->InitEnemy(EnemyConfig.Path, EnemyConfig.EnemyLevel, EnemyPropertyConfig);
+		Enemy->InitEnemy(EnemyConfig.Path, EnemyPropertyConfig->Damage);
+		FRoleProperty* RoleProperty = GetRandomEnemyProperty(EnemyPropertyConfig->Type, EnemyConfig.EnemyLevel);
+		URoleAttribute* EnemyAttribute = NewObject<URoleAttribute>();
+		EnemyAttribute->SetBaseProperty(*RoleProperty);
+		Enemy->InitRole(EnemyAttribute);
 		Enemy->OnEnemyDead.AddUObject(this, &UEnemyManager::OnEnemyDead);
 		Enemy->OnEnemyArrived.AddUObject(this, &UEnemyManager::OnEnemyArrived);
 		EnemyArray.Push(Enemy);

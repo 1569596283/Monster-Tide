@@ -31,5 +31,6 @@ public:
 	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
 	
 private :
+	UPROPERTY()
 	TObjectPtr<USaveGameData> GameData;
 };

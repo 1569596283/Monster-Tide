@@ -17,14 +17,12 @@ class MONSTERTIDE_API URolePropertyComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
 public:
-	bool InitProperty(FRoleProperty* rp);
+	bool InitProperty(const FRoleProperty* rp);
 	void RefreshProperty();
 
 	TObjectPtr<UUI_RoleProperty> UMG_RoleProperty;
 
 	const FRoleProperty* GetRoleProperty();
-
-	bool IsDead();
 
 	float ChangeHP(float Value);
 	float ChangeMP(float Value);
@@ -32,7 +30,7 @@ public:
 	void RecoveryProperty(float DeltaTime);
 
 protected:
-	FRoleProperty* RoleProperty;
+	const FRoleProperty* RoleProperty;
 
 private:
 

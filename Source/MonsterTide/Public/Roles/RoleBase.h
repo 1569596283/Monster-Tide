@@ -10,6 +10,7 @@ enum class ESkillType : uint8;
 struct FRoleProperty;
 struct FSkillConfig;
 class URolePropertyComponent;
+class URoleAttribute;
 
 struct FRoleSkill
 {
@@ -31,7 +32,7 @@ class MONSTERTIDE_API ARoleBase : public ACharacter
 public:
 	ARoleBase();
 
-	void InitRole(FRoleProperty* RoleProperty);
+	void InitRole(TObjectPtr<URoleAttribute> RA);
 
 	void RemoveRole();
 
@@ -42,20 +43,19 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
 
-	void ChangeHP(float Value);
-	void ChangeMP(float Value);
-
 	float OnHit(float Damage);
 
 	const FRoleProperty* GetRoleProperty();
 protected:
-	virtual void BeginPlay() override;
+	FRoleSkill RoleSkill = FRoleSkill();
+	UPROPERTY()
+	TObjectPtr<URoleAttribute> RoleAttribute;
 
+	virtual void BeginPlay() override;
  	TArray<TObjectPtr<AActor>> GetTargetWithinRange(ECollisionChannel Channel);
 
-	FRoleSkill RoleSkill = FRoleSkill();
-
 	virtual float UseSkill();
+
 	int GetNextSkill();
 
 	virtual void Dead();

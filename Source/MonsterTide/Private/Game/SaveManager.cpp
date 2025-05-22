@@ -14,12 +14,7 @@ void USaveManager::SaveGameData(FString Name)
 
 void USaveManager::InitSaveData()
 {
-	if (GameData != nullptr) {
-		GameData->RemoveFromRoot();
-	}
-
 	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
-	GameData->AddToRoot();
 	for (int i = 0; i < 4; i++) {
 		FRoleProperty* rp = GetRandomHeroProperty(ERoleType::Hero);
 		GameData->AddHero(rp);
@@ -28,14 +23,9 @@ void USaveManager::InitSaveData()
 
 bool USaveManager::ReadSaveData(FString Name)
 {
-	if (GameData != nullptr) {
-		GameData->RemoveFromRoot();
-	}
-
 	USaveGame* Data = UGameplayStatics::LoadGameFromSlot(Name, 0);
 	if (Data != nullptr) {
 		GameData = Cast<USaveGameData>(Data);
-		GameData->AddToRoot();
 		return true;
 	}
 	return false;

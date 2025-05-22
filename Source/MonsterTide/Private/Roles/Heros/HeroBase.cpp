@@ -3,6 +3,7 @@
 
 #include "Roles/Heros/HeroBase.h"
 #include "Roles/Enemys/EnemyBase.h"
+#include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
 #include "Components/CapsuleComponent.h"
 #include "Data/SkillData.h"
@@ -64,7 +65,7 @@ float AHeroBase::UseSkill()
 		}
 		FSkillConfig* SkillConfig = &RoleSkill.SkillConfigArray[index];
 		OnRoleUseSkill.Broadcast(SkillConfig->Type, this, TargetEnemy);
-		this->ChangeMP(-SkillConfig->Consume);
+		RoleAttribute->ChangeMP(-SkillConfig->Consume);
 		// 后面改成这个技能的释放时间和角色技能间隔的较大值
 	}
 	return RolePropertyComponent->GetRoleProperty()->SkillInterval;

@@ -47,8 +47,8 @@ void AGameGameMode::CheckVictory()
 	if (Num1 + Num2 == 0) {
 		auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
 		SaveMgr->SetCurLevel(LevelManager->GetCueLevel());
-		TArray<FRoleProperty>* RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroArray();
-		SaveMgr->SetHeroProperty(RolePropertyArr);
+		//TArray<FRoleProperty>* RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroPropertyArray();
+		//SaveMgr->SetHeroProperty(RolePropertyArr);
 		APlayerController* PC = GetWorld()->GetFirstPlayerController();
 		if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC) ) {
 			GPC->OpenSettlementUI(true);

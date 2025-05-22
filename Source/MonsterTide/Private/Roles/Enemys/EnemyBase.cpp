@@ -6,7 +6,6 @@
 #include "Components/SplineComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Levels/Spline.h"
-#include "Data/RolePropertyData.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -17,11 +16,9 @@ AEnemyBase::AEnemyBase()
 	}
 }
 
-void AEnemyBase::InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPropertyConfig)
+void AEnemyBase::InitEnemy(int Path,int Damage)
 {
-	Damage = EnemyPropertyConfig->Damage;
-	FRoleProperty* RoleProperty = GetRandomEnemyProperty(EnemyPropertyConfig->Type ,Level);
-	InitRole(RoleProperty);
+	CurDamage = Damage;
 	Distance = 0.f;
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpline::StaticClass(), FoundActors);
@@ -38,7 +35,7 @@ void AEnemyBase::InitEnemy(int Path, int Level, FEnemyPropertyConfig* EnemyPrope
 
 int AEnemyBase::GetDamage() const
 {
-	return Damage;
+	return CurDamage;
 }
 
 float AEnemyBase::GetRemainDistance() const

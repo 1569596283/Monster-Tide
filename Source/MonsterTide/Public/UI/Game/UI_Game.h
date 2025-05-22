@@ -8,7 +8,7 @@
 
 
 class UScrollBox;
-struct FRoleProperty;
+class URoleAttribute;
 class UUI_HeroItem;
 /**
  * 
@@ -31,7 +31,7 @@ public:
 	void RefreshHeros();
 
 private:
-	void AddHeroItem(FRoleProperty* rp);
+	void AddHeroItem(TObjectPtr<URoleAttribute> RA);
 
 	void RemoveHeroItem();
 };

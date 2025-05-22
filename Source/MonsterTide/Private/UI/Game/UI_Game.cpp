@@ -5,7 +5,7 @@
 #include "UI/Game/UI_HeroItem.h"
 #include "Components/ScrollBox.h"
 #include "Roles/HeroManager.h"
-#include "Data/RolePropertyData.h"
+#include "Roles/RoleAttribute.h"
 
 void UUI_Game::NativeOnInitialized()
 {
@@ -14,17 +14,17 @@ void UUI_Game::NativeOnInitialized()
 
 void UUI_Game::RefreshHeros()
 {
-	TArray<FRoleProperty>* RPArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroArray();
-	for (int i = 0; i < RPArr->Num(); i++) {
-		AddHeroItem(RPArr->GetData() + i);
+	TArray<TObjectPtr<URoleAttribute>> RAArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroAttributeArray();
+	for (int i = 0; i < RAArr.Num(); i++) {
+		AddHeroItem(RAArr[i]);
 	}
 }
 
-void UUI_Game::AddHeroItem(FRoleProperty* rp)
+void UUI_Game::AddHeroItem(TObjectPtr<URoleAttribute> RA)
 {
 	if (ScrHero && HeroItemClass) {
 		UUI_HeroItem* item = CreateWidget<UUI_HeroItem>(this, HeroItemClass);
 		ScrHero->AddChild(item);
-		item->InitRoleProperty(rp);
+		item->InitRoleAttribute(RA);
 	}
 }
