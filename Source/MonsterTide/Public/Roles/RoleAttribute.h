@@ -22,11 +22,15 @@ public:
 	void RefreshRoleProperty();
 
 	const FRoleProperty* GetRoleProperty() const;
+	const FRoleProperty* GetBaseProperty() const;
+
 
 	bool IsDead();
 
 	void ChangeHP(float Value);
 	void ChangeMP(float Value);
+
+	void AddExp(float Exp);
 
 protected:
 	/* 实际属性 */
@@ -37,4 +41,6 @@ protected:
 	FRoleProperty* EquipRoleProperty;
 	/* BUFF属性 */
 	FRoleProperty* BUFFRoleProperty;
+
+	void LevelUp(int TargetLevel);
 };

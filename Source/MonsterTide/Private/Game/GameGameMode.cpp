@@ -37,6 +37,8 @@ void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 
 void AGameGameMode::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
 {
+	float Exp = Enemy->GetRoleProperty()->Exp;
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->AddExp(Enemy->Killer, Exp);
 	CheckVictory();
 }
 
@@ -47,10 +49,10 @@ void AGameGameMode::CheckVictory()
 	if (Num1 + Num2 == 0) {
 		auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
 		SaveMgr->SetCurLevel(LevelManager->GetCueLevel());
-		//TArray<FRoleProperty>* RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroPropertyArray();
-		//SaveMgr->SetHeroProperty(RolePropertyArr);
+		TArray<FRoleProperty> RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroBasePropertyArray();
+		SaveMgr->SetHeroProperty(&RolePropertyArr);
 		APlayerController* PC = GetWorld()->GetFirstPlayerController();
-		if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC) ) {
+		if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
 			GPC->OpenSettlementUI(true);
 		}
 		SaveMgr->SaveGameData("TestSaveData");

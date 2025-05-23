@@ -45,6 +45,26 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	Skill = Config.Skill;
 }
 
+FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel)
+{
+	if (Property->Level == TargetLevel) {
+		return Property;
+	}
+
+	for (int level = Property->Level; level <= TargetLevel; level += 1) {
+		float multiplier = level % 9 == 0 ? 2.f : 1.1f;
+		Property->MaxHP *= multiplier;
+		Property->HP *= multiplier;
+		Property->MaxMP *= multiplier;
+		Property->MP *= multiplier;
+		Property->Attack *= multiplier;
+		Property->Defense *= multiplier;
+	}
+	Property->Level = TargetLevel;
+
+	return Property;
+}
+
 FRoleProperty* GetRandomHeroProperty(ERoleType type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
@@ -83,16 +103,7 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
-			if (level > 0) {
-				rp->Level = level;
-				float m = 1 + level / 10.f;
-				rp->HP *= m;
-				rp->MaxHP *= m;
-				rp->MP *= m;
-				rp->MaxMP *= m;
-				rp->Attack *= m;
-				rp->Defense *= m;
-			}
+			GetTargetLevelProperty(rp, level);
 			return rp;
 		}
 	}

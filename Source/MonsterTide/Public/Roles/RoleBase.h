@@ -43,7 +43,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<URolePropertyComponent> RolePropertyComponent;
 
-	float OnHit(float Damage);
+	float OnHit(float Damage , TObjectPtr<ARoleBase> Source);
+	TObjectPtr<ARoleBase> Killer;
 
 	const FRoleProperty* GetRoleProperty();
 protected:

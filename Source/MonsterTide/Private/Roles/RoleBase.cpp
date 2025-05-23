@@ -43,11 +43,12 @@ bool ARoleBase::IsDead()
 	return RoleAttribute->IsDead();
 }
 
-float ARoleBase::OnHit(float Damage)
+float ARoleBase::OnHit(float Damage, TObjectPtr<ARoleBase> Source)
 {
 	// 加一个函数，把伤害变成实际伤害。
 	RoleAttribute->ChangeHP(-Damage);
 	if (IsDead()) {
+		Killer = Source;
 		Dead();
 	}
 	return Damage;

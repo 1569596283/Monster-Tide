@@ -7,6 +7,7 @@
 #include "HeroManager.generated.h"
 
 enum class ESkillType :uint8;
+struct FRoleProperty;
 class ARoleBase;
 class URoleAttribute;
 
@@ -26,6 +27,7 @@ public:
 	void InitHeroProperty();
 
 	TArray<TObjectPtr< URoleAttribute >> GetHeroAttributeArray();
+	TArray<FRoleProperty> GetHeroBasePropertyArray();
 
 	FOnSelectItemChanged OnSelectItemChanged;
 	FOnPlaceHero OnPlaceHero;
@@ -35,6 +37,8 @@ public:
 
 	/* 创建英雄在指定位置 */
 	void CreateHeroAtLocation(FVector loc);
+
+	void AddExp(TObjectPtr<ARoleBase> Killer , float Exp);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

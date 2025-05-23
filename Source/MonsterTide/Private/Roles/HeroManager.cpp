@@ -22,6 +22,16 @@ TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetHeroAttributeArray()
 	return HeroAttributeArr;
 }
 
+TArray<FRoleProperty> UHeroManager::GetHeroBasePropertyArray()
+{
+	TArray<FRoleProperty> HeroBasePropertyArray;
+	for (int i = 0; i < HeroAttributeArr.Num();i++) {
+		FRoleProperty RP = *HeroAttributeArr[i]->GetBaseProperty();
+		HeroBasePropertyArray.Push(RP);
+	}
+	return HeroBasePropertyArray;
+}
+
 void UHeroManager::SelectHeroItem(TObjectPtr< URoleAttribute > RA)
 {
 	if (RA == CurSelectRoleAttribute) {
@@ -49,6 +59,21 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 	}
 	OnPlaceHero.Broadcast(CurSelectRoleAttribute);
 	CurSelectRoleAttribute = nullptr;
+}
+
+void UHeroManager::AddExp(TObjectPtr<ARoleBase> Killer, float Exp)
+{
+	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
+		TObjectPtr< URoleAttribute > RA = HeroAttributeArr[i];
+		if (IsValid(RA) && !RA->IsDead()) {
+			if (RA->GetRoleProperty() == Killer->GetRoleProperty()) {
+				RA->AddExp(Exp);
+			}
+			else {
+				RA->AddExp(Exp * 0.3f);
+			}
+		}
+	}
 }
 
 void UHeroManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)

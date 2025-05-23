@@ -38,7 +38,7 @@ void ASkillBase::Move(float DeltaTime)
 	float Distance = DeltaTime * SkillConfig->Speed;
 	if (FVector::PointsAreNear(TargetLocation, CurLocation, Distance)) {
 		if (IsValid(TargetRole)) {
-			float damage = TargetRole->OnHit(Damage);
+			float damage = TargetRole->OnHit(Damage, UserRole);
 		}
 		Destroy();
 		return;

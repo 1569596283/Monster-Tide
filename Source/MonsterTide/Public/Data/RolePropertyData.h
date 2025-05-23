@@ -134,6 +134,8 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 	TSubclassOf<AHeroBase> HeroClass;
 };
 
+FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property ,int TargetLevel);
+
 FRoleProperty* GetRandomHeroProperty(ERoleType type);
 FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type);
 FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level = 0);
