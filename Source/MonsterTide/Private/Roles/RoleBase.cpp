@@ -37,7 +37,7 @@ void ARoleBase::RemoveRole()
 
 bool ARoleBase::IsDead()
 {
-	if (RoleAttribute== nullptr) {
+	if (RoleAttribute == nullptr) {
 		return true;
 	}
 	return RoleAttribute->IsDead();
@@ -45,7 +45,8 @@ bool ARoleBase::IsDead()
 
 float ARoleBase::OnHit(float Damage, TObjectPtr<ARoleBase> Source)
 {
-	// 加一个函数，把伤害变成实际伤害。
+	Damage = Damage - GetRoleProperty()->Defense;
+	Damage = FMath::Max(Damage * 0.01f, Damage);
 	RoleAttribute->ChangeHP(-Damage);
 	if (IsDead()) {
 		Killer = Source;

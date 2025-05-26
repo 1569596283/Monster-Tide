@@ -14,13 +14,13 @@ ASkillBase::ASkillBase()
 
 }
 
-void ASkillBase::InitSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
+void ASkillBase::InitSkill(ESkillType Type,float Damage ,TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target )
 {
 	SkillConfig = GetSkillConfig(Type);
 	TargetRole = Target;
 	TargetLocation = Target->GetActorLocation();
 	UserRole = User;
-	Damage = UserRole->GetRoleProperty()->Attack * SkillConfig->Multiple;
+	SkillDamage = Damage;
 }
 
 // Called when the game starts or when spawned
@@ -38,7 +38,7 @@ void ASkillBase::Move(float DeltaTime)
 	float Distance = DeltaTime * SkillConfig->Speed;
 	if (FVector::PointsAreNear(TargetLocation, CurLocation, Distance)) {
 		if (IsValid(TargetRole)) {
-			float damage = TargetRole->OnHit(Damage, UserRole);
+			float damage = TargetRole->OnHit(SkillDamage, UserRole);
 		}
 		Destroy();
 		return;

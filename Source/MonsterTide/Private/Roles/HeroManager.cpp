@@ -87,9 +87,9 @@ void UHeroManager::ExitBattle()
 	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
 }
 
-void UHeroManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
+void UHeroManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
 {
-	this->OnRoleUseSkill.Broadcast(Type, User, Target);
+	this->OnRoleUseSkill.Broadcast(Type, Damage, User, Target);
 }
 
 void UHeroManager::RecoverHeros()

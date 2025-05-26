@@ -13,7 +13,7 @@ void USkillManager::InitSkill()
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->OnRoleUseSkill.AddUObject(this, &USkillManager::RoleUseSkill);
 }
 
-void USkillManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
+void USkillManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
 {
 	FVector SpawnLocation = User->GetActorLocation(); // 生成位置
 	FRotator SpawnRotation(0, 0, 0);	// 生成旋转
@@ -28,6 +28,6 @@ void USkillManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TO
 	TSubclassOf<ASkillBase> SkillClass = SkillConfig->SkillClass;
 	if (SkillClass) {
 		ASkillBase* Skill = GetWorld()->SpawnActor<ASkillBase>(SkillClass, SpawnLocation, SpawnRotation);
-		Skill->InitSkill(Type, User, Target);
+		Skill->InitSkill(Type, Damage, User, Target);
 	}
 }

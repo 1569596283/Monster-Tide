@@ -66,7 +66,7 @@ void AGameGameMode::GameOver(bool Victory)
 {
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
-		GPC->OpenSettlementUI(false);
+		GPC->OpenSettlementUI(Victory);
 	}
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->ExitBattle();
 }

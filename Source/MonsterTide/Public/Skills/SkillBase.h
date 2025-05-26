@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ASkillBase();
 
-	virtual void InitSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
+	virtual void InitSkill(ESkillType Type,float Damage ,TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,7 +30,7 @@ protected:
 	FSkillConfig* SkillConfig;
 	TObjectPtr<ARoleBase> TargetRole;
 	TObjectPtr<ARoleBase> UserRole;
-	float Damage;
+	float SkillDamage;
 
 public:
 	// Called every frame

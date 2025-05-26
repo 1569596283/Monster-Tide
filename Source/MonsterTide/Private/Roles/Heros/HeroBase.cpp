@@ -64,9 +64,11 @@ float AHeroBase::UseSkill()
 			return RoleAttribute->GetRoleProperty()->SkillInterval;
 		}
 		FSkillConfig* SkillConfig = &RoleSkill.SkillConfigArray[index];
-		OnRoleUseSkill.Broadcast(SkillConfig->Type, this, TargetEnemy);
-		RoleAttribute->ChangeMP(-SkillConfig->Consume);
+		float Consume = SkillConfig->Consume;
+		RoleAttribute->ChangeMP(-Consume);
+		float Damage = Consume * GetRoleProperty()->Attack * SkillConfig->Multiple;
+		OnRoleUseSkill.Broadcast(SkillConfig->Type, Damage, this, TargetEnemy);
 		// 后面改成这个技能的释放时间和角色技能间隔的较大值
 	}
-	return RoleAttribute->GetRoleProperty()->SkillInterval;
+	return GetRoleProperty()->SkillInterval;
 }

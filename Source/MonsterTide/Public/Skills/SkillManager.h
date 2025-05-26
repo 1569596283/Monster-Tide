@@ -21,5 +21,5 @@ public:
 	void InitSkill();
 
 private:
-	void RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
+	void RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 };

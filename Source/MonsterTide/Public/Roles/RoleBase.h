@@ -21,7 +21,7 @@ struct FRoleSkill
 	TArray<FSkillConfig> SkillConfigArray = {};
 };
 
-DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnRoleUseSkill, ESkillType, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
+DECLARE_MULTICAST_DELEGATE_FourParams(FOnRoleUseSkill, ESkillType, float,TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
 
 
 UCLASS()

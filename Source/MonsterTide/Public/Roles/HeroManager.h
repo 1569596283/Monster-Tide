@@ -13,7 +13,7 @@ class URoleAttribute;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, TObjectPtr< URoleAttribute >);
-DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnRoleUseSkill, ESkillType, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
+DECLARE_MULTICAST_DELEGATE_FourParams(FOnRoleUseSkill, ESkillType, float, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
 
 /**
  *
@@ -38,7 +38,7 @@ public:
 	/* 创建英雄在指定位置 */
 	void CreateHeroAtLocation(FVector loc);
 
-	void AddExp(TObjectPtr<ARoleBase> Killer , float Exp);
+	void AddExp(TObjectPtr<ARoleBase> Killer, float Exp);
 
 	void EnterBattle();
 	void ExitBattle();
@@ -50,7 +50,7 @@ protected:
 
 	TObjectPtr< URoleAttribute > CurSelectRoleAttribute;
 
-	void RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
+	void RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 
 	UFUNCTION()
 	void RecoverHeros();
