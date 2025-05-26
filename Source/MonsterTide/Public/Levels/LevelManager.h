@@ -6,6 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "LevelManager.generated.h"
 
+enum class ELevelType :uint8;
 struct FGameEnemyConfig;
 struct FLevelConfig;
 
@@ -25,18 +26,22 @@ public:
 	void InitLevel();
 	int GetCueLevel();
 
+	ELevelType GetLevelType();
 	void GameOver();
 
 	FLevelConfig* CurLevelConfig;
 
 	int GetEnemyNumber() const;
+
+	bool HasNextLevel();
 private:
 	UPROPERTY()
 	/* 当前关卡经过的时间 */
 	float LevelTime = 0;
+	/* 当前关卡类型 */
+	ELevelType CurLevelType;
 	/* 当前关卡 */
 	int CurLevel = 1;
-
 
 	FTimerHandle TimerHandle;
 	TArray<FGameEnemyConfig> EnemyArr;

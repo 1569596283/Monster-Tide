@@ -21,8 +21,10 @@ void ULevelManager::OpenLevel(int Level)
 
 void ULevelManager::OpenNextLevel()
 {
-	//CurLevel++;
-	OpenLevel();
+	if (HasNextLevel()) {
+		CurLevel++;
+		OpenLevel();
+	}
 }
 
 void ULevelManager::InitLevel()
@@ -43,6 +45,11 @@ int ULevelManager::GetCueLevel()
 	return CurLevel;
 }
 
+ELevelType ULevelManager::GetLevelType()
+{
+	return CurLevelType;
+}
+
 void ULevelManager::GameOver()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
@@ -55,6 +62,14 @@ int ULevelManager::GetEnemyNumber() const
 		Num += cfg.Number;
 	}
 	return Num;
+}
+
+bool ULevelManager::HasNextLevel()
+{
+	FString LevelName = "GameMap_" + FString::FromInt(CurLevel + 1);
+	FString LevelPath = FString::Printf(TEXT("/Game/Maps/Classic/%s"), *LevelName);
+	// 检查关卡是否存在
+	return FPackageName::DoesPackageExist(LevelPath);
 }
 
 void ULevelManager::CreateEnemy()

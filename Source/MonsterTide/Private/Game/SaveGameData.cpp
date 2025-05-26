@@ -20,15 +20,22 @@ bool USaveGameData::AddHero(FRoleProperty* rp)
 	}
 }
 
-int USaveGameData::GetCurLevel() const
+int USaveGameData::GetLastLevel(ELevelType Type)
 {
-	return CurLevel;
+	if (LastLevelMap.Find(Type)) {
+		return *LastLevelMap.Find(Type);
+	}
+	else {
+		LastLevelMap.Add(Type, 0);
+		return 0;
+	}
 }
 
-void USaveGameData::SetCurLevl(int Level)
+
+void USaveGameData::SetLastLevl(ELevelType Type, int Level)
 {
-	if (Level > CurLevel) {
-		CurLevel = Level;
+	if (Level > *LastLevelMap.Find(Type)) {
+		LastLevelMap[Type] = Level;
 	}
 }
 

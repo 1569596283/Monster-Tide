@@ -36,9 +36,15 @@ const TArray<FRoleProperty>& USaveManager::GetHeroArray() const
 	return GameData->GetHeroArray();
 }
 
-void USaveManager::SetCurLevel(int Level)
+int USaveManager::GetLastLevel(ELevelType Type)
 {
-	GameData->SetCurLevl(Level);
+	return GameData->GetLastLevel(Type);
+}
+
+
+void USaveManager::SetLastLevel(ELevelType Type, int Level)
+{
+	GameData->SetLastLevl(Type, Level);
 }
 
 void USaveManager::SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr)

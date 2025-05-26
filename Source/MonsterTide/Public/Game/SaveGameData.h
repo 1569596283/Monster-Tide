@@ -6,6 +6,7 @@
 #include "GameFramework/SaveGame.h"
 #include "SaveGameData.generated.h"
 
+enum class ELevelType :uint8;
 struct FRoleProperty;
 /**
  *
@@ -20,8 +21,8 @@ public:
 
 	bool AddHero(FRoleProperty* rp);
 
-	int GetCurLevel() const;
-	void SetCurLevl(int Level);
+	int GetLastLevel(ELevelType Type);
+	void SetLastLevl(ELevelType Type ,int Level);
 
 	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
 
@@ -31,5 +32,5 @@ protected:
 	TArray<FRoleProperty> HeroArr;
 
 	UPROPERTY(BlueprintReadOnly)
-	int CurLevel = 0;
+	TMap<ELevelType, int> LastLevelMap;
 };

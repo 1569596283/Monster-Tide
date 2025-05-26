@@ -45,6 +45,7 @@ protected:
 	TSubclassOf<UUI_LevelItem> LevelItemClass;
 
 private:
+	ELevelType CurLevelType;
 	void SetScrollLevelByType(ELevelType Type);
 
 	TArray<UUI_LevelItem*> LevelItemArr;

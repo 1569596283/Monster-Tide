@@ -7,11 +7,11 @@
 #include "SaveManager.generated.h"
 
 
-
+enum class ELevelType :uint8;
 class USaveGameData;
 struct FRoleProperty;
 /**
- * 
+ *
  */
 UCLASS()
 class MONSTERTIDE_API USaveManager : public UGameInstanceSubsystem
@@ -27,10 +27,13 @@ public:
 
 	const TArray< FRoleProperty >& GetHeroArray() const;
 
-	void SetCurLevel(int Level);
+	int GetLastLevel(ELevelType Type);
+	void SetLastLevel(ELevelType Type, int Level);
+
 	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
-	
-private :
+
+
+private:
 	UPROPERTY()
 	TObjectPtr<USaveGameData> GameData;
 };

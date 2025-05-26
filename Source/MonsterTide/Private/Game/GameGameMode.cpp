@@ -49,7 +49,7 @@ void AGameGameMode::CheckVictory()
 	int Num2 = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->GetEnemyNumber();
 	if (Num1 + Num2 == 0) {
 		auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
-		SaveMgr->SetCurLevel(LevelManager->GetCueLevel());
+		SaveMgr->SetLastLevel(LevelManager->GetLevelType(), LevelManager->GetCueLevel());
 		TArray<FRoleProperty> RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroBasePropertyArray();
 		SaveMgr->SetHeroProperty(&RolePropertyArr);
 		GameOver(true);

@@ -7,6 +7,7 @@
 #include "Components/ScrollBox.h"
 #include "Game/MainPlayerController.h"
 #include "Data/LevelData.h"
+#include "Game/SaveManager.h"
 #include "UI/Main/UI_LevelItem.h"
 
 void UUI_SelectLevel::NativeOnInitialized()
@@ -46,6 +47,7 @@ void UUI_SelectLevel::OnBtnClassicClicked()
 
 void UUI_SelectLevel::SetScrollLevelByType(ELevelType Type)
 {
+	CurLevelType = Type;
 	TArray<FLevelConfig*>CfgArr = GetLevelConfigs(Type);
 	for (int i = 0; i < LevelItemArr.Num();i++) {
 		UUI_LevelItem* Item = LevelItemArr[i];
@@ -64,4 +66,5 @@ void UUI_SelectLevel::SetScrollLevelByType(ELevelType Type)
 			Item->InitLevelConfig(CfgArr[i]);
 		}
 	}
+	//int LastLevel = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->GetLastLevel(CurLevelType);
 }

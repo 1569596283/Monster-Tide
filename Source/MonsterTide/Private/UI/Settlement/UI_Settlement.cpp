@@ -29,7 +29,7 @@ void UUI_Settlement::InitResult(bool Victory)
 	CP_TittleVictory->SetVisibility(Victory ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
 	CP_TittleDefeat->SetVisibility(Victory ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
 	// 需要补充是否存在下一关的情况
-	if (Victory ) {
+	if (Victory && GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->HasNextLevel()) {
 		SB_Next->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 	else {
