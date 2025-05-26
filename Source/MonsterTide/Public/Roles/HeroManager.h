@@ -40,6 +40,10 @@ public:
 
 	void AddExp(TObjectPtr<ARoleBase> Killer , float Exp);
 
+	void EnterBattle();
+	void ExitBattle();
+	FTimerHandle BattleTimerHandle = FTimerHandle();
+
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	TArray <TObjectPtr< URoleAttribute >> HeroAttributeArr;
@@ -47,4 +51,9 @@ protected:
 	TObjectPtr< URoleAttribute > CurSelectRoleAttribute;
 
 	void RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
+
+	UFUNCTION()
+	void RecoverHeros();
+	UPROPERTY()
+	float RecoverTime = 0.1f;
 };

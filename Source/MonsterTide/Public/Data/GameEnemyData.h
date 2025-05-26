@@ -7,7 +7,7 @@
 
 enum class ERoleType : uint8;
 
-/* 角色属性配置 */
+/* 游戏中怪物属性配置 */
 USTRUCT(BlueprintType)
 struct FGameEnemyConfig :public FTableRowBase
 {

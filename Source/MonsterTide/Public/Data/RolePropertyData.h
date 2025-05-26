@@ -122,6 +122,9 @@ struct FEnemyPropertyConfig :public FRolePropertyConfig
 
 	UPROPERTY(EditDefaultsOnly)
 	int Damage = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+	float BaseExp= 5;
 };
 
 /* ”¢–€ Ù–‘≈‰÷√ */

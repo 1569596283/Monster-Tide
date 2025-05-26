@@ -25,7 +25,7 @@ TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetHeroAttributeArray()
 TArray<FRoleProperty> UHeroManager::GetHeroBasePropertyArray()
 {
 	TArray<FRoleProperty> HeroBasePropertyArray;
-	for (int i = 0; i < HeroAttributeArr.Num();i++) {
+	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
 		FRoleProperty RP = *HeroAttributeArr[i]->GetBaseProperty();
 		HeroBasePropertyArray.Push(RP);
 	}
@@ -76,7 +76,25 @@ void UHeroManager::AddExp(TObjectPtr<ARoleBase> Killer, float Exp)
 	}
 }
 
+void UHeroManager::EnterBattle()
+{
+	RecoverTime = 0.1f;
+	GetWorld()->GetTimerManager().SetTimer(BattleTimerHandle, this, &UHeroManager::RecoverHeros, RecoverTime, true);
+}
+
+void UHeroManager::ExitBattle()
+{
+	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
+}
+
 void UHeroManager::RoleUseSkill(ESkillType Type, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
 {
 	this->OnRoleUseSkill.Broadcast(Type, User, Target);
+}
+
+void UHeroManager::RecoverHeros()
+{
+	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
+		HeroAttributeArr[i]->RecoveryProperty(RecoverTime);
+	}
 }

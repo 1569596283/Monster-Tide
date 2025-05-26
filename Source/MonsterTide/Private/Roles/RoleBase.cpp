@@ -26,7 +26,7 @@ void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
 	}
 	RolePropertyComponent = GetComponentByClass<URolePropertyComponent>();
 	if (RolePropertyComponent) {
-		RolePropertyComponent->InitProperty(RoleProperty);
+		RolePropertyComponent->InitProperty(RA);
 	}
 }
 
@@ -56,7 +56,7 @@ float ARoleBase::OnHit(float Damage, TObjectPtr<ARoleBase> Source)
 
 const FRoleProperty* ARoleBase::GetRoleProperty()
 {
-	return RolePropertyComponent->GetRoleProperty();
+	return RoleAttribute->GetRoleProperty();
 }
 
 // Called when the game starts or when spawned
@@ -72,7 +72,7 @@ TArray<TObjectPtr<AActor>> ARoleBase::GetTargetWithinRange(ECollisionChannel Cha
 
 	FVector StartLocation = GetActorLocation(); // 设置起点
 	FVector EndLocation = GetActorLocation();   // 设置终点
-	float SphereRadius = RolePropertyComponent->GetRoleProperty()->Range;  // 球体半径
+	float SphereRadius = RoleAttribute->GetRoleProperty()->Range;  // 球体半径
 
 	// 设置要检测的Object类型
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
@@ -125,7 +125,7 @@ void ARoleBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float ARoleBase::UseSkill()
 {
-	return  RolePropertyComponent->GetRoleProperty()->SkillInterval;
+	return  RoleAttribute->GetRoleProperty()->SkillInterval;
 }
 
 int ARoleBase::GetNextSkill()
@@ -134,7 +134,7 @@ int ARoleBase::GetNextSkill()
 	int i = 0;
 	while (i < RoleSkill.SkillCD.Num()) {
 		if (RoleSkill.SkillCD[RoleSkill.NextSkill] == 0 &&
-			RolePropertyComponent->GetRoleProperty()->MP >= RoleSkill.SkillConfigArray[RoleSkill.NextSkill].Consume) {
+			RoleAttribute->GetRoleProperty()->MP >= RoleSkill.SkillConfigArray[RoleSkill.NextSkill].Consume) {
 			index = RoleSkill.NextSkill;
 		}
 		RoleSkill.NextSkill = (RoleSkill.NextSkill + 1) % RoleSkill.SkillCD.Num();
@@ -171,5 +171,4 @@ void ARoleBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	SkillTiming(DeltaTime);
-	RolePropertyComponent->RecoveryProperty(DeltaTime);
 }

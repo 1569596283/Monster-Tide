@@ -31,4 +31,5 @@ private :
 
 	void CheckVictory();
 	void Defeat();
+	void GameOver(bool Victory);
 };

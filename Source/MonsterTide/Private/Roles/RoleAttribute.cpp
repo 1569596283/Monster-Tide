@@ -16,15 +16,19 @@ void URoleAttribute::RefreshRoleProperty()
 		RoleProperty = new FRoleProperty(*BaseRoleProperty);
 	}
 	else {
+		RoleProperty->Level = BaseRoleProperty->Level;
 		float HPPercent = RoleProperty->HP / RoleProperty->MaxHP;
 		float MPPercent = RoleProperty->MP / RoleProperty->MaxMP;
 		RoleProperty->MaxHP = BaseRoleProperty->MaxHP;
 		RoleProperty->HP = RoleProperty->MaxHP * HPPercent;
+		RoleProperty->RecoveryHP = BaseRoleProperty->RecoveryHP;
 		RoleProperty->MaxMP = BaseRoleProperty->MaxMP;
 		RoleProperty->MP = RoleProperty->MaxMP * MPPercent;
+		RoleProperty->RecoveryMP = BaseRoleProperty->RecoveryMP;
 		RoleProperty->Attack = BaseRoleProperty->Attack;
 		RoleProperty->Defense = BaseRoleProperty->Defense;
 	}
+	OnRolePropertyChanged.ExecuteIfBound();
 }
 
 const FRoleProperty* URoleAttribute::GetRoleProperty() const
@@ -45,11 +49,13 @@ bool URoleAttribute::IsDead()
 void URoleAttribute::ChangeHP(float Value)
 {
 	RoleProperty->HP = FMath::Clamp(RoleProperty->HP + Value, 0, RoleProperty->MaxHP);
+	OnRoleHPChanged.ExecuteIfBound();
 }
 
 void URoleAttribute::ChangeMP(float Value)
 {
 	RoleProperty->MP = FMath::Clamp(RoleProperty->MP + Value, 0, RoleProperty->MaxMP);
+	OnRoleMPChanged.ExecuteIfBound();
 }
 
 void URoleAttribute::AddExp(float Exp)
@@ -65,6 +71,12 @@ void URoleAttribute::AddExp(float Exp)
 	if (Up) {
 		RefreshRoleProperty();
 	}
+}
+
+void URoleAttribute::RecoveryProperty(float Time)
+{
+	ChangeHP(Time * RoleProperty->RecoveryHP);
+	ChangeMP(Time * RoleProperty->RecoveryMP);
 }
 
 void URoleAttribute::LevelUp(int TargetLevel)

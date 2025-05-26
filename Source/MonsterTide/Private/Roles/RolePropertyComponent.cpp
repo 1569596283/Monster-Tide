@@ -2,14 +2,19 @@
 
 
 #include "Roles/RolePropertyComponent.h"
+#include "Roles/RoleAttribute.h"
 #include "UI/Game/UI_RoleProperty.h"
 #include "Data/RolePropertyData.h"
 
-bool URolePropertyComponent::InitProperty(const FRoleProperty* rp)
+bool URolePropertyComponent::InitProperty(const TObjectPtr<URoleAttribute> RA)
 {
-	RoleProperty = rp;
+
+	RoleProperty = RA->GetRoleProperty();
 	UMG_RoleProperty = Cast<UUI_RoleProperty>(GetWidget());
 	RefreshProperty();
+	RA->OnRolePropertyChanged.BindDynamic(this, &URolePropertyComponent::RefreshProperty);
+	RA->OnRoleHPChanged.BindDynamic(this, &URolePropertyComponent::RefreshHP);
+	RA->OnRoleMPChanged.BindDynamic(this, &URolePropertyComponent::RefreshMP);
 	return true;
 }
 
@@ -20,27 +25,12 @@ void URolePropertyComponent::RefreshProperty()
 	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
 }
 
-const FRoleProperty* URolePropertyComponent::GetRoleProperty()
+void URolePropertyComponent::RefreshHP()
 {
-	return RoleProperty;
-}
-
-float URolePropertyComponent::ChangeHP(float Value)
-{
-	//RoleProperty->HP = FMath::Clamp(RoleProperty->HP + Value, 0.f, RoleProperty->MaxHP);
 	UMG_RoleProperty->SetHP(RoleProperty->HP / RoleProperty->MaxHP);
-	return RoleProperty->HP;
 }
 
-float URolePropertyComponent::ChangeMP(float Value)
+void URolePropertyComponent::RefreshMP()
 {
-	//RoleProperty->MP = FMath::Clamp(RoleProperty->MP + Value, 0.f, RoleProperty->MaxMP);
 	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
-	return RoleProperty->MP;
-}
-
-void URolePropertyComponent::RecoveryProperty(float DeltaTime)
-{
-	ChangeHP(DeltaTime * RoleProperty->RecoveryHP);
-	ChangeMP(DeltaTime * RoleProperty->RecoveryMP);
 }

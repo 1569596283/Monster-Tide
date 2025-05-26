@@ -22,6 +22,7 @@ void AGameGameMode::BeginPlay()
 	EnemyMgr->EnemyArrived.AddUObject(this, &AGameGameMode::OnEnemyArrived);
 	EnemyMgr->EnemyDead.AddUObject(this, &AGameGameMode::OnEnemyDead);
 	GetWorld()->GetGameInstance()->GetSubsystem<USkillManager>()->InitSkill();
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->EnterBattle();
 }
 
 void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
@@ -51,18 +52,21 @@ void AGameGameMode::CheckVictory()
 		SaveMgr->SetCurLevel(LevelManager->GetCueLevel());
 		TArray<FRoleProperty> RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroBasePropertyArray();
 		SaveMgr->SetHeroProperty(&RolePropertyArr);
-		APlayerController* PC = GetWorld()->GetFirstPlayerController();
-		if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
-			GPC->OpenSettlementUI(true);
-		}
+		GameOver(true);
 		SaveMgr->SaveGameData("TestSaveData");
 	}
 }
 
 void AGameGameMode::Defeat()
 {
+	GameOver(false);
+}
+
+void AGameGameMode::GameOver(bool Victory)
+{
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
 		GPC->OpenSettlementUI(false);
 	}
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->ExitBattle();
 }

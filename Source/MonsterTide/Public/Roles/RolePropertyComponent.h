@@ -8,6 +8,7 @@
 
 struct FRoleProperty;
 class UUI_RoleProperty;
+class URoleAttribute;
 
 /**
  *
@@ -17,17 +18,17 @@ class MONSTERTIDE_API URolePropertyComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
 public:
-	bool InitProperty(const FRoleProperty* rp);
+	bool InitProperty(const TObjectPtr<URoleAttribute> RA);
+
+	UFUNCTION()
 	void RefreshProperty();
 
 	TObjectPtr<UUI_RoleProperty> UMG_RoleProperty;
 
-	const FRoleProperty* GetRoleProperty();
-
-	float ChangeHP(float Value);
-	float ChangeMP(float Value);
-
-	void RecoveryProperty(float DeltaTime);
+	UFUNCTION()
+	void RefreshHP();
+	UFUNCTION()
+	void RefreshMP();
 
 protected:
 	const FRoleProperty* RoleProperty;

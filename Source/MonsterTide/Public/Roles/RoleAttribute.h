@@ -8,6 +8,11 @@
 
 struct FRoleProperty;
 
+DECLARE_DYNAMIC_DELEGATE(FOnRolePropertyChanged);
+DECLARE_DYNAMIC_DELEGATE(FOnRoleHPChanged);
+DECLARE_DYNAMIC_DELEGATE(FOnRoleMPChanged);
+
+
 /**
  * 
  */
@@ -19,18 +24,22 @@ class MONSTERTIDE_API URoleAttribute : public UObject
 public:
 	void SetBaseProperty(const FRoleProperty& RP);
 
+	FOnRolePropertyChanged OnRolePropertyChanged;
 	void RefreshRoleProperty();
 
 	const FRoleProperty* GetRoleProperty() const;
 	const FRoleProperty* GetBaseProperty() const;
 
-
 	bool IsDead();
 
+	FOnRoleHPChanged OnRoleHPChanged;
 	void ChangeHP(float Value);
+	FOnRoleMPChanged OnRoleMPChanged;
 	void ChangeMP(float Value);
 
 	void AddExp(float Exp);
+
+	void RecoveryProperty(float Time);
 
 protected:
 	/*  µº  Ù–‘ */

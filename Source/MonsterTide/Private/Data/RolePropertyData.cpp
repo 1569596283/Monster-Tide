@@ -103,6 +103,7 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
+			rp->Exp = EnemyPropertyConfig->BaseExp * (1 + level / 10);
 			GetTargetLevelProperty(rp, level);
 			return rp;
 		}
