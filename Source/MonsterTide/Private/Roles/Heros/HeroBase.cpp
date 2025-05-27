@@ -4,6 +4,7 @@
 #include "Roles/Heros/HeroBase.h"
 #include "Roles/Enemys/EnemyBase.h"
 #include "Roles/RoleAttribute.h"
+#include "Roles/RoleAnimInstance.h"
 #include "Data/RolePropertyData.h"
 #include "Components/CapsuleComponent.h"
 #include "Data/SkillData.h"
@@ -67,7 +68,17 @@ float AHeroBase::UseSkill()
 		float Consume = SkillConfig->Consume;
 		RoleAttribute->ChangeMP(-Consume);
 		float Damage = Consume * GetRoleProperty()->Attack * SkillConfig->Multiple;
-		OnRoleUseSkill.Broadcast(SkillConfig->Type, Damage, this, TargetEnemy);
+		float Time = RoleAnimInstance->PlayAttackAnimation();
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(
+			TimerHandle,
+			[this, SkillConfig, Damage, TargetEnemy]()
+			{
+				OnRoleUseSkill.Broadcast(SkillConfig->Type, Damage, this, TargetEnemy);
+			},
+			Time / 2,
+			false
+		);
 		// 后面改成这个技能的释放时间和角色技能间隔的较大值
 	}
 	return GetRoleProperty()->SkillInterval;

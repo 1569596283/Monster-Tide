@@ -4,6 +4,7 @@
 #include "Roles/RoleBase.h"
 #include "Roles/RolePropertyComponent.h"
 #include "Roles/RoleAttribute.h"
+#include "Roles/RoleAnimInstance.h"
 #include "Data/RolePropertyData.h"
 #include "Data/SkillData.h"
 #include <Kismet/KismetSystemLibrary.h>
@@ -14,6 +15,7 @@ ARoleBase::ARoleBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	// ªÒ»° AnimInstance
 }
 
 void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
@@ -64,6 +66,9 @@ const FRoleProperty* ARoleBase::GetRoleProperty()
 void ARoleBase::BeginPlay()
 {
 	Super::BeginPlay();
+	USkeletalMeshComponent* SkeletalMesh = GetMesh();
+	UAnimInstance* AnimInstance = SkeletalMesh->GetAnimInstance();
+	RoleAnimInstance = Cast<URoleAnimInstance>(AnimInstance);
 }
 
 TArray<TObjectPtr<AActor>> ARoleBase::GetTargetWithinRange(ECollisionChannel Channel)

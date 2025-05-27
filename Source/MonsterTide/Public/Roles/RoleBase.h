@@ -7,10 +7,12 @@
 #include "RoleBase.generated.h"
 
 enum class ESkillType : uint8;
+enum class ERoleAnimState : uint8;
 struct FRoleProperty;
 struct FSkillConfig;
 class URolePropertyComponent;
 class URoleAttribute;
+class URoleAnimInstance;
 
 struct FRoleSkill
 {
@@ -61,8 +63,11 @@ protected:
 
 	virtual void Dead();
 
+	TObjectPtr<URoleAnimInstance> RoleAnimInstance;
+
 private:
 	void SkillTiming(float DeltaTime);
+
 
 public:	
 	virtual void Tick(float DeltaTime) override;

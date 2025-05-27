@@ -15,6 +15,9 @@ void USkillManager::InitSkill()
 
 void USkillManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
 {
+	if (!User || User->IsDead() || !Target) {
+		return;
+	}
 	FVector SpawnLocation = User->GetActorLocation(); // 生成位置
 	FRotator SpawnRotation(0, 0, 0);	// 生成旋转
 	FVector Direction = Target->GetActorLocation() - User->GetActorLocation();
