@@ -54,6 +54,7 @@ void AEnemyBase::Move(float DeltaTime)
 	Distance += DeltaTime * 100;
 	FVector LocationAtDistance = SplineComponent->GetLocationAtDistanceAlongSpline(Distance, ESplineCoordinateSpace::World);
 	FRotator RotationAtDistance = SplineComponent->GetRotationAtDistanceAlongSpline(Distance, ESplineCoordinateSpace::World);
+	LocationAtDistance.Z = GetActorLocation().Z;
 	SetActorLocation(LocationAtDistance);
 	SetActorRotation(RotationAtDistance);
 	if (Distance > SplineComponent->GetSplineLength()) {

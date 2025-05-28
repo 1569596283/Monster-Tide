@@ -52,8 +52,12 @@ void AGameGameMode::CheckVictory()
 		SaveMgr->SetLastLevel(LevelManager->GetLevelType(), LevelManager->GetCueLevel());
 		TArray<FRoleProperty> RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroBasePropertyArray();
 		SaveMgr->SetHeroProperty(&RolePropertyArr);
-		GameOver(true);
 		SaveMgr->SaveGameData("TestSaveData");
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle,
+			[this]() {
+				GameOver(true);
+			}, 3.f, false);
 	}
 }
 

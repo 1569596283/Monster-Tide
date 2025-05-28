@@ -12,6 +12,15 @@ float URoleAnimInstance::PlayAttackAnimation()
 	return 0.f;
 }
 
+float URoleAnimInstance::PlayDeadAnimation()
+{
+	if (DeadMontage)
+	{
+		return Montage_Play(DeadMontage);
+	}
+	return 0.f;
+}
+
 void URoleAnimInstance::SetState(ERoleAnimState State)
 {
 	RoleAnimState = State;

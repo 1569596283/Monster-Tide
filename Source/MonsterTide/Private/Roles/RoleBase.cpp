@@ -15,7 +15,6 @@ ARoleBase::ARoleBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// ªÒ»° AnimInstance
 }
 
 void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
@@ -154,7 +153,18 @@ int ARoleBase::GetNextSkill()
 
 void ARoleBase::Dead()
 {
-	RemoveRole();
+	PrimaryActorTick.SetTickFunctionEnable(false);
+	float Time = RoleAnimInstance->PlayDeadAnimation();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(
+		TimerHandle,
+		[this]()
+		{
+			RemoveRole();
+		},
+		Time,
+		false
+	);
 }
 
 void ARoleBase::SkillTiming(float DeltaTime)

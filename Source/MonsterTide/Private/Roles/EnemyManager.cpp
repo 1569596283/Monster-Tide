@@ -44,7 +44,7 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 	FEnemyPropertyConfig* EnemyPropertyConfig = GetEnemyPropertyConfig(EnemyConfig.Type);
 	TSubclassOf<AEnemyBase> RoleClass = EnemyPropertyConfig->EnemyClass;
 	if (RoleClass) {
-		FVector SpawnLocation(0, 0, 0); // 生成位置
+		FVector SpawnLocation(0, 0, 88); // 生成位置
 		FRotator SpawnRotation(0, 0, 0);  // 生成旋转
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;

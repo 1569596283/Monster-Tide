@@ -26,6 +26,7 @@ class MONSTERTIDE_API URoleAnimInstance : public UAnimInstance
 
 public:
 	float PlayAttackAnimation();
+	float PlayDeadAnimation();
 
 	void SetState(ERoleAnimState State);
 
@@ -35,6 +36,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	TObjectPtr<UAnimMontage> AttackMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	TObjectPtr<UAnimMontage> DeadMontage;
 
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
