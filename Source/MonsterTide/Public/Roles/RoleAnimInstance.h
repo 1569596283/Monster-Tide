@@ -8,6 +8,7 @@
 
 class UAnimSequence;
 class UAnimMontage;
+class UBlendSpace;
 
 UENUM(BlueprintType)
 enum class ERoleAnimState :uint8 {
@@ -28,15 +29,9 @@ public:
 
 	void SetState(ERoleAnimState State);
 
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+	float Speed = 0.f;
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-	TObjectPtr< UAnimSequence > IdleAnimation;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-	TObjectPtr< UAnimSequence > WalkAnimation;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-	TObjectPtr< UAnimSequence > RunAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	TObjectPtr<UAnimMontage> AttackMontage;

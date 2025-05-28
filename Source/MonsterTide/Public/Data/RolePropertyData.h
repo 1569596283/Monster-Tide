@@ -61,6 +61,9 @@ struct FRoleProperty
 	float Defense = 0.f;
 
 	UPROPERTY(EditDefaultsOnly)
+	float Speed = 100.f;
+
+	UPROPERTY(EditDefaultsOnly)
 	float Range = 500.f;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -99,6 +102,8 @@ struct FRolePropertyConfig :public FTableRowBase
 	float MinDefense = 0.f;
 	UPROPERTY(EditDefaultsOnly)
 	float MaxDefense = 0.f;
+	UPROPERTY(EditDefaultsOnly)
+	float Speed = 100.f;
 	UPROPERTY(EditDefaultsOnly)
 	float Range = 500.f;
 	UPROPERTY(EditDefaultsOnly)

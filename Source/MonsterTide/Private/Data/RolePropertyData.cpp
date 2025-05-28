@@ -22,6 +22,7 @@ FRoleProperty::FRoleProperty(const FRoleProperty& Other)
 	RecoveryMP = Other.RecoveryMP;
 	Attack = Other.Attack;
 	Defense = Other.Defense;
+	Speed = Other.Speed;
 	Range = Other.Range;
 	SkillInterval = Other.SkillInterval;
 	Skill = Other.Skill;
@@ -40,6 +41,7 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	RecoveryMP = Config.RecoveryMP;
 	Attack = FMath::RandRange(Config.MinAttack, Config.MaxAttack);
 	Defense = FMath::RandRange(Config.MinDefense, Config.MaxDefense);
+	Speed = Config.Speed;
 	Range = Config.Range;
 	SkillInterval = Config.SkillInterval;
 	Skill = Config.Skill;

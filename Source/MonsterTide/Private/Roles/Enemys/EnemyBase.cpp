@@ -2,6 +2,7 @@
 
 
 #include "Roles/Enemys/EnemyBase.h"
+#include "Roles/RoleAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SplineComponent.h"
 #include "Components/CapsuleComponent.h"

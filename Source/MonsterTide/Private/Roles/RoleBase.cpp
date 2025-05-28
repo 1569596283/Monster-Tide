@@ -30,6 +30,7 @@ void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
 	if (RolePropertyComponent) {
 		RolePropertyComponent->InitProperty(RA);
 	}
+	RoleAnimInstance->Speed = RoleProperty->Speed;
 }
 
 void ARoleBase::RemoveRole()
