@@ -9,7 +9,11 @@
 /* 技能类型 */
 UENUM(BlueprintType)
 enum class ESkillType :uint8 {
-	Skill	UMETA(DisplayName = "Skill"),
+	SkillBase	UMETA(DisplayName = "SkillBase"),
+	Skill_1	UMETA(DisplayName = "Skill_1"),
+	Skill_2	UMETA(DisplayName = "Skill_2"),
+	Skill_3	UMETA(DisplayName = "Skill_3"),
+	Skill_4	UMETA(DisplayName = "Skill_4"),
 };
 
 
@@ -20,7 +24,7 @@ struct FSkillConfig :public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	ESkillType Type = ESkillType::Skill;
+	ESkillType Type = ESkillType::SkillBase;
 
 	UPROPERTY(EditDefaultsOnly)
 	float Multiple = 1.f;

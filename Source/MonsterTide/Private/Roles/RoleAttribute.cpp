@@ -79,6 +79,12 @@ void URoleAttribute::RecoveryProperty(float Time)
 	ChangeMP(Time * RoleProperty->RecoveryMP);
 }
 
+void URoleAttribute::RecoveryAllStatuses()
+{
+	RoleProperty->HP = RoleProperty->MaxHP;
+	RoleProperty->MP = RoleProperty->MaxMP;
+}
+
 void URoleAttribute::LevelUp(int TargetLevel)
 {
 	GetTargetLevelProperty(BaseRoleProperty, TargetLevel);

@@ -52,6 +52,8 @@ protected:
 
 	void RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 
+	void RecoverHerosAllStatuses();
+
 	UFUNCTION()
 	void RecoverHeros();
 	UPROPERTY()

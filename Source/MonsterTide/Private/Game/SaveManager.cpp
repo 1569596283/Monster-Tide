@@ -15,10 +15,14 @@ void USaveManager::SaveGameData(FString Name)
 void USaveManager::InitSaveData()
 {
 	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
-	for (int i = 0; i < 4; i++) {
-		FRoleProperty* rp = GetRandomHeroProperty(ERoleType::Hero);
-		GameData->AddHero(rp);
-	}
+	FRoleProperty* rp_1 = GetRandomHeroProperty(ERoleType::Hero_1);
+	GameData->AddHero(rp_1);
+	FRoleProperty* rp_2 = GetRandomHeroProperty(ERoleType::Hero_2);
+	GameData->AddHero(rp_2);
+	FRoleProperty* rp_3 = GetRandomHeroProperty(ERoleType::Hero_3);
+	GameData->AddHero(rp_3);
+	FRoleProperty* rp_4 = GetRandomHeroProperty(ERoleType::Hero_4);
+	GameData->AddHero(rp_4);
 }
 
 bool USaveManager::ReadSaveData(FString Name)

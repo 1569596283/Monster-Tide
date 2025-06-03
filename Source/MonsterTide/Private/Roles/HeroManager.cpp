@@ -85,11 +85,19 @@ void UHeroManager::EnterBattle()
 void UHeroManager::ExitBattle()
 {
 	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
+	RecoverHerosAllStatuses();
 }
 
 void UHeroManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)
 {
 	this->OnRoleUseSkill.Broadcast(Type, Damage, User, Target);
+}
+
+void UHeroManager::RecoverHerosAllStatuses()
+{
+	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
+		HeroAttributeArr[i]->RecoveryAllStatuses();
+	}
 }
 
 void UHeroManager::RecoverHeros()

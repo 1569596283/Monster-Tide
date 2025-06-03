@@ -11,8 +11,15 @@ enum class ESkillType :uint8;
 UENUM(BlueprintType)
 enum class ERoleType :uint8 {
 	Role	UMETA(DisplayName = "Role"),
-	Hero	UMETA(DisplayName = "Hero"),
-	Enemy	UMETA(DisplayName = "Enemy")
+	Hero_1	UMETA(DisplayName = "Hero_1"),
+	Hero_2	UMETA(DisplayName = "Hero_2"),
+	Hero_3	UMETA(DisplayName = "Hero_3"),
+	Hero_4	UMETA(DisplayName = "Hero_4"),
+	Enemy_1	UMETA(DisplayName = "Enemy_1"),
+	Enemy_2	UMETA(DisplayName = "Enemy_2"),
+	Enemy_3	UMETA(DisplayName = "Enemy_3"),
+	Enemy_4	UMETA(DisplayName = "Enemy_4"),
+	Enemy_5	UMETA(DisplayName = "Enemy_5")
 };
 
 /* ½ÇÉ«ÊôÐÔ */

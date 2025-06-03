@@ -21,21 +21,27 @@ void UUI_SelectLevel::NativeOnInitialized()
 	}
 	CP_Level->SetVisibility(ESlateVisibility::Collapsed);
 	CP_Mode->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	OnBtnClassicClicked();
 }
 
 void UUI_SelectLevel::OnBtnReturnClicked()
 {
-	if (CP_Level->IsVisible() ) {
-		CP_Level->SetVisibility(ESlateVisibility::Collapsed);
-		CP_Mode->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	APlayerController* PC = GetOwningPlayer();
+	if (!PC) return;
+	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
+		MainPC->CloseLevelUMG();
 	}
-	else {
-		APlayerController* PC = GetOwningPlayer();
-		if (!PC) return;
-		if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC) ){
-			MainPC->CloseLevelUMG();
-		}
-	}
+	//if (CP_Level->IsVisible()) {
+	//	CP_Level->SetVisibility(ESlateVisibility::Collapsed);
+	//	CP_Mode->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	//}
+	//else {
+	//	APlayerController* PC = GetOwningPlayer();
+	//	if (!PC) return;
+	//	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
+	//		MainPC->CloseLevelUMG();
+	//	}
+	//}
 }
 
 void UUI_SelectLevel::OnBtnClassicClicked()

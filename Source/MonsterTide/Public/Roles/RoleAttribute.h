@@ -40,6 +40,7 @@ public:
 	void AddExp(float Exp);
 
 	void RecoveryProperty(float Time);
+	void RecoveryAllStatuses();
 
 protected:
 	/*  µº  Ù–‘ */
