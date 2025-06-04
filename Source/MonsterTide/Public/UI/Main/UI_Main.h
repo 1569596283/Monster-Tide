@@ -24,8 +24,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Play;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UButton> Btn_Hero;
 
 	UFUNCTION()
 	void OnBtnPlayClicked();
+	UFUNCTION()
+	void OnBtnHeroClicked();
 
 };

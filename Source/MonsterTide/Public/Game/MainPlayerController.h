@@ -9,6 +9,7 @@
 
 class UUI_Main;
 class UUI_SelectLevel;
+class UUI_Hero;
 
 /**
  * 
@@ -23,6 +24,8 @@ public:
 	
 	void OpenLevelUMG();
 	void CloseLevelUMG();
+	void OpenHeroUMG();
+	void CloseHeroUMG();
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -34,4 +37,8 @@ protected:
 	TSubclassOf<UUI_SelectLevel> UI_SelectLevelClass;
 	UPROPERTY()
 	TObjectPtr<UUI_SelectLevel> UI_SelectLevel;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUI_Hero> UI_HeroClass;
+	UPROPERTY()
+	TObjectPtr<UUI_Hero> UI_Hero;
 };

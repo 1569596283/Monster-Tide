@@ -4,6 +4,7 @@
 #include "Game/MainPlayerController.h"
 #include "UI/Main/UI_Main.h"
 #include "UI/Main/UI_SelectLevel.h"
+#include "UI/Main/UI_Hero.h"
 
 void AMainPlayerController::BeginPlay()
 {
@@ -29,4 +30,20 @@ void AMainPlayerController::CloseLevelUMG()
 	UI_SelectLevel->RemoveFromParent();
 	UI_Main->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	UI_SelectLevel = nullptr;
+}
+
+void AMainPlayerController::OpenHeroUMG()
+{
+	if (UI_HeroClass != nullptr) {
+		UI_Main->SetVisibility(ESlateVisibility::Collapsed);
+		UI_Hero = CreateWidget<UUI_Hero>(this, UI_HeroClass);
+		UI_Hero->AddToViewport();
+	}
+}
+
+void AMainPlayerController::CloseHeroUMG()
+{
+	UI_Hero->RemoveFromParent();
+	UI_Main->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	UI_Hero = nullptr;
 }

@@ -12,6 +12,9 @@ void UUI_Main::NativeOnInitialized()
 	if (Btn_Play != nullptr) {
 		Btn_Play->OnClicked.AddDynamic(this, &UUI_Main::OnBtnPlayClicked);
 	}
+	if (Btn_Hero != nullptr) {
+		Btn_Hero->OnClicked.AddDynamic(this, &UUI_Main::OnBtnHeroClicked);
+	}
 }
 
 void UUI_Main::OnBtnPlayClicked()
@@ -20,5 +23,14 @@ void UUI_Main::OnBtnPlayClicked()
 	if (!PC) return;
 	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
 		MainPC->OpenLevelUMG();
+	}
+}
+
+void UUI_Main::OnBtnHeroClicked()
+{
+	APlayerController* PC = GetOwningPlayer();
+	if (!PC) return;
+	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
+		MainPC->OpenHeroUMG();
 	}
 }
