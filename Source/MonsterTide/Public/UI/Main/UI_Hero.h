@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "UI_Hero.generated.h"
 
-
+enum class ERoleType : uint8;
 class UButton;
 class UTextBlock;
 class UImage;
@@ -57,10 +57,13 @@ protected:
 	UFUNCTION()
 	void OnBtnReturnClicked();
 
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<ACharacter> HeroModel;
 
 private:
 	void ShowHeros();
 
 	void RefreshHeroInfo(TObjectPtr<URoleAttribute> Attribute);
 
+	void RefreshHeroModel(ERoleType Type);
 };

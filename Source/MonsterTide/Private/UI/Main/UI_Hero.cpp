@@ -10,6 +10,8 @@
 #include "Roles/HeroManager.h"
 #include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
+#include "GameFramework/Character.h"
+#include <Kismet/GameplayStatics.h>
 
 
 void UUI_Hero::NativeOnInitialized()
@@ -64,5 +66,28 @@ void UUI_Hero::RefreshHeroInfo(TObjectPtr<URoleAttribute> Attribute)
 	for (int i = 0; i < HeroIconArr.Num(); i++) {
 		TObjectPtr<UUI_HeroIcon> Icon = HeroIconArr[i];
 		Icon->SetState(Attribute == Icon->RoleAttribute);
+	}
+	RefreshHeroModel(BaseProperty->Type);
+}
+
+void UUI_Hero::RefreshHeroModel(ERoleType Type)
+{
+	if (!HeroModel) {
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), FoundActors);
+		// 遍历并处理每个Character
+		for (AActor* Actor : FoundActors)
+		{
+			if (Actor->GetActorLabel() == "HeroModel")
+			{
+				HeroModel = Cast<ACharacter>(Actor);
+			}
+		}
+	}
+	USkeletalMeshComponent* MeshComp = HeroModel->GetMesh();
+	TObjectPtr<USkeletalMesh> SkeletalMesh = GetHeroSkeletalMesh(Type);
+	if (MeshComp && SkeletalMesh)
+	{
+		MeshComp->SetSkeletalMesh(SkeletalMesh);
 	}
 }

@@ -117,6 +117,8 @@ struct FRolePropertyConfig :public FTableRowBase
 	float SkillInterval = 1.f;
 	UPROPERTY(EditDefaultsOnly)
 	TArray<ESkillType> Skill = {};
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr< USkeletalMesh >SkeletalMesh;
 };
 
 class AEnemyBase;
@@ -136,7 +138,7 @@ struct FEnemyPropertyConfig :public FRolePropertyConfig
 	int Damage = 1;
 
 	UPROPERTY(EditDefaultsOnly)
-	float BaseExp= 5;
+	float BaseExp = 5;
 };
 
 /* ”¢–€ Ù–‘≈‰÷√ */
@@ -149,9 +151,10 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 	TSubclassOf<AHeroBase> HeroClass;
 };
 
-FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property ,int TargetLevel);
+FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel);
+TObjectPtr< USkeletalMesh >GetHeroSkeletalMesh(ERoleType Type);
 
-FRoleProperty* GetRandomHeroProperty(ERoleType type);
-FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type);
-FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level = 0);
-FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType type);
+FRoleProperty* GetRandomHeroProperty(ERoleType Type);
+FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType Type);
+FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level = 0);
+FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType Type);

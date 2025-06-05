@@ -67,12 +67,26 @@ FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel)
 	return Property;
 }
 
-FRoleProperty* GetRandomHeroProperty(ERoleType type)
+TObjectPtr<USkeletalMesh> GetHeroSkeletalMesh(ERoleType Type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
-		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
+		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
+		if (HeroPropertyConfig) {
+			return HeroPropertyConfig->SkeletalMesh;
+		}
+	}
+	return nullptr;
+}
+
+FRoleProperty* GetRandomHeroProperty(ERoleType Type)
+{
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	if (DataTable) {
+		FString ContextString = "Context";
+		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
 		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
 		if (HeroPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*HeroPropertyConfig);
@@ -82,12 +96,12 @@ FRoleProperty* GetRandomHeroProperty(ERoleType type)
 	return nullptr;
 }
 
-FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type)
+FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType Type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
-		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
 		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
 		if (HeroPropertyConfig) {
 			return HeroPropertyConfig;
@@ -96,29 +110,29 @@ FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType type)
 	return nullptr;
 }
 
-FRoleProperty* GetRandomEnemyProperty(ERoleType type, int level)
+FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
-		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
-			rp->Exp = EnemyPropertyConfig->BaseExp * (1 + level / 10);
-			GetTargetLevelProperty(rp, level);
+			rp->Exp = EnemyPropertyConfig->BaseExp * (1 + Level / 10);
+			GetTargetLevelProperty(rp, Level);
 			return rp;
 		}
 	}
 	return nullptr;
 }
 
-FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType type)
+FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType Type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
 	if (DataTable) {
 		FString ContextString = "Context";
-		FName RowName = FName(UEnum::GetDisplayValueAsText(type).ToString());
+		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			return EnemyPropertyConfig;
