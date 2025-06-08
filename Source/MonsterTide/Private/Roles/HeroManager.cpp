@@ -128,6 +128,10 @@ void UHeroManager::EnterBattle()
 
 void UHeroManager::ExitBattle()
 {
+	OnSelectItemChanged.Clear();
+	OnPlaceHero.Clear();
+	OnRoleUseSkill.Clear();
+	OnHeroAddExp.Clear();
 	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
 	RecoverHerosAllStatuses();
 }

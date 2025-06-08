@@ -4,15 +4,11 @@
 #include "Game/GamePlayerController.h"
 #include "UI/Game/UI_Game.h"
 #include "UI/Settlement/UI_Settlement.h"
+#include "Roles/EnemyManager.h"
 
 void AGamePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (UI_GameClass != nullptr) {
-		UI_Game = CreateWidget<UUI_Game>(this, UI_GameClass);
-		UI_Game->AddToViewport();
-	}
 }
 
 void AGamePlayerController::OpenSettlementUI(bool Victory)
@@ -26,5 +22,16 @@ void AGamePlayerController::OpenSettlementUI(bool Victory)
 		UI_Settlement = CreateWidget<UUI_Settlement>(this, UI_SettlementClass);
 		UI_Settlement->AddToViewport();
 		UI_Settlement->InitResult(Victory);
+	}
+}
+
+void AGamePlayerController::OpenGameUI(FString LevelName)
+{
+	if (UI_GameClass != nullptr) {
+		UI_Game = CreateWidget<UUI_Game>(this, UI_GameClass);
+		UI_Game->AddToViewport();
+		UI_Game->InitGameUI(LevelName);
+		auto EnemyMgr = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>();
+		EnemyMgr->EnemyCreate.AddUObject(UI_Game, &UUI_Game::RefreshEnemyProperss);
 	}
 }

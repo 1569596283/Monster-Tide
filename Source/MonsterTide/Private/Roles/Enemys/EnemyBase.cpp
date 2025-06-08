@@ -17,10 +17,11 @@ AEnemyBase::AEnemyBase()
 	}
 }
 
-void AEnemyBase::InitEnemy(int Path,int Damage)
+void AEnemyBase::InitEnemy(int Path,int Damage,float Exp)
 {
 	CurDamage = Damage;
 	Distance = 0.f;
+	EnemyExp = Exp;
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpline::StaticClass(), FoundActors);
 	for (AActor* Actor : FoundActors)
@@ -37,6 +38,11 @@ void AEnemyBase::InitEnemy(int Path,int Damage)
 int AEnemyBase::GetDamage() const
 {
 	return CurDamage;
+}
+
+int AEnemyBase::GetEnemyExp() const
+{
+	return EnemyExp;
 }
 
 float AEnemyBase::GetRemainDistance() const

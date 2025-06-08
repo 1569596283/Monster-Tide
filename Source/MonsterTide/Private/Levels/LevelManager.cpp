@@ -32,12 +32,15 @@ void ULevelManager::InitLevel()
 	LevelTime = 0;
 	CurLevelConfig = GetLevelConfig(CurLevel);
 	EnemyArr.Empty();
+	int EnemyNum = 0;
 	for (int i = CurLevelConfig->Enemy[0]; i <= CurLevelConfig->Enemy[1]; i++) {
 		FGameEnemyConfig GameEnemyConfig = GetGameEnemyConfig(i);
 		EnemyArr.Push(GameEnemyConfig);
+		EnemyNum += GameEnemyConfig.Number;
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ULevelManager::Tick, 0.1f, true);
+	GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->SetLevelEnemyNum(EnemyNum);
 }
 
 int ULevelManager::GetCueLevel()

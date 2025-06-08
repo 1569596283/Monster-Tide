@@ -8,6 +8,8 @@
 
 
 class UScrollBox;
+class UTextBlock;
+class UProgressBar;
 class URoleAttribute;
 class UUI_HeroItem;
 /**
@@ -21,6 +23,10 @@ class MONSTERTIDE_API UUI_Game : public UUserWidget
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UScrollBox> ScrHero;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_Name;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UProgressBar> PB_Enemy;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUI_HeroItem> HeroItemClass;
@@ -30,8 +36,11 @@ public:
 
 	void RefreshHeros();
 
+	void InitGameUI(FString LevelName);
+
+	void RefreshEnemyProperss(float Percent);
 private:
 	void AddHeroItem(TObjectPtr<URoleAttribute> RA);
 
-	void RemoveHeroItem();
+	//void RemoveHeroItem();
 };

@@ -23,6 +23,7 @@ public:
 
 	void OpenSettlementUI(bool Victory);
 
+	void OpenGameUI(FString LevelName);
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUI_Game> UI_GameClass;
@@ -33,5 +34,6 @@ protected:
 	TSubclassOf<UUI_Settlement> UI_SettlementClass;
 	UPROPERTY()
 	TObjectPtr<UUI_Settlement> UI_Settlement;
+
 
 };

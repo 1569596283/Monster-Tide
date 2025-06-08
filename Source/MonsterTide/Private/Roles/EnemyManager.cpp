@@ -39,6 +39,20 @@ int UEnemyManager::GetEnemyNumber() const
 	return Num;
 }
 
+void UEnemyManager::SetLevelEnemyNum(int Num)
+{
+	CreatedEnemyNumber = 0.f;
+	LevelEnemyNumber = Num;
+}
+
+void UEnemyManager::ExitBattle()
+{
+	EnemyArrived.Clear();
+	EnemyDead.Clear();
+	EnemyCreate.Clear();
+
+}
+
 void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 {
 	FEnemyPropertyConfig* EnemyPropertyConfig = GetEnemyPropertyConfig(EnemyConfig.Type);
@@ -54,10 +68,13 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 		URoleAttribute* EnemyAttribute = NewObject<URoleAttribute>();
 		EnemyAttribute->SetBaseProperty(*RoleProperty);
 		Enemy->InitRole(EnemyConfig.EnemyLevel, EnemyAttribute);
-		Enemy->InitEnemy(EnemyConfig.Path, EnemyPropertyConfig->Damage);
+		Enemy->InitEnemy(EnemyConfig.Path, EnemyPropertyConfig->Damage, EnemyPropertyConfig->BaseExp * (1 + EnemyConfig.EnemyLevel / 10.f));
 		Enemy->OnEnemyDead.AddUObject(this, &UEnemyManager::OnEnemyDead);
 		Enemy->OnEnemyArrived.AddUObject(this, &UEnemyManager::OnEnemyArrived);
 		EnemyArray.Push(Enemy);
+		CreatedEnemyNumber++;
+		float Percent = CreatedEnemyNumber / LevelEnemyNumber;
+		EnemyCreate.Broadcast(Percent);
 	}
 
 	for (FCreateStruct* CreateStruct : CreateArray) {

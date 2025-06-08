@@ -4,6 +4,8 @@
 #include "UI/Game/UI_Game.h"
 #include "UI/Game/UI_HeroItem.h"
 #include "Components/ScrollBox.h"
+#include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
 #include "Roles/HeroManager.h"
 #include "Roles/RoleAttribute.h"
 
@@ -18,6 +20,16 @@ void UUI_Game::RefreshHeros()
 	for (int i = 0; i < RAArr.Num(); i++) {
 		AddHeroItem(RAArr[i]);
 	}
+}
+
+void UUI_Game::InitGameUI(FString LevelName)
+{
+	TB_Name->SetText(FText::FromString(LevelName));
+}
+
+void UUI_Game::RefreshEnemyProperss(float Percent)
+{
+	PB_Enemy->SetPercent(Percent);
 }
 
 void UUI_Game::AddHeroItem(TObjectPtr<URoleAttribute> RA)

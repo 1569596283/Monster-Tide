@@ -11,6 +11,7 @@ class AEnemyBase;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyArrived, TObjectPtr<AEnemyBase>);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyDead, TObjectPtr<AEnemyBase>);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyCreate, float);
 
 struct FCreateStruct
 {
@@ -35,9 +36,13 @@ public:
 
 	FOnEnemyArrived EnemyArrived;
 	FOnEnemyDead EnemyDead;
+	FOnEnemyCreate EnemyCreate;
 
 	int GetEnemyNumber() const;
 
+	void SetLevelEnemyNum(int Num);
+
+	void ExitBattle();
 private:
 	TArray<FCreateStruct*> CreateArray;
 
@@ -50,4 +55,7 @@ private:
 	void RemoveEnemy(TObjectPtr< AEnemyBase > Enemy);
 	void OnEnemyDead(TObjectPtr< AEnemyBase > Enemy);
 	void OnEnemyArrived(TObjectPtr< AEnemyBase > Enemy);
+
+	int LevelEnemyNumber = 0;
+	float CreatedEnemyNumber = 0.f;
 };

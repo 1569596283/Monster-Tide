@@ -24,6 +24,11 @@ void AGameGameMode::BeginPlay()
 	EnemyMgr->EnemyDead.AddUObject(this, &AGameGameMode::OnEnemyDead);
 	GetWorld()->GetGameInstance()->GetSubsystem<USkillManager>()->InitSkill();
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->EnterBattle();
+
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
+		GPC->OpenGameUI(LevelManager->CurLevelConfig->LevelName);
+	}
 }
 
 void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
@@ -39,7 +44,7 @@ void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 
 void AGameGameMode::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
 {
-	float Exp = 10.f;
+	float Exp = Enemy->GetEnemyExp();
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->AddExp(Enemy->Killer, Exp);
 	CheckVictory();
 }
@@ -74,4 +79,5 @@ void AGameGameMode::GameOver(bool Victory)
 		GPC->OpenSettlementUI(Victory);
 	}
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->ExitBattle();
+	GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->ExitBattle();
 }
