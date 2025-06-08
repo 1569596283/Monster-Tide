@@ -7,7 +7,11 @@
 #include "SaveGameData.generated.h"
 
 enum class ELevelType :uint8;
+enum class ERoleType :uint8;
 struct FRoleProperty;
+struct FHeroInfo;
+
+
 /**
  *
  */
@@ -17,19 +21,23 @@ class MONSTERTIDE_API USaveGameData : public USaveGame
 	GENERATED_BODY()
 
 public:
-	const TArray<FRoleProperty>& GetHeroArray() const;
+	TArray<FHeroInfo> GetHeroInfoArray() ;
+	FHeroInfo GetHeroInfo(FString ID);
+	FString ChangeHeroName(FString ID, FString NewName);
 
-	bool AddHero(FRoleProperty* rp);
+	FHeroInfo* AddHero(ERoleType Type, int Level);
 
 	int GetLastLevel(ELevelType Type);
 	void SetLastLevl(ELevelType Type ,int Level);
 
-	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
-
+	void RefreshHeroInfo(FHeroInfo HeroInfo);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FRoleProperty> HeroArr;
+	int HeroIndex = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FHeroInfo> HeroInfoArr;
 
 	UPROPERTY(BlueprintReadOnly)
 	TMap<ELevelType, int> LastLevelMap;

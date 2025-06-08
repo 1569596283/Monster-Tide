@@ -6,10 +6,12 @@
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "Components/TextBlock.h"
+#include "Components/EditableText.h"
 #include "Game/MainPlayerController.h"
 #include "Roles/HeroManager.h"
 #include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 #include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
 
@@ -21,6 +23,7 @@ void UUI_Hero::NativeOnInitialized()
 		Btn_Return->OnClicked.AddDynamic(this, &UUI_Hero::OnBtnReturnClicked);
 	}
 	ShowHeros();
+	ET_Name->OnTextCommitted.AddDynamic(this, &UUI_Hero::ChangeHeroName);
 }
 
 void UUI_Hero::OnBtnReturnClicked()
@@ -32,13 +35,23 @@ void UUI_Hero::OnBtnReturnClicked()
 	}
 }
 
+void UUI_Hero::ChangeHeroName(const FText& Text, ETextCommit::Type CommitMethod)
+{
+	auto HeroMgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
+	if (HeroMgr->GetHeroInfo(HeroAttribute).Name == Text.ToString()) {
+		return;
+	}
+	FString NewName = HeroMgr->ChangeHeroName(HeroAttribute, Text.ToString());
+	ET_Name->SetText(FText::FromString(NewName));
+}
+
 void UUI_Hero::ShowHeros()
 {
 	if (!WB_Heros || !HeroIconClass) {
 		return;
 	}
 	auto HeroMgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
-	TArray<TObjectPtr<URoleAttribute>> Heros = HeroMgr->GetHeroAttributeArray();
+	TArray<TObjectPtr<URoleAttribute>> Heros = HeroMgr->GetAllHeroAttributeArray();
 	for (int i = 0; i < Heros.Num(); i++) {
 		TObjectPtr<URoleAttribute> RoleAttribute = Heros[i];
 		TObjectPtr<UUI_HeroIcon> Icon = CreateWidget<UUI_HeroIcon>(this, HeroIconClass);
@@ -52,11 +65,16 @@ void UUI_Hero::ShowHeros()
 
 void UUI_Hero::RefreshHeroInfo(TObjectPtr<URoleAttribute> Attribute)
 {
-	TB_Name->SetText(FText::FromString(TEXT("Name")));
+	if (HeroAttribute == Attribute) {
+		return;
+	}
+	HeroAttribute = Attribute;
 	const FRoleProperty* BaseProperty = Attribute->GetBaseProperty();
-	TB_Type->SetText(UEnum::GetDisplayValueAsText(BaseProperty->Type));
-	TB_Level->SetText(FText::FromString(FString::FromInt(BaseProperty->Level)));
-	FString EXPText = FString::FromInt(BaseProperty->Exp) + "/" + FString::FromInt(100 * BaseProperty->Level);
+	FHeroInfo HeroInfo = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroInfo(Attribute);
+	ET_Name->SetText(FText::FromString(HeroInfo.Name));
+	TB_Type->SetText(UEnum::GetDisplayValueAsText(HeroInfo.Type));
+	TB_Level->SetText(FText::FromString(FString::FromInt(HeroInfo.Level)));
+	FString EXPText = FString::FromInt(HeroInfo.Exp) + "/" + FString::FromInt(100 * HeroInfo.Level);
 	TB_EXP->SetText(FText::FromString(EXPText));
 	TB_HP->SetText(FText::FromString(FString::FromInt(BaseProperty->MaxHP)));
 	TB_MP->SetText(FText::FromString(FString::FromInt(BaseProperty->MaxMP)));
@@ -67,7 +85,7 @@ void UUI_Hero::RefreshHeroInfo(TObjectPtr<URoleAttribute> Attribute)
 		TObjectPtr<UUI_HeroIcon> Icon = HeroIconArr[i];
 		Icon->SetState(Attribute == Icon->RoleAttribute);
 	}
-	RefreshHeroModel(BaseProperty->Type);
+	RefreshHeroModel(HeroInfo.Type);
 }
 
 void UUI_Hero::RefreshHeroModel(ERoleType Type)

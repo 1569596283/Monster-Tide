@@ -17,7 +17,7 @@ ARoleBase::ARoleBase()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
+void ARoleBase::InitRole(int Level, TObjectPtr<URoleAttribute> RA)
 {
 	RoleAttribute = RA;
 	const FRoleProperty* RoleProperty = RA->GetRoleProperty();
@@ -27,7 +27,7 @@ void ARoleBase::InitRole(TObjectPtr<URoleAttribute> RA)
 	}
 	RolePropertyComponent = GetComponentByClass<URolePropertyComponent>();
 	if (RolePropertyComponent) {
-		RolePropertyComponent->InitProperty(RA);
+		RolePropertyComponent->InitProperty(Level, RA);
 	}
 	RoleAnimInstance->Speed = RoleProperty->Speed;
 }

@@ -18,10 +18,12 @@ class MONSTERTIDE_API URolePropertyComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
 public:
-	bool InitProperty(const TObjectPtr<URoleAttribute> RA);
+	bool InitProperty(int Level, const TObjectPtr<URoleAttribute> RA);
 
 	UFUNCTION()
 	void RefreshProperty();
+
+	void RefreshLevel(int Level);
 
 	TObjectPtr<UUI_RoleProperty> UMG_RoleProperty;
 

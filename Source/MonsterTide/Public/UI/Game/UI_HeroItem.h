@@ -55,6 +55,8 @@ protected:
 	UFUNCTION()
 	void OnBtnHeroClicked();
 
+	void RefreshLevel(TObjectPtr< URoleAttribute > Attribute, int Level, float Exp);
+
 	/* 根据当前状态和新点击的角色属性设置是否选中 */
 	void SetBtnHeroState(TObjectPtr< URoleAttribute > RA);
 	/* 根据是否选中设置按钮颜色 */

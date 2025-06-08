@@ -8,6 +8,7 @@
 #include "Roles/HeroManager.h"
 #include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 
 void UUI_HeroItem::NativeOnInitialized()
 {
@@ -25,18 +26,23 @@ void UUI_HeroItem::InitRoleAttribute(TObjectPtr< URoleAttribute > RA)
 {
 	RoleAttribute = RA;
 	const FRoleProperty* RoleProperty = RA->GetRoleProperty();
-	TB_Name->SetText(FText::FromString(TEXT("Name")));
-	TB_Type->SetText(UEnum::GetDisplayValueAsText(RoleProperty->Type));
-	TB_Level->SetText(FText::FromString(FString::FromInt(RoleProperty->Level)));
+	auto mgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
+	FHeroInfo HeroInfo = mgr->GetBattleHeroInfo(RA);
+	mgr->OnHeroAddExp.AddUObject(this, &UUI_HeroItem::RefreshLevel);
+	TB_Name->SetText(FText::FromString(HeroInfo.Name));
+	TB_Type->SetText(UEnum::GetDisplayValueAsText(HeroInfo.Type));
+	TB_Level->SetText(FText::FromString(FString::FromInt(HeroInfo.Level)));
+	FString EXPText = FString::FromInt(HeroInfo.Exp) + "/" + FString::FromInt(100 * HeroInfo.Level);
+	TB_EXP->SetText(FText::FromString(EXPText));
+	PB_EXP->SetPercent(HeroInfo.Exp / 100 * HeroInfo.Level);
+
 	FString HPText = FString::FromInt(RoleProperty->HP) + "/" + FString::FromInt(RoleProperty->MaxHP);
 	TB_HP->SetText(FText::FromString(HPText));
 	PB_HP->SetPercent(RoleProperty->HP / RoleProperty->MaxHP);
 	FString MPText = FString::FromInt(RoleProperty->MP) + "/" + FString::FromInt(RoleProperty->MaxMP);
 	TB_MP->SetText(FText::FromString(MPText));
 	PB_MP->SetPercent(RoleProperty->MP / RoleProperty->MaxMP);
-	FString EXPText = FString::FromInt(RoleProperty->Exp) + "/" + FString::FromInt(100);
-	TB_EXP->SetText(FText::FromString(EXPText));
-	PB_EXP->SetPercent(RoleProperty->Exp / 100);
+
 }
 
 void UUI_HeroItem::OnBtnHeroClicked()
@@ -45,6 +51,16 @@ void UUI_HeroItem::OnBtnHeroClicked()
 		SetBtnHeroState(RoleAttribute);
 	}
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->SelectHeroItem(RoleAttribute);
+}
+
+void UUI_HeroItem::RefreshLevel(TObjectPtr< URoleAttribute > Attribute, int Level, float Exp)
+{
+	if (RoleAttribute == Attribute) {
+		TB_Level->SetText(FText::FromString(FString::FromInt(Level)));
+		FString EXPText = FString::FromInt(Exp) + "/" + FString::FromInt(100 * Level);
+		TB_EXP->SetText(FText::FromString(EXPText));
+		PB_EXP->SetPercent(Exp / 100 * Level);
+	}
 }
 
 void UUI_HeroItem::SetBtnHeroState(TObjectPtr< URoleAttribute > RA)

@@ -53,7 +53,7 @@ void UEnemyManager::CreateEnemy(FGameEnemyConfig EnemyConfig)
 		FRoleProperty* RoleProperty = GetRandomEnemyProperty(EnemyPropertyConfig->Type, EnemyConfig.EnemyLevel);
 		URoleAttribute* EnemyAttribute = NewObject<URoleAttribute>();
 		EnemyAttribute->SetBaseProperty(*RoleProperty);
-		Enemy->InitRole(EnemyAttribute);
+		Enemy->InitRole(EnemyConfig.EnemyLevel, EnemyAttribute);
 		Enemy->InitEnemy(EnemyConfig.Path, EnemyPropertyConfig->Damage);
 		Enemy->OnEnemyDead.AddUObject(this, &UEnemyManager::OnEnemyDead);
 		Enemy->OnEnemyArrived.AddUObject(this, &UEnemyManager::OnEnemyArrived);

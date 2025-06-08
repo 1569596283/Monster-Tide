@@ -21,6 +21,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void RefreshProperty(TObjectPtr<URoleAttribute>  Attribute, int Level, float Exp);
+
 protected:
 	virtual float UseSkill() override;
 

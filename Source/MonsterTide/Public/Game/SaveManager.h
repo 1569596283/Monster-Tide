@@ -10,6 +10,7 @@
 enum class ELevelType :uint8;
 class USaveGameData;
 struct FRoleProperty;
+struct FHeroInfo;
 /**
  *
  */
@@ -25,15 +26,21 @@ public:
 
 	bool ReadSaveData(FString Name);
 
-	const TArray< FRoleProperty >& GetHeroArray() const;
+	TArray< FHeroInfo > GetHeroInfoArray();
+	FHeroInfo GetHeroInfo(FString ID);
+	FString ChangeHeroName(FString ID, FString NewName);
 
 	int GetLastLevel(ELevelType Type);
 	void SetLastLevel(ELevelType Type, int Level);
 
-	void SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr);
+	void RefreshHeroInfo(FHeroInfo HeroInfo);
+	void RefreshHeroInfo(TArray<FHeroInfo> HeroInfoArr);
 
 
 private:
 	UPROPERTY()
 	TObjectPtr<USaveGameData> GameData;
+
+	UPROPERTY()
+	FString DataSlotName = "TestSaveData";
 };

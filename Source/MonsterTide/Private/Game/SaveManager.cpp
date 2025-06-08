@@ -4,25 +4,23 @@
 #include "Game/SaveManager.h"
 #include "Game/SaveGameData.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 #include "Kismet/GameplayStatics.h"
 
 
 void USaveManager::SaveGameData(FString Name)
 {
 	UGameplayStatics::SaveGameToSlot(GameData, Name, 0);
+	DataSlotName = Name;
 }
 
 void USaveManager::InitSaveData()
 {
 	GameData = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
-	FRoleProperty* rp_1 = GetRandomHeroProperty(ERoleType::Hero_1);
-	GameData->AddHero(rp_1);
-	FRoleProperty* rp_2 = GetRandomHeroProperty(ERoleType::Hero_2);
-	GameData->AddHero(rp_2);
-	FRoleProperty* rp_3 = GetRandomHeroProperty(ERoleType::Hero_3);
-	GameData->AddHero(rp_3);
-	FRoleProperty* rp_4 = GetRandomHeroProperty(ERoleType::Hero_4);
-	GameData->AddHero(rp_4);
+	GameData->AddHero(ERoleType::Hero_1, 1);
+	GameData->AddHero(ERoleType::Hero_2, 1);
+	GameData->AddHero(ERoleType::Hero_3, 1);
+	GameData->AddHero(ERoleType::Hero_4, 1);
 }
 
 bool USaveManager::ReadSaveData(FString Name)
@@ -30,14 +28,31 @@ bool USaveManager::ReadSaveData(FString Name)
 	USaveGame* Data = UGameplayStatics::LoadGameFromSlot(Name, 0);
 	if (Data != nullptr) {
 		GameData = Cast<USaveGameData>(Data);
+		DataSlotName = Name;
 		return true;
 	}
 	return false;
 }
 
-const TArray<FRoleProperty>& USaveManager::GetHeroArray() const
+TArray<FHeroInfo> USaveManager::GetHeroInfoArray()
 {
-	return GameData->GetHeroArray();
+	return GameData->GetHeroInfoArray();
+}
+
+FHeroInfo USaveManager::GetHeroInfo(FString ID)
+{
+	FHeroInfo HeroInfo = GameData->GetHeroInfo(ID);
+	return HeroInfo;
+}
+
+FString USaveManager::ChangeHeroName(FString ID, FString NewName)
+{
+	FHeroInfo HeroInfo = GetHeroInfo(ID);
+	if (HeroInfo.Name != NewName) {
+		NewName = GameData->ChangeHeroName(ID, NewName);
+		SaveGameData(DataSlotName);
+	}
+	return NewName;
 }
 
 int USaveManager::GetLastLevel(ELevelType Type)
@@ -51,7 +66,14 @@ void USaveManager::SetLastLevel(ELevelType Type, int Level)
 	GameData->SetLastLevl(Type, Level);
 }
 
-void USaveManager::SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr)
+void USaveManager::RefreshHeroInfo(FHeroInfo HeroInfo)
 {
-	GameData->SetHeroProperty(RolePropertyArr);
+	GameData->RefreshHeroInfo(HeroInfo);
+}
+
+void USaveManager::RefreshHeroInfo(TArray<FHeroInfo> HeroInfoArr)
+{
+	for (FHeroInfo& HeroInfo : HeroInfoArr) {
+		GameData->RefreshHeroInfo(HeroInfo);
+	}
 }

@@ -4,6 +4,9 @@
 #include "UI/Main/UI_HeroIcon.h"
 #include "Roles/RoleAttribute.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
+#include "Data/HeroInfoData.h"
+#include "Roles/HeroManager.h"
 
 void UUI_HeroIcon::NativeOnInitialized()
 {
@@ -16,6 +19,9 @@ void UUI_HeroIcon::NativeOnInitialized()
 void UUI_HeroIcon::InitAttribute(TObjectPtr<URoleAttribute> Attribute)
 {
 	RoleAttribute = Attribute;
+	FHeroInfo HeroInfo = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroInfo(Attribute);
+	TB_Name ->SetText(FText::FromString(HeroInfo.Name)) ;
+	TB_Level->SetText(FText::FromString(FString::FromInt(HeroInfo.Level)));
 }
 
 void UUI_HeroIcon::SetState(bool Select)

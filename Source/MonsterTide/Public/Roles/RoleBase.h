@@ -34,7 +34,7 @@ class MONSTERTIDE_API ARoleBase : public ACharacter
 public:
 	ARoleBase();
 
-	void InitRole(TObjectPtr<URoleAttribute> RA);
+	void InitRole(int Level, TObjectPtr<URoleAttribute> RA);
 
 	void RemoveRole();
 

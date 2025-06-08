@@ -3,21 +3,44 @@
 
 #include "Game/SaveGameData.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 
-const TArray< FRoleProperty >& USaveGameData::GetHeroArray() const
+TArray< FHeroInfo > USaveGameData::GetHeroInfoArray()
 {
-	return HeroArr;
+	return HeroInfoArr;
 }
 
-bool USaveGameData::AddHero(FRoleProperty* rp)
+FHeroInfo USaveGameData::GetHeroInfo(FString ID)
 {
-	if (rp) {
-		HeroArr.Push(*rp);
-		return true;
+	for (auto &HeroInfo : HeroInfoArr) {
+		if (HeroInfo.ID == ID) {
+			return HeroInfo;
+		}
 	}
-	else {
-		return false;
+	return FHeroInfo();
+}
+
+FString USaveGameData::ChangeHeroName(FString ID, FString NewName)
+{
+	if (NewName.Len() <= 3 || NewName.Len() >= 15) {
+		NewName = "Hero";
 	}
+	for (auto& HeroInfo : HeroInfoArr) {
+		if (HeroInfo.ID == ID) {
+			HeroInfo.Name = NewName;
+			return HeroInfo.Name;
+		}
+	}
+	return "Hero";
+}
+
+FHeroInfo* USaveGameData::AddHero(ERoleType Type, int Level)
+{
+	HeroIndex++;
+	FString ID = FString::FromInt(HeroIndex);
+	FHeroInfo HeroInfo = GetRandomHeroInfo(ID, Type, Level);
+	HeroInfoArr.Push(HeroInfo);
+	return &HeroInfoArr.Last();
 }
 
 int USaveGameData::GetLastLevel(ELevelType Type)
@@ -39,10 +62,11 @@ void USaveGameData::SetLastLevl(ELevelType Type, int Level)
 	}
 }
 
-void USaveGameData::SetHeroProperty(TArray<FRoleProperty>* RolePropertyArr)
+void USaveGameData::RefreshHeroInfo(FHeroInfo HeroInfo)
 {
-	HeroArr.Empty();
-	for (int i = 0; i < RolePropertyArr->Num(); i++) {
-		HeroArr.Push(*(RolePropertyArr->GetData() + i));
+	for (int i = 0; i < HeroInfoArr.Num();i++) {
+		if (HeroInfoArr[i].ID == HeroInfo.ID) {
+			HeroInfoArr[i] = HeroInfo;
+		}
 	}
 }

@@ -6,11 +6,11 @@
 #include "UI/Game/UI_RoleProperty.h"
 #include "Data/RolePropertyData.h"
 
-bool URolePropertyComponent::InitProperty(const TObjectPtr<URoleAttribute> RA)
+bool URolePropertyComponent::InitProperty(int Level, const TObjectPtr<URoleAttribute> RA)
 {
-
-	RoleProperty = RA->GetRoleProperty();
 	UMG_RoleProperty = Cast<UUI_RoleProperty>(GetWidget());
+	UMG_RoleProperty->SetLevel(Level);
+	RoleProperty = RA->GetRoleProperty();
 	RefreshProperty();
 	RA->OnRolePropertyChanged.BindDynamic(this, &URolePropertyComponent::RefreshProperty);
 	RA->OnRoleHPChanged.BindDynamic(this, &URolePropertyComponent::RefreshHP);
@@ -20,9 +20,13 @@ bool URolePropertyComponent::InitProperty(const TObjectPtr<URoleAttribute> RA)
 
 void URolePropertyComponent::RefreshProperty()
 {
-	UMG_RoleProperty->SetLevel(RoleProperty->Level);
-	UMG_RoleProperty->SetHP(RoleProperty->HP / RoleProperty->MaxHP);
-	UMG_RoleProperty->SetMP(RoleProperty->MP / RoleProperty->MaxMP);
+	RefreshHP();
+	RefreshMP();
+}
+
+void URolePropertyComponent::RefreshLevel(int Level)
+{
+	UMG_RoleProperty->SetLevel(Level);
 }
 
 void URolePropertyComponent::RefreshHP()

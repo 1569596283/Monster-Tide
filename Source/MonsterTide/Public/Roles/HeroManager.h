@@ -8,12 +8,15 @@
 
 enum class ESkillType :uint8;
 struct FRoleProperty;
+struct FHeroInfo;
 class ARoleBase;
 class URoleAttribute;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_FourParams(FOnRoleUseSkill, ESkillType, float, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnHeroAddExp, TObjectPtr< URoleAttribute >, int, float);
+
 
 /**
  *
@@ -26,12 +29,17 @@ class MONSTERTIDE_API UHeroManager : public UGameInstanceSubsystem
 public:
 	void InitHeroProperty();
 
-	TArray<TObjectPtr< URoleAttribute >> GetHeroAttributeArray();
-	TArray<FRoleProperty> GetHeroBasePropertyArray();
+	TArray<TObjectPtr< URoleAttribute >> GetBattleHeroAttributeArray();
+	TArray<TObjectPtr< URoleAttribute >> GetAllHeroAttributeArray();
+	TArray<FHeroInfo> GetBattleHeroInfoArr();
+	FHeroInfo GetHeroInfo(TObjectPtr<URoleAttribute> Attribute);
+	FHeroInfo GetBattleHeroInfo(TObjectPtr<URoleAttribute> Attribute);
+	FString ChangeHeroName(TObjectPtr<URoleAttribute> Attribute, FString NewName);
 
 	FOnSelectItemChanged OnSelectItemChanged;
 	FOnPlaceHero OnPlaceHero;
 	FOnRoleUseSkill OnRoleUseSkill;
+	FOnHeroAddExp OnHeroAddExp;
 
 	void SelectHeroItem(TObjectPtr< URoleAttribute > RA);
 
@@ -46,13 +54,20 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TArray <TObjectPtr< URoleAttribute >> HeroAttributeArr;
+	TArray <TObjectPtr< URoleAttribute >> BattleHeroAttributeArr;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FHeroInfo> BattleHeroInfoArr;
+
+	TMap<TObjectPtr<URoleAttribute>, FString > HeroMap;
 
 	TObjectPtr< URoleAttribute > CurSelectRoleAttribute;
 
 	void RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target);
 
 	void RecoverHerosAllStatuses();
+
+	int HeroAddExp(int Index, float Exp);
 
 	UFUNCTION()
 	void RecoverHeros();

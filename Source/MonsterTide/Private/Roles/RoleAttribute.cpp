@@ -4,7 +4,7 @@
 #include "Roles/RoleAttribute.h"
 #include "Data/RolePropertyData.h"
 
-void URoleAttribute::SetBaseProperty(const FRoleProperty& RP)
+void URoleAttribute::SetBaseProperty(FRoleProperty& RP)
 {
 	BaseRoleProperty = new FRoleProperty(RP);
 	RefreshRoleProperty();
@@ -16,7 +16,6 @@ void URoleAttribute::RefreshRoleProperty()
 		RoleProperty = new FRoleProperty(*BaseRoleProperty);
 	}
 	else {
-		RoleProperty->Level = BaseRoleProperty->Level;
 		float HPPercent = RoleProperty->HP / RoleProperty->MaxHP;
 		float MPPercent = RoleProperty->MP / RoleProperty->MaxMP;
 		RoleProperty->MaxHP = BaseRoleProperty->MaxHP;
@@ -29,6 +28,12 @@ void URoleAttribute::RefreshRoleProperty()
 		RoleProperty->Defense = BaseRoleProperty->Defense;
 	}
 	OnRolePropertyChanged.ExecuteIfBound();
+}
+
+void URoleAttribute::AddLevel(int CurLevel, int TargetLevel)
+{
+	GetTargetLevelProperty(BaseRoleProperty, CurLevel, TargetLevel);
+	RefreshRoleProperty();
 }
 
 const FRoleProperty* URoleAttribute::GetRoleProperty() const
@@ -58,21 +63,6 @@ void URoleAttribute::ChangeMP(float Value)
 	OnRoleMPChanged.ExecuteIfBound();
 }
 
-void URoleAttribute::AddExp(float Exp)
-{
-	float TargetExp = 100.f * BaseRoleProperty->Level;
-	BaseRoleProperty->Exp += Exp;
-	bool Up = BaseRoleProperty->Exp >= TargetExp;
-	while (BaseRoleProperty->Exp >= TargetExp) {
-		BaseRoleProperty->Exp -= TargetExp;
-		LevelUp(BaseRoleProperty->Level + 1);
-		TargetExp = 100.f * BaseRoleProperty->Level;
-	}
-	if (Up) {
-		RefreshRoleProperty();
-	}
-}
-
 void URoleAttribute::RecoveryProperty(float Time)
 {
 	ChangeHP(Time * RoleProperty->RecoveryHP);
@@ -83,9 +73,4 @@ void URoleAttribute::RecoveryAllStatuses()
 {
 	RoleProperty->HP = RoleProperty->MaxHP;
 	RoleProperty->MP = RoleProperty->MaxMP;
-}
-
-void URoleAttribute::LevelUp(int TargetLevel)
-{
-	GetTargetLevelProperty(BaseRoleProperty, TargetLevel);
 }

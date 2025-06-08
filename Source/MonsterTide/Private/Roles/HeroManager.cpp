@@ -6,30 +6,64 @@
 #include "Roles/RoleAttribute.h"
 #include "Game/SaveManager.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 
 void UHeroManager::InitHeroProperty()
 {
-	const TArray<FRoleProperty>& RPArr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->GetHeroArray();
+	TArray<FHeroInfo> RPArr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->GetHeroInfoArray();
 	for (int i = 0; i < RPArr.Num(); i++) {
 		TObjectPtr< URoleAttribute > RA = NewObject<URoleAttribute>();
-		RA->SetBaseProperty(RPArr[i]);
-		HeroAttributeArr.Push(RA);
+		FHeroInfo HeroInfo = RPArr[i];
+		RA->SetBaseProperty(HeroInfo.BaseRoleProperty);
+		BattleHeroAttributeArr.Push(RA);
+		BattleHeroInfoArr.Push(HeroInfo);
+		HeroMap.Add(RA, HeroInfo.ID);
 	}
 }
 
-TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetHeroAttributeArray()
+TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetBattleHeroAttributeArray()
 {
-	return HeroAttributeArr;
+	return BattleHeroAttributeArr;
 }
 
-TArray<FRoleProperty> UHeroManager::GetHeroBasePropertyArray()
+TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetAllHeroAttributeArray()
 {
-	TArray<FRoleProperty> HeroBasePropertyArray;
-	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
-		FRoleProperty RP = *HeroAttributeArr[i]->GetBaseProperty();
-		HeroBasePropertyArray.Push(RP);
+	TArray<TObjectPtr<URoleAttribute>> AttributeArray;
+	// 遍历键值对
+	for (const TPair<TObjectPtr<URoleAttribute>, FString>& Pair : HeroMap)
+	{
+		AttributeArray.Push(Pair.Key);
 	}
-	return HeroBasePropertyArray;
+	return AttributeArray;
+}
+
+TArray<FHeroInfo> UHeroManager::GetBattleHeroInfoArr()
+{
+	return BattleHeroInfoArr;
+}
+
+FHeroInfo UHeroManager::GetHeroInfo(TObjectPtr<URoleAttribute> Attribute)
+{
+	FString ID = *HeroMap.Find(Attribute);
+	FHeroInfo HeroInfo = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->GetHeroInfo(ID);
+	return HeroInfo;
+}
+
+FHeroInfo UHeroManager::GetBattleHeroInfo(TObjectPtr<URoleAttribute> Attribute)
+{
+	FString ID = *HeroMap.Find(Attribute);
+	for (auto& HeroInfo : BattleHeroInfoArr) {
+		if (ID == HeroInfo.ID) {
+			return HeroInfo;
+		}
+	}
+	return FHeroInfo();
+}
+
+FString UHeroManager::ChangeHeroName(TObjectPtr<URoleAttribute> Attribute, FString NewName)
+{
+	FString ID = *HeroMap.Find(Attribute);
+	return  GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->ChangeHeroName(ID, NewName);
 }
 
 void UHeroManager::SelectHeroItem(TObjectPtr< URoleAttribute > RA)
@@ -50,12 +84,14 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 	}
 	FVector SpawnLocation(loc.X, loc.Y, loc.Z + 200); // 生成位置
 	FRotator SpawnRotation(0, 0, 0);  // 生成旋转
-	FHeroPropertyConfig* HeroPropertyConfig = GetHeroPropertyConfig(CurSelectRoleAttribute->GetRoleProperty()->Type);
+	FHeroInfo HeroInfo = GetBattleHeroInfo(CurSelectRoleAttribute);
+	FHeroPropertyConfig* HeroPropertyConfig = GetHeroPropertyConfig(HeroInfo.Type);
 	TSubclassOf<AHeroBase> HeroClass = HeroPropertyConfig->HeroClass;
 	if (HeroClass) {
 		AHeroBase* Hero = GetWorld()->SpawnActor<AHeroBase>(HeroClass, SpawnLocation, SpawnRotation);
-		Hero->InitRole(CurSelectRoleAttribute);
+		Hero->InitRole(HeroInfo.Level, CurSelectRoleAttribute);
 		Hero->OnRoleUseSkill.AddUObject(this, &UHeroManager::RoleUseSkill);
+		OnHeroAddExp.AddUObject(Hero, &AHeroBase::RefreshProperty);
 	}
 	OnPlaceHero.Broadcast(CurSelectRoleAttribute);
 	CurSelectRoleAttribute = nullptr;
@@ -63,14 +99,22 @@ void UHeroManager::CreateHeroAtLocation(FVector loc)
 
 void UHeroManager::AddExp(TObjectPtr<ARoleBase> Killer, float Exp)
 {
-	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
-		TObjectPtr< URoleAttribute > RA = HeroAttributeArr[i];
+	for (int i = 0; i < BattleHeroAttributeArr.Num(); i++) {
+		TObjectPtr< URoleAttribute > RA = BattleHeroAttributeArr[i];
 		if (IsValid(RA) && !RA->IsDead()) {
+			// HeroAddExp 会改变BattleHeroInfoArr[i]的值
+			int CurLevel = BattleHeroInfoArr[i].Level;
+			int AddLevel = CurLevel;
 			if (RA->GetRoleProperty() == Killer->GetRoleProperty()) {
-				RA->AddExp(Exp);
+				AddLevel = HeroAddExp(i, Exp);
 			}
 			else {
-				RA->AddExp(Exp * 0.3f);
+				AddLevel = HeroAddExp(i, Exp * 0.3f);
+			}
+			FHeroInfo HeroInfo = BattleHeroInfoArr[i];
+			OnHeroAddExp.Broadcast(RA, AddLevel, HeroInfo.Exp);
+			if (CurLevel != AddLevel) {
+				RA->AddLevel(CurLevel, AddLevel);
 			}
 		}
 	}
@@ -95,14 +139,27 @@ void UHeroManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleB
 
 void UHeroManager::RecoverHerosAllStatuses()
 {
-	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
-		HeroAttributeArr[i]->RecoveryAllStatuses();
+	for (int i = 0; i < BattleHeroAttributeArr.Num(); i++) {
+		BattleHeroAttributeArr[i]->RecoveryAllStatuses();
 	}
+}
+
+int UHeroManager::HeroAddExp(int Index, float Exp)
+{
+	FHeroInfo HeroInfo = BattleHeroInfoArr[Index];
+	HeroInfo.Exp += Exp;
+	int TargetExp = 100 * HeroInfo.Level;
+	while (HeroInfo.Exp >= TargetExp) {
+		HeroInfo.Level++;
+		HeroInfo.Exp -= TargetExp;
+	}
+	BattleHeroInfoArr[Index] = HeroInfo;
+	return HeroInfo.Level;
 }
 
 void UHeroManager::RecoverHeros()
 {
-	for (int i = 0; i < HeroAttributeArr.Num(); i++) {
-		HeroAttributeArr[i]->RecoveryProperty(RecoverTime);
+	for (int i = 0; i < BattleHeroAttributeArr.Num(); i++) {
+		BattleHeroAttributeArr[i]->RecoveryProperty(RecoverTime);
 	}
 }

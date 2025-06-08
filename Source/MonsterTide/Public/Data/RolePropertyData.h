@@ -35,15 +35,6 @@ struct FRoleProperty
 	FRoleProperty(const FRolePropertyConfig& Config);
 
 	UPROPERTY(EditDefaultsOnly)
-	ERoleType Type = ERoleType::Role;
-
-	UPROPERTY(EditDefaultsOnly)
-	int Level = 1;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Exp = 0.f;
-
-	UPROPERTY(EditDefaultsOnly)
 	float MaxHP = 100.f;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -151,7 +142,7 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 	TSubclassOf<AHeroBase> HeroClass;
 };
 
-FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel);
+FRoleProperty* GetTargetLevelProperty( FRoleProperty* Property, int CurLevel, int TargetLevel);
 TObjectPtr< USkeletalMesh >GetHeroSkeletalMesh(ERoleType Type);
 
 FRoleProperty* GetRandomHeroProperty(ERoleType Type);

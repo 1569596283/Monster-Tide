@@ -6,6 +6,7 @@
 #include "Game/SaveManager.h"
 #include "Data/LevelData.h"
 #include "Data/RolePropertyData.h"
+#include "Data/HeroInfoData.h"
 #include "Levels/LevelManager.h"
 #include "Roles/HeroManager.h"
 #include "Roles/EnemyManager.h"
@@ -38,7 +39,7 @@ void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 
 void AGameGameMode::OnEnemyDead(TObjectPtr<AEnemyBase> Enemy)
 {
-	float Exp = Enemy->GetRoleProperty()->Exp;
+	float Exp = 10.f;
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->AddExp(Enemy->Killer, Exp);
 	CheckVictory();
 }
@@ -50,8 +51,8 @@ void AGameGameMode::CheckVictory()
 	if (Num1 + Num2 == 0) {
 		auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
 		SaveMgr->SetLastLevel(LevelManager->GetLevelType(), LevelManager->GetCueLevel());
-		TArray<FRoleProperty> RolePropertyArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroBasePropertyArray();
-		SaveMgr->SetHeroProperty(&RolePropertyArr);
+		TArray<FHeroInfo> BattleHeroInfoArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetBattleHeroInfoArr();
+		SaveMgr->RefreshHeroInfo(BattleHeroInfoArr);
 		SaveMgr->SaveGameData("TestSaveData");
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle,

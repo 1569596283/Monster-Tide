@@ -56,6 +56,13 @@ void AHeroBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AHeroBase::RefreshProperty(TObjectPtr<URoleAttribute> Attribute, int Level, float Exp)
+{
+	if (Attribute == RoleAttribute) {
+		RolePropertyComponent->RefreshLevel(Level);
+	}
+}
+
 float AHeroBase::UseSkill()
 {
 	TObjectPtr<AEnemyBase> TargetEnemy = GetTargetEnemy();

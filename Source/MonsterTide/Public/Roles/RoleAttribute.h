@@ -22,10 +22,12 @@ class MONSTERTIDE_API URoleAttribute : public UObject
 	GENERATED_BODY()
 
 public:
-	void SetBaseProperty(const FRoleProperty& RP);
+	void SetBaseProperty(FRoleProperty& RP);
 
 	FOnRolePropertyChanged OnRolePropertyChanged;
 	void RefreshRoleProperty();
+
+	void AddLevel(int CurLevel,int TargetLevel);
 
 	const FRoleProperty* GetRoleProperty() const;
 	const FRoleProperty* GetBaseProperty() const;
@@ -36,8 +38,6 @@ public:
 	void ChangeHP(float Value);
 	FOnRoleMPChanged OnRoleMPChanged;
 	void ChangeMP(float Value);
-
-	void AddExp(float Exp);
 
 	void RecoveryProperty(float Time);
 	void RecoveryAllStatuses();
@@ -52,5 +52,4 @@ protected:
 	/* BUFF Ù–‘ */
 	FRoleProperty* BUFFRoleProperty;
 
-	void LevelUp(int TargetLevel);
 };

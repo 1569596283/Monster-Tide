@@ -11,9 +11,6 @@ FRoleProperty::FRoleProperty()
 
 FRoleProperty::FRoleProperty(const FRoleProperty& Other)
 {
-	Type = Other.Type;
-	Level = Other.Level;
-	Exp = Other.Exp;
 	MaxHP = Other.MaxHP;
 	HP = Other.HP;
 	RecoveryHP = Other.RecoveryHP;
@@ -30,9 +27,6 @@ FRoleProperty::FRoleProperty(const FRoleProperty& Other)
 
 FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 {
-	Type = Config.Type;
-	Level = 1;
-	Exp = 0;
 	MaxHP = FMath::RandRange(Config.MinHP, Config.MaxHP);
 	HP = MaxHP;
 	RecoveryHP = Config.RecoveryHP;
@@ -47,13 +41,9 @@ FRoleProperty::FRoleProperty(const FRolePropertyConfig& Config)
 	Skill = Config.Skill;
 }
 
-FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel)
+FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int CurLevel, int TargetLevel)
 {
-	if (Property->Level == TargetLevel) {
-		return Property;
-	}
-
-	for (int level = Property->Level; level <= TargetLevel; level += 1) {
+	for (int level = CurLevel; level <= TargetLevel; level += 1) {
 		float multiplier = level % 9 == 0 ? 2.f : 1.1f;
 		Property->MaxHP *= multiplier;
 		Property->HP *= multiplier;
@@ -62,7 +52,6 @@ FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int TargetLevel)
 		Property->Attack *= multiplier;
 		Property->Defense *= multiplier;
 	}
-	Property->Level = TargetLevel;
 
 	return Property;
 }
@@ -119,8 +108,7 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level)
 		FEnemyPropertyConfig* EnemyPropertyConfig = DataTable->FindRow<FEnemyPropertyConfig>(RowName, ContextString);
 		if (EnemyPropertyConfig) {
 			FRoleProperty* rp = new FRoleProperty(*EnemyPropertyConfig);
-			rp->Exp = EnemyPropertyConfig->BaseExp * (1 + Level / 10);
-			GetTargetLevelProperty(rp, Level);
+			GetTargetLevelProperty(rp, 1, Level);
 			return rp;
 		}
 	}

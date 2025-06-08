@@ -14,7 +14,7 @@ void UUI_Game::NativeOnInitialized()
 
 void UUI_Game::RefreshHeros()
 {
-	TArray<TObjectPtr<URoleAttribute>> RAArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetHeroAttributeArray();
+	TArray<TObjectPtr<URoleAttribute>> RAArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetBattleHeroAttributeArray();
 	for (int i = 0; i < RAArr.Num(); i++) {
 		AddHeroItem(RAArr[i]);
 	}

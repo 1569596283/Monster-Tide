@@ -9,6 +9,7 @@
 enum class ERoleType : uint8;
 class UButton;
 class UTextBlock;
+class UEditableText;
 class UImage;
 class UWrapBox;
 class UUI_HeroIcon;
@@ -30,7 +31,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Return;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<UTextBlock> TB_Name;
+	TObjectPtr<UEditableText> ET_Name;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UTextBlock> TB_Type;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -57,8 +58,14 @@ protected:
 	UFUNCTION()
 	void OnBtnReturnClicked();
 
+	UFUNCTION()
+	void ChangeHeroName(const FText& Text, ETextCommit::Type CommitMethod);
+
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ACharacter> HeroModel;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<URoleAttribute> HeroAttribute;
 
 private:
 	void ShowHeros();
