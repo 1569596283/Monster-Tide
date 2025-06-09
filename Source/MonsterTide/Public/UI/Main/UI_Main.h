@@ -8,6 +8,7 @@
 
 
 class UButton;
+class UTextBlock;
 
 /**
  * 
@@ -20,12 +21,17 @@ class MONSTERTIDE_API UUI_Main : public UUserWidget
 public:
 	virtual void NativeOnInitialized() override;
 
+	void RefreshInfo();
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Play;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Hero;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_FairyStone;
+
 
 	UFUNCTION()
 	void OnBtnPlayClicked();

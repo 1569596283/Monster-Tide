@@ -67,6 +67,11 @@ int ULevelManager::GetEnemyNumber() const
 	return Num;
 }
 
+int ULevelManager::GetFairyStone(int HP) const
+{
+	return CurLevelConfig->FairyStone * (1.f * HP / CurLevelConfig->HP);
+}
+
 bool ULevelManager::HasNextLevel()
 {
 	FString LevelName = "GameMap_" + FString::FromInt(CurLevel + 1);

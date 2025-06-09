@@ -3,8 +3,10 @@
 
 #include "UI/Main/UI_Main.h"
 #include "Components/Button.h"
-#include "Levels/LevelManager.h"
+#include "Components/TextBlock.h"
+#include "Game/SaveManager.h"
 #include "Game/MainPlayerController.h"
+#include "Levels/LevelManager.h"
 
 void UUI_Main::NativeOnInitialized()
 {
@@ -15,6 +17,12 @@ void UUI_Main::NativeOnInitialized()
 	if (Btn_Hero != nullptr) {
 		Btn_Hero->OnClicked.AddDynamic(this, &UUI_Main::OnBtnHeroClicked);
 	}
+}
+
+void UUI_Main::RefreshInfo()
+{
+	auto SaveMgr = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>();
+	TB_FairyStone->SetText(FText::FromString(FString::FromInt(SaveMgr->GetFairyStone())));
 }
 
 void UUI_Main::OnBtnPlayClicked()

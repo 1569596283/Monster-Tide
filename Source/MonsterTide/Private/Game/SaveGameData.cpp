@@ -12,7 +12,7 @@ TArray< FHeroInfo > USaveGameData::GetHeroInfoArray()
 
 FHeroInfo USaveGameData::GetHeroInfo(FString ID)
 {
-	for (auto &HeroInfo : HeroInfoArr) {
+	for (auto& HeroInfo : HeroInfoArr) {
 		if (HeroInfo.ID == ID) {
 			return HeroInfo;
 		}
@@ -43,6 +43,20 @@ FHeroInfo* USaveGameData::AddHero(ERoleType Type, int Level)
 	return &HeroInfoArr.Last();
 }
 
+int USaveGameData::GetFairyStone() const
+{
+	return FairyStone;
+}
+
+bool USaveGameData::ChangeFairyStone(int Value)
+{
+	if (FairyStone + Value < 0) {
+		return false;
+	}
+	FairyStone += Value;
+	return true;
+}
+
 int USaveGameData::GetLastLevel(ELevelType Type)
 {
 	if (LastLevelMap.Find(Type)) {
@@ -64,7 +78,7 @@ void USaveGameData::SetLastLevl(ELevelType Type, int Level)
 
 void USaveGameData::RefreshHeroInfo(FHeroInfo HeroInfo)
 {
-	for (int i = 0; i < HeroInfoArr.Num();i++) {
+	for (int i = 0; i < HeroInfoArr.Num(); i++) {
 		if (HeroInfoArr[i].ID == HeroInfo.ID) {
 			HeroInfoArr[i] = HeroInfo;
 		}

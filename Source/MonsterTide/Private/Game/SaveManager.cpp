@@ -55,6 +55,16 @@ FString USaveManager::ChangeHeroName(FString ID, FString NewName)
 	return NewName;
 }
 
+int USaveManager::GetFairyStone() const
+{
+	return GameData->GetFairyStone();
+}
+
+bool USaveManager::ChangeFairyStone(int Value)
+{
+	return GameData->ChangeFairyStone(Value);
+}
+
 int USaveManager::GetLastLevel(ELevelType Type)
 {
 	return GameData->GetLastLevel(Type);

@@ -33,6 +33,8 @@ public:
 
 	int GetEnemyNumber() const;
 
+	int GetFairyStone(int HP) const;
+
 	bool HasNextLevel();
 private:
 	UPROPERTY()

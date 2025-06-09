@@ -58,6 +58,7 @@ void AGameGameMode::CheckVictory()
 		SaveMgr->SetLastLevel(LevelManager->GetLevelType(), LevelManager->GetCueLevel());
 		TArray<FHeroInfo> BattleHeroInfoArr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetBattleHeroInfoArr();
 		SaveMgr->RefreshHeroInfo(BattleHeroInfoArr);
+		SaveMgr->ChangeFairyStone(LevelManager->GetFairyStone(HP));
 		SaveMgr->SaveGameData("TestSaveData");
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle,

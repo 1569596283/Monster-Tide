@@ -22,6 +22,8 @@ class MONSTERTIDE_API AMainPlayerController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	
+	void ShowMainUMG();
+
 	void OpenLevelUMG();
 	void CloseLevelUMG();
 	void OpenHeroUMG();

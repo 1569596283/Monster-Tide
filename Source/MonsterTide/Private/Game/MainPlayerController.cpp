@@ -9,11 +9,21 @@
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	ShowMainUMG();
+}
 
-	if (UI_MainClass != nullptr) {
-		UI_Main = CreateWidget<UUI_Main>(this, UI_MainClass);
-		UI_Main->AddToViewport();
+void AMainPlayerController::ShowMainUMG()
+{
+	if (UI_Main) {
+		UI_Main->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
+	else {
+		if (UI_MainClass != nullptr) {
+			UI_Main = CreateWidget<UUI_Main>(this, UI_MainClass);
+			UI_Main->AddToViewport();
+		}
+	}
+	UI_Main->RefreshInfo();
 }
 
 void AMainPlayerController::OpenLevelUMG()
@@ -28,7 +38,7 @@ void AMainPlayerController::OpenLevelUMG()
 void AMainPlayerController::CloseLevelUMG()
 {
 	UI_SelectLevel->RemoveFromParent();
-	UI_Main->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	ShowMainUMG();
 	UI_SelectLevel = nullptr;
 }
 
@@ -44,6 +54,6 @@ void AMainPlayerController::OpenHeroUMG()
 void AMainPlayerController::CloseHeroUMG()
 {
 	UI_Hero->RemoveFromParent();
-	UI_Main->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	ShowMainUMG();
 	UI_Hero = nullptr;
 }

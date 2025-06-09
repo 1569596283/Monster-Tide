@@ -21,6 +21,9 @@ struct FLevelConfig :public FTableRowBase
 	int Level = 1;
 
 	UPROPERTY(EditDefaultsOnly)
+	ELevelType Type = ELevelType::Classic;
+
+	UPROPERTY(EditDefaultsOnly)
 	FString LevelName = "";
 
 	UPROPERTY(EditDefaultsOnly)
@@ -30,10 +33,10 @@ struct FLevelConfig :public FTableRowBase
 	int HP = 10;
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<int>Enemy = {};
+	int FairyStone = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	ELevelType Type = ELevelType::Classic;
+	TArray<int>Enemy = {};
 
 };
 

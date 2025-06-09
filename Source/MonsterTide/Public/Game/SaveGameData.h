@@ -21,14 +21,17 @@ class MONSTERTIDE_API USaveGameData : public USaveGame
 	GENERATED_BODY()
 
 public:
-	TArray<FHeroInfo> GetHeroInfoArray() ;
+	TArray<FHeroInfo> GetHeroInfoArray();
 	FHeroInfo GetHeroInfo(FString ID);
 	FString ChangeHeroName(FString ID, FString NewName);
 
 	FHeroInfo* AddHero(ERoleType Type, int Level);
 
+	int GetFairyStone() const;
+	bool ChangeFairyStone(int Value);
+
 	int GetLastLevel(ELevelType Type);
-	void SetLastLevl(ELevelType Type ,int Level);
+	void SetLastLevl(ELevelType Type, int Level);
 
 	void RefreshHeroInfo(FHeroInfo HeroInfo);
 
@@ -41,4 +44,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	TMap<ELevelType, int> LastLevelMap;
+
+	UPROPERTY()
+	int FairyStone = 100;
 };

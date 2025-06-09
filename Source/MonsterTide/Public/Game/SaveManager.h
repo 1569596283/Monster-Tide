@@ -30,6 +30,9 @@ public:
 	FHeroInfo GetHeroInfo(FString ID);
 	FString ChangeHeroName(FString ID, FString NewName);
 
+	int GetFairyStone() const;
+	bool ChangeFairyStone(int Value);
+
 	int GetLastLevel(ELevelType Type);
 	void SetLastLevel(ELevelType Type, int Level);
 

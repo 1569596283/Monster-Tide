@@ -72,6 +72,7 @@ float AHeroBase::UseSkill()
 			return RoleAttribute->GetRoleProperty()->SkillInterval;
 		}
 		FSkillConfig* SkillConfig = &RoleSkill.SkillConfigArray[index];
+		RoleSkill.SkillCD[index] = SkillConfig->CD;
 		float Consume = SkillConfig->Consume;
 		RoleAttribute->ChangeMP(-Consume);
 		float Damage = Consume * GetRoleProperty()->Attack * SkillConfig->Multiple;
