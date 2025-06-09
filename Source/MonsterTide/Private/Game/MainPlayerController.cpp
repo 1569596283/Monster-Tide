@@ -5,6 +5,7 @@
 #include "UI/Main/UI_Main.h"
 #include "UI/Main/UI_SelectLevel.h"
 #include "UI/Main/UI_Hero.h"
+#include "UI/Main/UI_Recruit.h"
 
 void AMainPlayerController::BeginPlay()
 {
@@ -56,4 +57,20 @@ void AMainPlayerController::CloseHeroUMG()
 	UI_Hero->RemoveFromParent();
 	ShowMainUMG();
 	UI_Hero = nullptr;
+}
+
+void AMainPlayerController::OpenRecruitUMG()
+{
+	if (UI_RecruitClass != nullptr) {
+		UI_Main->SetVisibility(ESlateVisibility::Collapsed);
+		UI_Recruit = CreateWidget<UUI_Recruit>(this, UI_RecruitClass);
+		UI_Recruit->AddToViewport();
+	}
+}
+
+void AMainPlayerController::CloseRecruitUMG()
+{
+	UI_Recruit->RemoveFromParent();
+	ShowMainUMG();
+	UI_Recruit = nullptr;
 }

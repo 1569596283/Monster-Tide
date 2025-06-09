@@ -8,6 +8,7 @@
 
 
 enum class ELevelType :uint8;
+enum class ERoleType :uint8;
 class USaveGameData;
 struct FRoleProperty;
 struct FHeroInfo;
@@ -20,6 +21,7 @@ class MONSTERTIDE_API USaveManager : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
+	void SaveGameData();
 	void SaveGameData(FString Name);
 
 	void InitSaveData();
@@ -39,6 +41,7 @@ public:
 	void RefreshHeroInfo(FHeroInfo HeroInfo);
 	void RefreshHeroInfo(TArray<FHeroInfo> HeroInfoArr);
 
+	FHeroInfo AddRandomHero(ERoleType Type, int Level);
 
 private:
 	UPROPERTY()

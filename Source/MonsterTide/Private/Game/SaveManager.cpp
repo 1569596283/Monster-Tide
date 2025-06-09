@@ -8,6 +8,13 @@
 #include "Kismet/GameplayStatics.h"
 
 
+void USaveManager::SaveGameData()
+{
+	if (!DataSlotName.IsEmpty()) {
+		UGameplayStatics::SaveGameToSlot(GameData, DataSlotName, 0);
+	}
+}
+
 void USaveManager::SaveGameData(FString Name)
 {
 	UGameplayStatics::SaveGameToSlot(GameData, Name, 0);
@@ -50,7 +57,7 @@ FString USaveManager::ChangeHeroName(FString ID, FString NewName)
 	FHeroInfo HeroInfo = GetHeroInfo(ID);
 	if (HeroInfo.Name != NewName) {
 		NewName = GameData->ChangeHeroName(ID, NewName);
-		SaveGameData(DataSlotName);
+		SaveGameData();
 	}
 	return NewName;
 }
@@ -86,4 +93,10 @@ void USaveManager::RefreshHeroInfo(TArray<FHeroInfo> HeroInfoArr)
 	for (FHeroInfo& HeroInfo : HeroInfoArr) {
 		GameData->RefreshHeroInfo(HeroInfo);
 	}
+}
+
+FHeroInfo USaveManager::AddRandomHero(ERoleType Type, int Level)
+{
+	FHeroInfo* HeroInfo = GameData->AddHero(Type, Level);
+	return *HeroInfo;
 }

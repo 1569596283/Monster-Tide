@@ -28,6 +28,7 @@ class MONSTERTIDE_API UHeroManager : public UGameInstanceSubsystem
 
 public:
 	void InitHeroProperty();
+	FHeroInfo AddRandomHero();
 
 	TArray<TObjectPtr< URoleAttribute >> GetBattleHeroAttributeArray();
 	TArray<TObjectPtr< URoleAttribute >> GetAllHeroAttributeArray();

@@ -17,6 +17,9 @@ void UUI_Main::NativeOnInitialized()
 	if (Btn_Hero != nullptr) {
 		Btn_Hero->OnClicked.AddDynamic(this, &UUI_Main::OnBtnHeroClicked);
 	}
+	if (Btn_Recruit != nullptr) {
+		Btn_Recruit->OnClicked.AddDynamic(this, &UUI_Main::OnBtnRecruitClicked);
+	}
 }
 
 void UUI_Main::RefreshInfo()
@@ -40,5 +43,14 @@ void UUI_Main::OnBtnHeroClicked()
 	if (!PC) return;
 	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
 		MainPC->OpenHeroUMG();
+	}
+}
+
+void UUI_Main::OnBtnRecruitClicked()
+{
+	APlayerController* PC = GetOwningPlayer();
+	if (!PC) return;
+	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
+		MainPC->OpenRecruitUMG();
 	}
 }

@@ -70,6 +70,21 @@ TObjectPtr<USkeletalMesh> GetHeroSkeletalMesh(ERoleType Type)
 	return nullptr;
 }
 
+ERoleType GetRandomHeroType()
+{
+	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	if (DataTable) {
+		// 获取数据表的所有行名
+		TArray<FName> RowNames = DataTable->GetRowNames();
+		int Index = FMath::RandRange(0, RowNames.Num() - 1);
+		FName RowName = RowNames[Index];
+		FString ContextString = "Context";
+		FHeroPropertyConfig* HeroPropertyConfig = DataTable->FindRow<FHeroPropertyConfig>(RowName, ContextString);
+		return HeroPropertyConfig->Type;
+	}
+	return ERoleType::Hero_1;
+}
+
 FRoleProperty* GetRandomHeroProperty(ERoleType Type)
 {
 	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));

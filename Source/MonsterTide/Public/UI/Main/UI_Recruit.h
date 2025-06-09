@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "UI_Main.generated.h"
-
+#include "UI_Recruit.generated.h"
 
 class UButton;
 class UTextBlock;
@@ -14,7 +13,7 @@ class UTextBlock;
  * 
  */
 UCLASS()
-class MONSTERTIDE_API UUI_Main : public UUserWidget
+class MONSTERTIDE_API UUI_Recruit : public UUserWidget
 {
 	GENERATED_BODY()
 	
@@ -24,22 +23,22 @@ public:
 	void RefreshInfo();
 
 protected:
-
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<UButton> Btn_Play;
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<UButton> Btn_Hero;
+	TObjectPtr<UButton> Btn_Return;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Recruit;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<UTextBlock> TB_FairyStone; 
-
+	TObjectPtr<UTextBlock> TB_FairyStone;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_RecruitFS;
+	
 
 	UFUNCTION()
-	void OnBtnPlayClicked();
-	UFUNCTION()
-	void OnBtnHeroClicked();
+	void OnBtnReturnClicked();
 	UFUNCTION()
 	void OnBtnRecruitClicked();
 
+private:
+	UPROPERTY()
+	int RecruitCost = 200;
 };

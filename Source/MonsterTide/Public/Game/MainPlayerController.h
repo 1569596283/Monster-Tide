@@ -10,6 +10,7 @@
 class UUI_Main;
 class UUI_SelectLevel;
 class UUI_Hero;
+class UUI_Recruit;
 
 /**
  * 
@@ -28,6 +29,9 @@ public:
 	void CloseLevelUMG();
 	void OpenHeroUMG();
 	void CloseHeroUMG();
+	void OpenRecruitUMG();
+	void CloseRecruitUMG();
+
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -43,4 +47,8 @@ protected:
 	TSubclassOf<UUI_Hero> UI_HeroClass;
 	UPROPERTY()
 	TObjectPtr<UUI_Hero> UI_Hero;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUI_Recruit> UI_RecruitClass;
+	UPROPERTY()
+	TObjectPtr<UUI_Recruit> UI_Recruit;
 };

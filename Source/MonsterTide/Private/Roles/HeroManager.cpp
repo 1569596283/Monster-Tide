@@ -21,6 +21,18 @@ void UHeroManager::InitHeroProperty()
 	}
 }
 
+FHeroInfo UHeroManager::AddRandomHero()
+{
+	ERoleType Type = GetRandomHeroType();
+	FHeroInfo HeroInfo = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->AddRandomHero(Type, 1);
+	TObjectPtr< URoleAttribute > RA = NewObject<URoleAttribute>();
+	RA->SetBaseProperty(HeroInfo.BaseRoleProperty);
+	BattleHeroAttributeArr.Push(RA);
+	BattleHeroInfoArr.Push(HeroInfo);
+	HeroMap.Add(RA, HeroInfo.ID);
+	return HeroInfo;
+}
+
 TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetBattleHeroAttributeArray()
 {
 	return BattleHeroAttributeArr;

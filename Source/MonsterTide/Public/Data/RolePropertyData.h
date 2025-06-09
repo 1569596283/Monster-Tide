@@ -145,6 +145,8 @@ struct FHeroPropertyConfig :public FRolePropertyConfig
 FRoleProperty* GetTargetLevelProperty( FRoleProperty* Property, int CurLevel, int TargetLevel);
 TObjectPtr< USkeletalMesh >GetHeroSkeletalMesh(ERoleType Type);
 
+ERoleType GetRandomHeroType();
+
 FRoleProperty* GetRandomHeroProperty(ERoleType Type);
 FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType Type);
 FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level = 0);
