@@ -30,13 +30,16 @@ public:
 	void GameOver();
 
 	FLevelConfig* CurLevelConfig;
+	FORCEINLINE float GetBattleHeroNumber() const;
 
 	int GetEnemyNumber() const;
 
-	int GetFairyStone(int HP) const;
+	int GetFairyStone() const;
+	int GetFairyStone(int HP) ;
 
 	bool HasNextLevel();
-private:
+
+protected:
 	UPROPERTY()
 	/* 当前关卡经过的时间 */
 	float LevelTime = 0;
@@ -44,6 +47,7 @@ private:
 	ELevelType CurLevelType;
 	/* 当前关卡 */
 	int CurLevel = 1;
+	int FairyStone;
 
 	FTimerHandle TimerHandle;
 	TArray<FGameEnemyConfig> EnemyArr;

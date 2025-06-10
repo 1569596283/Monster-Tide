@@ -12,6 +12,7 @@ class UButton;
 class UHorizontalBox;
 class UWrapBox;
 class USizeBox;
+class UTextBlock;
 
 /**
  * 
@@ -44,6 +45,9 @@ protected:
 	TObjectPtr<UButton> Btn_Restart;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Return; 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_FairyStone;
+	
 
 	UFUNCTION()
 	void OnBtnNextClicked();

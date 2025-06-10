@@ -30,6 +30,7 @@ void ULevelManager::OpenNextLevel()
 void ULevelManager::InitLevel()
 {
 	LevelTime = 0;
+	FairyStone = 0;
 	CurLevelConfig = GetLevelConfig(CurLevel);
 	EnemyArr.Empty();
 	int EnemyNum = 0;
@@ -58,6 +59,11 @@ void ULevelManager::GameOver()
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
+float ULevelManager::GetBattleHeroNumber() const
+{
+	return CurLevelConfig->HerosNum;
+}
+
 int ULevelManager::GetEnemyNumber() const
 {
 	int Num = 0;
@@ -67,9 +73,15 @@ int ULevelManager::GetEnemyNumber() const
 	return Num;
 }
 
-int ULevelManager::GetFairyStone(int HP) const
+int ULevelManager::GetFairyStone() const
 {
-	return CurLevelConfig->FairyStone * (1.f * HP / CurLevelConfig->HP);
+	return FairyStone;
+}
+
+int ULevelManager::GetFairyStone(int HP)
+{
+	FairyStone = CurLevelConfig->FairyStone * (1.f * HP / CurLevelConfig->HP);
+	return FairyStone;
 }
 
 bool ULevelManager::HasNextLevel()

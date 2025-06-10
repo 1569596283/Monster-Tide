@@ -6,10 +6,14 @@
 #include "Blueprint/UserWidget.h"
 #include "UI_HeroItem.generated.h"
 
+
 class UTextBlock;
 class UButton;
 class UProgressBar;
 class URoleAttribute;
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHeroButtonClicked, TObjectPtr<UUI_HeroItem>, TObjectPtr< URoleAttribute >);
+
 /**
  * 
  */
@@ -23,15 +27,24 @@ public:
 
 	void InitRoleAttribute(TObjectPtr< URoleAttribute > RA);
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UButton> Btn_Hero;
+
+	FOnHeroButtonClicked OnHeroButtonClicked;
+
+	const TObjectPtr< URoleAttribute > GetRoleAttribute();
+
+	/* 根据是否选中设置按钮颜色 */
+	void RefreshBtnHeroState(bool Select);
+
+	void OnPlaceHero(TObjectPtr< URoleAttribute > RA);
+
 private:
 	TObjectPtr< URoleAttribute > RoleAttribute;
 
 	bool IsSelect = false;
 	
 protected:
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	TObjectPtr<UButton> Btn_Hero;
-
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UTextBlock> TB_Name;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -57,10 +70,5 @@ protected:
 
 	void RefreshLevel(TObjectPtr< URoleAttribute > Attribute, int Level, float Exp);
 
-	/* 根据当前状态和新点击的角色属性设置是否选中 */
-	void SetBtnHeroState(TObjectPtr< URoleAttribute > RA);
-	/* 根据是否选中设置按钮颜色 */
-	UFUNCTION()
-	void RefreshBtnHeroState();
-	void OnPlaceHero(TObjectPtr< URoleAttribute > RA);
+	virtual void NativeDestruct() override;
 };

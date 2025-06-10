@@ -15,8 +15,6 @@ void UHeroManager::InitHeroProperty()
 		TObjectPtr< URoleAttribute > RA = NewObject<URoleAttribute>();
 		FHeroInfo HeroInfo = RPArr[i];
 		RA->SetBaseProperty(HeroInfo.BaseRoleProperty);
-		BattleHeroAttributeArr.Push(RA);
-		BattleHeroInfoArr.Push(HeroInfo);
 		HeroMap.Add(RA, HeroInfo.ID);
 	}
 }
@@ -27,10 +25,32 @@ FHeroInfo UHeroManager::AddRandomHero()
 	FHeroInfo HeroInfo = GetWorld()->GetGameInstance()->GetSubsystem<USaveManager>()->AddRandomHero(Type, 1);
 	TObjectPtr< URoleAttribute > RA = NewObject<URoleAttribute>();
 	RA->SetBaseProperty(HeroInfo.BaseRoleProperty);
-	BattleHeroAttributeArr.Push(RA);
-	BattleHeroInfoArr.Push(HeroInfo);
 	HeroMap.Add(RA, HeroInfo.ID);
 	return HeroInfo;
+}
+
+void UHeroManager::AddBattleHero(TObjectPtr<URoleAttribute> RoleAttribute)
+{
+	BattleHeroAttributeArr.Push(RoleAttribute);
+	FHeroInfo HeroInfo = GetHeroInfo(RoleAttribute);
+	BattleHeroInfoArr.Push(HeroInfo);
+}
+
+void UHeroManager::RemoveBattleHero(TObjectPtr<URoleAttribute> RoleAttribute)
+{
+	for (int i = 0; i < BattleHeroAttributeArr.Num();i++) {
+		if (BattleHeroAttributeArr[i] == RoleAttribute) {
+			BattleHeroAttributeArr.RemoveAt(i);
+			break;
+		}
+	}
+	FString ID = *HeroMap.Find(RoleAttribute);
+	for (int i = 0; i < BattleHeroInfoArr.Num(); i++) {
+		if (BattleHeroInfoArr[i].ID == ID) {
+			BattleHeroInfoArr.RemoveAt(i);
+			break;
+		}
+	}
 }
 
 TArray<TObjectPtr<URoleAttribute>> UHeroManager::GetBattleHeroAttributeArray()
@@ -85,7 +105,6 @@ void UHeroManager::SelectHeroItem(TObjectPtr< URoleAttribute > RA)
 	}
 	else {
 		CurSelectRoleAttribute = RA;
-		OnSelectItemChanged.Broadcast(RA);
 	}
 }
 
@@ -140,7 +159,6 @@ void UHeroManager::EnterBattle()
 
 void UHeroManager::ExitBattle()
 {
-	OnSelectItemChanged.Clear();
 	OnPlaceHero.Clear();
 	OnRoleUseSkill.Clear();
 	OnHeroAddExp.Clear();

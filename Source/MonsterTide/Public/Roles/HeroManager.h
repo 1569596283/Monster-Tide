@@ -12,7 +12,6 @@ struct FHeroInfo;
 class ARoleBase;
 class URoleAttribute;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnSelectItemChanged, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlaceHero, TObjectPtr< URoleAttribute >);
 DECLARE_MULTICAST_DELEGATE_FourParams(FOnRoleUseSkill, ESkillType, float, TObjectPtr<ARoleBase>, TObjectPtr<ARoleBase>);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnHeroAddExp, TObjectPtr< URoleAttribute >, int, float);
@@ -29,20 +28,23 @@ class MONSTERTIDE_API UHeroManager : public UGameInstanceSubsystem
 public:
 	void InitHeroProperty();
 	FHeroInfo AddRandomHero();
+	void AddBattleHero(TObjectPtr< URoleAttribute > RoleAttribute);
+	void RemoveBattleHero(TObjectPtr< URoleAttribute > RoleAttribute);
 
 	TArray<TObjectPtr< URoleAttribute >> GetBattleHeroAttributeArray();
 	TArray<TObjectPtr< URoleAttribute >> GetAllHeroAttributeArray();
 	TArray<FHeroInfo> GetBattleHeroInfoArr();
+	FORCEINLINE int GetBattleHeroNumber() const { return BattleHeroInfoArr.Num(); }
 	FHeroInfo GetHeroInfo(TObjectPtr<URoleAttribute> Attribute);
 	FHeroInfo GetBattleHeroInfo(TObjectPtr<URoleAttribute> Attribute);
 	FString ChangeHeroName(TObjectPtr<URoleAttribute> Attribute, FString NewName);
 
-	FOnSelectItemChanged OnSelectItemChanged;
 	FOnPlaceHero OnPlaceHero;
 	FOnRoleUseSkill OnRoleUseSkill;
 	FOnHeroAddExp OnHeroAddExp;
 
 	void SelectHeroItem(TObjectPtr< URoleAttribute > RA);
+	FORCEINLINE TObjectPtr< URoleAttribute > GetCurSelectHero() const { return CurSelectRoleAttribute; }
 
 	/* 创建英雄在指定位置 */
 	void CreateHeroAtLocation(FVector loc);
@@ -60,6 +62,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FHeroInfo> BattleHeroInfoArr;
 
+	UPROPERTY(BlueprintReadOnly)
 	TMap<TObjectPtr<URoleAttribute>, FString > HeroMap;
 
 	TObjectPtr< URoleAttribute > CurSelectRoleAttribute;

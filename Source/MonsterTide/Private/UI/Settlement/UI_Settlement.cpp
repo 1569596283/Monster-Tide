@@ -5,6 +5,7 @@
 #include "Levels/LevelManager.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "Components/SizeBox.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include <Kismet/GameplayStatics.h>
@@ -28,8 +29,10 @@ void UUI_Settlement::InitResult(bool Victory)
 {
 	CP_TittleVictory->SetVisibility(Victory ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
 	CP_TittleDefeat->SetVisibility(Victory ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
+	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
+	TB_FairyStone->SetText(FText::FromString(FString::FromInt(LevelMgr->GetFairyStone())));
 	// 需要补充是否存在下一关的情况
-	if (Victory && GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->HasNextLevel()) {
+	if (Victory && LevelMgr->HasNextLevel()) {
 		SB_Next->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 	else {
