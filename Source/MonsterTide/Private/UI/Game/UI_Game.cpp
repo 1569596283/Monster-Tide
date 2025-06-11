@@ -51,11 +51,13 @@ void UUI_Game::OnBtnSHSelectClicked()
 
 void UUI_Game::OnBtnStartClicked()
 {
-	int LevelNum = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->GetBattleHeroNumber();
+	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
+	int LevelNum = LevelMgr->GetBattleHeroNumber();
 	int SelectNum = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->GetBattleHeroNumber();
 	if (SelectNum > 0 && SelectNum <= LevelNum) {
 		CP_SelectHeros->SetVisibility(ESlateVisibility::Collapsed);
 		InitHeroItems();
+		LevelMgr->LevelStart();
 	}
 }
 

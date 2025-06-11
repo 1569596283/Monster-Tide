@@ -25,12 +25,13 @@ public:
 
 	void InitLevel();
 	int GetCueLevel();
+	void LevelStart();
 
 	ELevelType GetLevelType();
 	void GameOver();
 
 	FLevelConfig* CurLevelConfig;
-	FORCEINLINE float GetBattleHeroNumber() const;
+	int GetBattleHeroNumber() const;
 
 	int GetEnemyNumber() const;
 

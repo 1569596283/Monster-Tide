@@ -38,7 +38,7 @@ void UHeroManager::AddBattleHero(TObjectPtr<URoleAttribute> RoleAttribute)
 
 void UHeroManager::RemoveBattleHero(TObjectPtr<URoleAttribute> RoleAttribute)
 {
-	for (int i = 0; i < BattleHeroAttributeArr.Num();i++) {
+	for (int i = 0; i < BattleHeroAttributeArr.Num(); i++) {
 		if (BattleHeroAttributeArr[i] == RoleAttribute) {
 			BattleHeroAttributeArr.RemoveAt(i);
 			break;
@@ -74,6 +74,11 @@ TArray<FHeroInfo> UHeroManager::GetBattleHeroInfoArr()
 	return BattleHeroInfoArr;
 }
 
+int UHeroManager::GetBattleHeroNumber() const
+{
+	return BattleHeroInfoArr.Num();
+}
+
 FHeroInfo UHeroManager::GetHeroInfo(TObjectPtr<URoleAttribute> Attribute)
 {
 	FString ID = *HeroMap.Find(Attribute);
@@ -106,6 +111,11 @@ void UHeroManager::SelectHeroItem(TObjectPtr< URoleAttribute > RA)
 	else {
 		CurSelectRoleAttribute = RA;
 	}
+}
+
+TObjectPtr<URoleAttribute> UHeroManager::GetCurSelectHero() const
+{
+	return CurSelectRoleAttribute;
 }
 
 void UHeroManager::CreateHeroAtLocation(FVector loc)

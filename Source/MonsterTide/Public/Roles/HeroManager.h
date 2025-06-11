@@ -34,7 +34,7 @@ public:
 	TArray<TObjectPtr< URoleAttribute >> GetBattleHeroAttributeArray();
 	TArray<TObjectPtr< URoleAttribute >> GetAllHeroAttributeArray();
 	TArray<FHeroInfo> GetBattleHeroInfoArr();
-	FORCEINLINE int GetBattleHeroNumber() const { return BattleHeroInfoArr.Num(); }
+	int GetBattleHeroNumber() const;
 	FHeroInfo GetHeroInfo(TObjectPtr<URoleAttribute> Attribute);
 	FHeroInfo GetBattleHeroInfo(TObjectPtr<URoleAttribute> Attribute);
 	FString ChangeHeroName(TObjectPtr<URoleAttribute> Attribute, FString NewName);
@@ -44,7 +44,7 @@ public:
 	FOnHeroAddExp OnHeroAddExp;
 
 	void SelectHeroItem(TObjectPtr< URoleAttribute > RA);
-	FORCEINLINE TObjectPtr< URoleAttribute > GetCurSelectHero() const { return CurSelectRoleAttribute; }
+	TObjectPtr< URoleAttribute > GetCurSelectHero() const;
 
 	/* 创建英雄在指定位置 */
 	void CreateHeroAtLocation(FVector loc);

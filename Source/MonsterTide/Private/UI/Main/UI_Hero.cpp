@@ -96,7 +96,8 @@ void UUI_Hero::RefreshHeroModel(ERoleType Type)
 		// 遍历并处理每个Character
 		for (AActor* Actor : FoundActors)
 		{
-			if (Actor->GetActorLabel() == "HeroModel")
+			auto Tags = Actor->Tags;
+			if (Tags.Find("HeroModel") != INDEX_NONE)
 			{
 				HeroModel = Cast<ACharacter>(Actor);
 			}

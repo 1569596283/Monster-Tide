@@ -40,13 +40,17 @@ void ULevelManager::InitLevel()
 		EnemyNum += GameEnemyConfig.Number;
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ULevelManager::Tick, 0.1f, true);
 	GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>()->SetLevelEnemyNum(EnemyNum);
 }
 
 int ULevelManager::GetCueLevel()
 {
 	return CurLevel;
+}
+
+void ULevelManager::LevelStart()
+{
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ULevelManager::Tick, 0.1f, true);
 }
 
 ELevelType ULevelManager::GetLevelType()
@@ -59,7 +63,7 @@ void ULevelManager::GameOver()
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
-float ULevelManager::GetBattleHeroNumber() const
+int ULevelManager::GetBattleHeroNumber() const
 {
 	return CurLevelConfig->HerosNum;
 }

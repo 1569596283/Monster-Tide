@@ -28,7 +28,7 @@ void AEnemyBase::InitEnemy(int Path,int Damage,float Exp)
 	{
 		if (ASpline* DerivedActor = Cast<ASpline>(Actor))
 		{
-			if (*DerivedActor->GetActorLabel() == FString::FromInt(Path)) {
+			if (DerivedActor->GetPath() == Path) {
 				SplineComponent = DerivedActor->SplineComponent;
 			}
 		}
