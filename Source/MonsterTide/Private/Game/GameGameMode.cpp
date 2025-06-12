@@ -27,13 +27,14 @@ void AGameGameMode::BeginPlay()
 
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (AGamePlayerController* GPC = Cast<AGamePlayerController>(PC)) {
-		GPC->OpenGameUI(LevelManager->CurLevelConfig->LevelName);
+		GPC->OpenGameUI();
 	}
 }
 
 void AGameGameMode::OnEnemyArrived(TObjectPtr<AEnemyBase> Enemy)
 {
 	HP -= Enemy->GetDamage();
+	GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>()->OnHPChanged.Broadcast(HP);
 	if (HP <= 0) {
 		Defeat();
 	}

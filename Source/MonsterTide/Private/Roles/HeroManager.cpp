@@ -174,6 +174,16 @@ void UHeroManager::ExitBattle()
 	OnHeroAddExp.Clear();
 	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
 	RecoverHerosAllStatuses();
+	BattleHeroAttributeArr.Empty();
+	BattleHeroInfoArr.Empty();
+}
+
+void UHeroManager::ClearHero()
+{
+	BattleHeroAttributeArr.Empty();
+	BattleHeroInfoArr.Empty();
+	HeroMap.Empty();
+	CurSelectRoleAttribute = nullptr;
 }
 
 void UHeroManager::RoleUseSkill(ESkillType Type, float Damage, TObjectPtr<ARoleBase> User, TObjectPtr<ARoleBase> Target)

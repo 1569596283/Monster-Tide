@@ -104,15 +104,13 @@ void ULevelManager::CreateEnemy()
 			EnemyArr.RemoveAt(i);
 		}
 	}
-
-	if (EnemyArr.IsEmpty()) {
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-	}
-
 }
 
 void ULevelManager::Tick()
 {
 	LevelTime += 0.1;
-	CreateEnemy();
+	OnTimeAdd.Broadcast(LevelTime);
+	if (!EnemyArr.IsEmpty()) {
+		CreateEnemy();
+	}
 }

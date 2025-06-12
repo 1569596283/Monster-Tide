@@ -13,6 +13,8 @@
 #include "Roles/HeroManager.h"
 #include "Roles/RoleAttribute.h"
 #include "Levels/LevelManager.h"
+#include "Data/LevelData.h"
+#include "Utils/MyUtils.h"
 
 void UUI_Game::NativeOnInitialized()
 {
@@ -23,13 +25,22 @@ void UUI_Game::NativeOnInitialized()
 		Btn_Start->OnClicked.AddDynamic(this, &UUI_Game::OnBtnStartClicked);
 	}
 
+	PB_Enemy->SetPercent(0.f);
 	ShowAllHeros();
 	RefreshHeroCount();
 }
 
-void UUI_Game::InitGameUI(FString LevelName)
+void UUI_Game::InitGameUI()
 {
-	TB_Name->SetText(FText::FromString(LevelName));
+	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
+	TB_Name->SetText(FText::FromString(LevelMgr->CurLevelConfig->LevelName));
+	TB_Time->SetText(FText::FromString(UMyUtils::ConvertSecondsToMinutesSeconds(0.f)));
+	FString HP = FString::FromInt(LevelMgr->CurLevelConfig->HP) + "/" + FString::FromInt(LevelMgr->CurLevelConfig->HP);
+	TB_HP->SetText(FText::FromString(HP));
+	TB_Revenue->SetText(FText::FromString(FString::FromInt(LevelMgr->CurLevelConfig->FairyStone)));
+
+	LevelMgr->OnTimeAdd.AddUObject(this, &UUI_Game::RefreshTime);
+	LevelMgr->OnHPChanged.AddUObject(this, &UUI_Game::RefreshHP);
 }
 
 void UUI_Game::RefreshEnemyProperss(float Percent)
@@ -137,4 +148,18 @@ void UUI_Game::RefreshHeroCount()
 	auto HeroMgr = GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>();
 	FString Count = FString::FromInt(HeroMgr->GetBattleHeroNumber()) + "/" + FString::FromInt(LevelMgr->GetBattleHeroNumber());
 	TB_HeroCount->SetText(FText::FromString(Count));
+}
+
+void UUI_Game::RefreshTime(float Time)
+{
+	TB_Time->SetText(FText::FromString(UMyUtils::ConvertSecondsToMinutesSeconds(Time)));
+}
+
+void UUI_Game::RefreshHP(int HP)
+{
+	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
+	TB_HP->SetText(FText::FromString(HP + "/" + LevelMgr->CurLevelConfig->HP));
+	HP = FMath::Max(HP, 0);
+	int FairyStone = 1.0f * HP / LevelMgr->CurLevelConfig->HP * LevelMgr->CurLevelConfig->FairyStone;
+	TB_Revenue->SetText(FText::FromString(FString::FromInt(FairyStone)));
 }

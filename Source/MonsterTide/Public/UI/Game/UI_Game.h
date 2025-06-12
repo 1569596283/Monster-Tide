@@ -44,6 +44,12 @@ protected:
 	TObjectPtr<UButton> Btn_Start;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UWrapBox> WB_Heros;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_Time;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_HP;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TB_Revenue;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUI_HeroItem> HeroItemClass;
@@ -54,7 +60,7 @@ protected:
 public:
 	virtual void NativeOnInitialized() override;
 
-	void InitGameUI(FString LevelName);
+	void InitGameUI();
 
 	void RefreshEnemyProperss(float Percent);
 
@@ -77,4 +83,8 @@ private:
 	void RemoveHeroItem(TObjectPtr<UUI_HeroItem> Item, TObjectPtr<URoleAttribute> RA);
 
 	void RefreshHeroCount();
+
+	void RefreshTime(float Time);
+
+	void RefreshHP(int HP);
 };

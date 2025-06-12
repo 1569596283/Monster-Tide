@@ -25,12 +25,12 @@ void AGamePlayerController::OpenSettlementUI(bool Victory)
 	}
 }
 
-void AGamePlayerController::OpenGameUI(FString LevelName)
+void AGamePlayerController::OpenGameUI()
 {
 	if (UI_GameClass != nullptr) {
 		UI_Game = CreateWidget<UUI_Game>(this, UI_GameClass);
 		UI_Game->AddToViewport();
-		UI_Game->InitGameUI(LevelName);
+		UI_Game->InitGameUI();
 		auto EnemyMgr = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>();
 		EnemyMgr->EnemyCreate.AddUObject(UI_Game, &UUI_Game::RefreshEnemyProperss);
 	}

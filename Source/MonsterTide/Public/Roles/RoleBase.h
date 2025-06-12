@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Data/SkillData.h"
 #include "RoleBase.generated.h"
 
 enum class ESkillType : uint8;

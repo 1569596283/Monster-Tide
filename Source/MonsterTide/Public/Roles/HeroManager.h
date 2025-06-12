@@ -55,6 +55,8 @@ public:
 	void ExitBattle();
 	FTimerHandle BattleTimerHandle = FTimerHandle();
 
+	void ClearHero();
+
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	TArray <TObjectPtr< URoleAttribute >> BattleHeroAttributeArr;

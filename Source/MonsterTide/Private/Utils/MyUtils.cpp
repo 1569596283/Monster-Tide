@@ -45,3 +45,11 @@ int UMyUtils::GetRandomIndexByWeight(const TArray<float>& Weights)
     // 理论上不应该执行到这里，但为了安全返回最后一个索引
     return Weights.Num() - 1;
 }
+
+FString UMyUtils::ConvertSecondsToMinutesSeconds(float TotalSeconds)
+{
+    int32 Minutes = FMath::FloorToInt(TotalSeconds / 60.0f);
+    int32 Seconds = FMath::FloorToInt(FMath::Fmod(TotalSeconds, 60.0f));
+
+    return FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
+}

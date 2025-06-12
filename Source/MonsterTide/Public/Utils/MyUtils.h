@@ -21,4 +21,5 @@ public:
     // 静态方法可以直接调用，无需创建实例
     UFUNCTION(BlueprintCallable, Category = "MyUtility|Random", meta = (DisplayName = "Get Random Index By Weight"))
     static int GetRandomIndexByWeight(const TArray<float>& Weights);
+    static FString ConvertSecondsToMinutesSeconds(float TotalSeconds);
 };

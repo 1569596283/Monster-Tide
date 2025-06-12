@@ -10,6 +10,10 @@ enum class ELevelType :uint8;
 struct FGameEnemyConfig;
 struct FLevelConfig;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnTimeAdd, float);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHPChanged, int);
+
+
 /**
  * 
  */
@@ -19,6 +23,9 @@ class MONSTERTIDE_API ULevelManager : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 public:
+	FOnTimeAdd OnTimeAdd;
+	FOnHPChanged OnHPChanged;
+
 	void OpenLevel();
 	void OpenLevel(int Level);
 	void OpenNextLevel();

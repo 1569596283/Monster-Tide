@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Btn_Recruit;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<UButton> Btn_Return;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UTextBlock> TB_FairyStone; 
 
 
@@ -41,5 +43,6 @@ protected:
 	void OnBtnHeroClicked();
 	UFUNCTION()
 	void OnBtnRecruitClicked();
-
+	UFUNCTION()
+	void OnBtnReturnClicked();
 };

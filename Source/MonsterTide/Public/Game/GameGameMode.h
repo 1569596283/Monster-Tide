@@ -9,6 +9,7 @@
 class ULevelManager;
 class AEnemyBase;
 
+
 /**
  * 
  */
@@ -21,6 +22,7 @@ public:
 	virtual void BeginPlay() override;
 
 	int HP;
+
 
 private :
 	UPROPERTY()

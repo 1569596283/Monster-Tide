@@ -7,6 +7,8 @@
 #include "Game/SaveManager.h"
 #include "Game/MainPlayerController.h"
 #include "Levels/LevelManager.h"
+#include "Roles/HeroManager.h"
+#include <Kismet/GameplayStatics.h>
 
 void UUI_Main::NativeOnInitialized()
 {
@@ -19,6 +21,9 @@ void UUI_Main::NativeOnInitialized()
 	}
 	if (Btn_Recruit != nullptr) {
 		Btn_Recruit->OnClicked.AddDynamic(this, &UUI_Main::OnBtnRecruitClicked);
+	}
+	if (Btn_Return != nullptr) {
+		Btn_Return->OnClicked.AddDynamic(this, &UUI_Main::OnBtnReturnClicked);
 	}
 }
 
@@ -53,4 +58,10 @@ void UUI_Main::OnBtnRecruitClicked()
 	if (AMainPlayerController* MainPC = Cast<AMainPlayerController>(PC)) {
 		MainPC->OpenRecruitUMG();
 	}
+}
+
+void UUI_Main::OnBtnReturnClicked()
+{
+	UGameplayStatics::OpenLevel(this, FName(FString("StartMap")));
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->ClearHero();
 }

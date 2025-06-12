@@ -2,6 +2,7 @@
 
 
 #include "Data/RolePropertyData.h"
+#include "Data/DataTableSettings.h"
 #include "Roles/Heros/HeroBase.h"
 #include "Roles/Enemys/EnemyBase.h"
 
@@ -58,7 +59,7 @@ FRoleProperty* GetTargetLevelProperty(FRoleProperty* Property, int CurLevel, int
 
 TObjectPtr<USkeletalMesh> GetHeroSkeletalMesh(ERoleType Type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetHeroPropertyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
@@ -72,7 +73,7 @@ TObjectPtr<USkeletalMesh> GetHeroSkeletalMesh(ERoleType Type)
 
 ERoleType GetRandomHeroType()
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetHeroPropertyDataTable();
 	if (DataTable) {
 		// 获取数据表的所有行名
 		TArray<FName> RowNames = DataTable->GetRowNames();
@@ -87,7 +88,7 @@ ERoleType GetRandomHeroType()
 
 FRoleProperty* GetRandomHeroProperty(ERoleType Type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetHeroPropertyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
@@ -102,7 +103,7 @@ FRoleProperty* GetRandomHeroProperty(ERoleType Type)
 
 FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType Type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_HeroProperty.DT_HeroProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetHeroPropertyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
@@ -116,7 +117,7 @@ FHeroPropertyConfig* GetHeroPropertyConfig(ERoleType Type)
 
 FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetEnemyPropertyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());
@@ -132,7 +133,7 @@ FRoleProperty* GetRandomEnemyProperty(ERoleType Type, int Level)
 
 FEnemyPropertyConfig* GetEnemyPropertyConfig(ERoleType Type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_EnemyProperty.DT_EnemyProperty'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetEnemyPropertyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());

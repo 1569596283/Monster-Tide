@@ -26,6 +26,8 @@ protected:
 
 	// 重写函数来处理点击
 	virtual void NotifyActorOnClicked(FKey ButtonPressed = EKeys::LeftMouseButton) override;
+	// 新增触摸处理
+	virtual void NotifyActorOnInputTouchEnd(ETouchIndex::Type FingerIndex) override;
 
 	// 可选：悬停事件
 	virtual void NotifyActorBeginCursorOver() override;

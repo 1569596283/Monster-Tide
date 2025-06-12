@@ -2,11 +2,12 @@
 
 
 #include "Data/GameEnemyData.h"
+#include "Data/DataTableSettings.h"
 #include "Data/RolePropertyData.h"
 
 FGameEnemyConfig GetGameEnemyConfig(int id)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_GameEnemy.DT_GameEnemy'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetGameEnemyDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(FString::FromInt(id));

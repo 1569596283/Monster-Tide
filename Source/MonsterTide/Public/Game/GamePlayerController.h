@@ -23,7 +23,7 @@ public:
 
 	void OpenSettlementUI(bool Victory);
 
-	void OpenGameUI(FString LevelName);
+	void OpenGameUI();
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUI_Game> UI_GameClass;

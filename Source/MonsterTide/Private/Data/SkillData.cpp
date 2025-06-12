@@ -2,10 +2,11 @@
 
 
 #include "Data/SkillData.h"
+#include "Data/DataTableSettings.h"
 
 FSkillConfig* GetSkillConfig(ESkillType Type)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_Skill.DT_Skill'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetSkillDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(UEnum::GetDisplayValueAsText(Type).ToString());

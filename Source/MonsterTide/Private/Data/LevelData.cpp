@@ -2,10 +2,11 @@
 
 
 #include "Data/LevelData.h"
+#include "Data/DataTableSettings.h"
 
 FLevelConfig* GetLevelConfig(int Level)
 {
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_Level.DT_Level'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetLevelDataTable();
 	if (DataTable) {
 		FString ContextString = "Context";
 		FName RowName = FName(FString::FromInt(Level));
@@ -19,7 +20,7 @@ FLevelConfig* GetLevelConfig(int Level)
 TArray<FLevelConfig*> GetLevelConfigs(ELevelType Type)
 {
 	TArray<FLevelConfig*> Arr = TArray<FLevelConfig*>();
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Script/Engine.DataTable'/Game/DataTable/DT_Level.DT_Level'")));
+	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetLevelDataTable();
 	if (DataTable) {
 	TArray<FName> RowNames = DataTable->GetRowNames();
 		FString ContextString = "Context";

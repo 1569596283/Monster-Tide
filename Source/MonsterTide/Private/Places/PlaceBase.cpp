@@ -25,6 +25,11 @@ void APlaceBase::NotifyActorOnClicked(FKey ButtonPressed)
 	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->CreateHeroAtLocation(GetActorLocation());
 }
 
+void APlaceBase::NotifyActorOnInputTouchEnd(ETouchIndex::Type FingerIndex)
+{
+	GetWorld()->GetGameInstance()->GetSubsystem<UHeroManager>()->CreateHeroAtLocation(GetActorLocation());
+}
+
 void APlaceBase::NotifyActorBeginCursorOver()
 {
 }
