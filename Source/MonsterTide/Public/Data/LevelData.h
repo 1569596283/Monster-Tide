@@ -40,6 +40,6 @@ struct FLevelConfig :public FTableRowBase
 
 };
 
-FLevelConfig* GetLevelConfig(int Level);
+FLevelConfig GetLevelConfig(int Level);
 
 TArray<FLevelConfig *> GetLevelConfigs(ELevelType Type);

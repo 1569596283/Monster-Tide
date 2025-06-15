@@ -18,7 +18,7 @@ void AGameGameMode::BeginPlay()
 {
 	LevelManager = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
 	LevelManager->InitLevel();
-	HP = LevelManager->CurLevelConfig->HP;
+	HP = LevelManager->CurLevelConfig.HP;
 	auto EnemyMgr = GetWorld()->GetGameInstance()->GetSubsystem<UEnemyManager>();
 	EnemyMgr->EnemyArrived.AddUObject(this, &AGameGameMode::OnEnemyArrived);
 	EnemyMgr->EnemyDead.AddUObject(this, &AGameGameMode::OnEnemyDead);

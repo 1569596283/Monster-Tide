@@ -34,7 +34,7 @@ void ULevelManager::InitLevel()
 	CurLevelConfig = GetLevelConfig(CurLevel);
 	EnemyArr.Empty();
 	int EnemyNum = 0;
-	for (int i = CurLevelConfig->Enemy[0]; i <= CurLevelConfig->Enemy[1]; i++) {
+	for (int i = CurLevelConfig.Enemy[0]; i <= CurLevelConfig.Enemy[1]; i++) {
 		FGameEnemyConfig GameEnemyConfig = GetGameEnemyConfig(i);
 		EnemyArr.Push(GameEnemyConfig);
 		EnemyNum += GameEnemyConfig.Number;
@@ -65,7 +65,7 @@ void ULevelManager::GameOver()
 
 int ULevelManager::GetBattleHeroNumber() const
 {
-	return CurLevelConfig->HerosNum;
+	return CurLevelConfig.HerosNum;
 }
 
 int ULevelManager::GetEnemyNumber() const
@@ -84,7 +84,7 @@ int ULevelManager::GetFairyStone() const
 
 int ULevelManager::GetFairyStone(int HP)
 {
-	FairyStone = CurLevelConfig->FairyStone * (1.f * HP / CurLevelConfig->HP);
+	FairyStone = CurLevelConfig.FairyStone * (1.f * HP / CurLevelConfig.HP);
 	return FairyStone;
 }
 

@@ -33,11 +33,11 @@ void UUI_Game::NativeOnInitialized()
 void UUI_Game::InitGameUI()
 {
 	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
-	TB_Name->SetText(FText::FromString(LevelMgr->CurLevelConfig->LevelName));
+	TB_Name->SetText(FText::FromString(LevelMgr->CurLevelConfig.LevelName));
 	TB_Time->SetText(FText::FromString(UMyUtils::ConvertSecondsToMinutesSeconds(0.f)));
-	FString HP = FString::FromInt(LevelMgr->CurLevelConfig->HP) + "/" + FString::FromInt(LevelMgr->CurLevelConfig->HP);
+	FString HP = FString::FromInt(LevelMgr->CurLevelConfig.HP) + "/" + FString::FromInt(LevelMgr->CurLevelConfig.HP);
 	TB_HP->SetText(FText::FromString(HP));
-	TB_Revenue->SetText(FText::FromString(FString::FromInt(LevelMgr->CurLevelConfig->FairyStone)));
+	TB_Revenue->SetText(FText::FromString(FString::FromInt(LevelMgr->CurLevelConfig.FairyStone)));
 
 	LevelMgr->OnTimeAdd.AddUObject(this, &UUI_Game::RefreshTime);
 	LevelMgr->OnHPChanged.AddUObject(this, &UUI_Game::RefreshHP);
@@ -158,8 +158,9 @@ void UUI_Game::RefreshTime(float Time)
 void UUI_Game::RefreshHP(int HP)
 {
 	auto LevelMgr = GetWorld()->GetGameInstance()->GetSubsystem<ULevelManager>();
-	TB_HP->SetText(FText::FromString(HP + "/" + LevelMgr->CurLevelConfig->HP));
+	FString HPString = FString::FromInt(HP) + "/" + FString::FromInt(LevelMgr->CurLevelConfig.HP);
+	TB_HP->SetText(FText::FromString(HPString));
 	HP = FMath::Max(HP, 0);
-	int FairyStone = 1.0f * HP / LevelMgr->CurLevelConfig->HP * LevelMgr->CurLevelConfig->FairyStone;
+	int FairyStone = 1.0f * HP / LevelMgr->CurLevelConfig.HP * LevelMgr->CurLevelConfig.FairyStone;
 	TB_Revenue->SetText(FText::FromString(FString::FromInt(FairyStone)));
 }

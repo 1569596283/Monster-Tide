@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Data/LevelData.h"
 #include "LevelManager.generated.h"
 
 enum class ELevelType :uint8;
@@ -37,7 +38,8 @@ public:
 	ELevelType GetLevelType();
 	void GameOver();
 
-	FLevelConfig* CurLevelConfig;
+	FLevelConfig CurLevelConfig;
+
 	int GetBattleHeroNumber() const;
 
 	int GetEnemyNumber() const;

@@ -4,7 +4,7 @@
 #include "Data/LevelData.h"
 #include "Data/DataTableSettings.h"
 
-FLevelConfig* GetLevelConfig(int Level)
+FLevelConfig GetLevelConfig(int Level)
 {
 	UDataTable* DataTable = GetMutableDefault<UDataTableSettings>()->GetLevelDataTable();
 	if (DataTable) {
@@ -12,9 +12,9 @@ FLevelConfig* GetLevelConfig(int Level)
 		FName RowName = FName(FString::FromInt(Level));
 		FLevelConfig* LevelConfig = DataTable->FindRow<FLevelConfig>(RowName, ContextString);
 		if (LevelConfig)
-			return LevelConfig;
+			return *LevelConfig;
 	}
-	return nullptr;
+	return FLevelConfig();
 }
 
 TArray<FLevelConfig*> GetLevelConfigs(ELevelType Type)
